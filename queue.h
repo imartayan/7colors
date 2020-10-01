@@ -1,5 +1,11 @@
-#ifndef LISTS_H
-#define LISTS_H
+#ifndef QUEUE_H
+#define QUEUE_H
+
+typedef struct point
+{
+    int x;
+    int y;
+} point;
 
 typedef struct cell
 {

@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "board.h" /* Import our board module */
 #include "queue.h"
+#include "board.h" /* Import our board module */
 
 /** Program entry point */
 int main(void)
