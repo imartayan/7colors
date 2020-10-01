@@ -10,12 +10,6 @@
 #define BOARD_SIZE 30
 #define NB_COLORS 7
 
-typedef struct point
-{
-    int x;
-    int y;
-} point;
-
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
 
@@ -23,7 +17,12 @@ char get_cell(int x, int y);
 void set_cell(int x, int y, char color);
 
 void init_board();
+
+void propagate(point *p, char curr_player, char color, bool *change);
 void bad_update_board(char curr_player, char color);
+
+void visit_bfs(point *p, bool *seen, queue *q, char player);
+void update_board_bfs(char player, char color);
 
 /** Prints the current state of the board on screen
  *

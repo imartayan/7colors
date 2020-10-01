@@ -4,8 +4,8 @@
 #include <stdio.h> /* Import printf */
 #include <stdlib.h>
 #include <stdbool.h>
-#include "board.h" /* Enforce that the header file matches the declarations */
 #include "queue.h"
+#include "board.h"            /* Enforce that the header file matches the declarations */
 #include "simple_unit_test.h" /* Import the testing infrastructure */
 
 /* Note: This template comes with several global definitions. For now.
@@ -21,10 +21,11 @@
 /** Represent the actual current board game */
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
 
+point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
 int score1 = 0, score2 = 0;
 
-const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'O'};
-struct point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
+point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y)
@@ -52,40 +53,93 @@ void init_board()
             set_cell(i, j, color);
         }
     }
-    set_cell(0, BOARD_SIZE - 1, '2');
-    set_cell(BOARD_SIZE - 1, 0, '1');
+    set_cell(start1.x, start1.y, '1');
+    set_cell(start2.x, start2.y, '2');
+}
+
+void propagate(point *p, char curr_player, char color, bool *change)
+{
+    point pvoisin;
+    for (int k = 0; k < 4; k++)
+    {
+        pvoisin.x = p->x + direction[k].x;
+        pvoisin.y = p->y + direction[k].y;
+        bool in_bounds = (pvoisin.x >= 0 && pvoisin.x < BOARD_SIZE && pvoisin.y >= 0 && pvoisin.y < BOARD_SIZE);
+        bool chosen_color = (get_cell(pvoisin.x, pvoisin.y) == color);
+        if (in_bounds && chosen_color)
+        {
+            *change = true;
+            set_cell(pvoisin.x, pvoisin.y, curr_player);
+            propagate(&pvoisin, curr_player, color, change);
+        }
+    }
 }
 
 void bad_update_board(char curr_player, char color)
 {
-    bool changement = true;
-    int x, y;
-    while (changement)
+    bool change = true;
+    point *p = (point *)malloc(sizeof(point));
+    while (change)
     {
-        changement = false;
+        change = false;
         for (int i = 0; i < BOARD_SIZE; i++)
         {
             for (int j = 0; j < BOARD_SIZE; j++)
             {
                 if (get_cell(i, j) == curr_player)
                 {
-                    for (int k = 0; k < 4; k++)
-                    {
-                        x = i + direction[k].x;
-                        y = j + direction[k].y;
-                        bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
-                        bool chosen_color = (get_cell(x, y) == color);
-                        if (in_bounds && chosen_color)
-                        {
-                            set_cell(x, y, curr_player);
-                            changement = true;
-                        }
-                    }
+                    p->x = i;
+                    p->y = j;
+                    propagate(p, curr_player, color, &change);
                 }
             }
         }
     }
+    free(p);
 }
+
+// void visit_bfs(point *p, bool *seen, queue *q, char player)
+// {
+//     if (!seen[p->x + p->y * BOARD_SIZE])
+//     {
+//         seen[p->x + p->y * BOARD_SIZE] = true;
+//         add_queue(q, p);
+//     }
+// }
+
+// void update_board_bfs(char player, char color)
+// {
+//     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
+//     queue *q = create_queue();
+//     if (player == '1')
+//         add_queue(q, &start1);
+//     else if (player == '2')
+//         add_queue(q, &start2);
+//     // TODO
+//     int x, y;
+//     point *p = (point *)malloc(sizeof(point));
+//     while (!empty_queue(q))
+//     {
+//         pop_queue(q, p);
+//         visit_bfs(p, seen, q, player);
+//         // if (get_cell(p->x, p->y) == player)
+//         // {
+//         //     for (int k = 0; k < 4; k++)
+//         //     {
+//         //         x = p->x + direction[k].x;
+//         //         y = p->y + direction[k].y;
+//         //         bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
+//         //         bool chosen_color = (get_cell(x, y) == color);
+//         //         if (in_bounds && chosen_color)
+//         //         {
+//         //             set_cell(x, y, player);
+//         //         }
+//         //     }
+//         // }
+//     }
+//     free(p);
+//     free(q);
+// }
 
 // Properly printing colors
 void reset_print_color()
@@ -143,12 +197,21 @@ void set_print_color(char c)
  */
 void print_board(void)
 {
+    system("clear");
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
         {
-            printf("%c ", get_cell(i, j));
+            char c = get_cell(i, j);
+            if (c == '1' || c == '2')
+                printf("%c ", c);
+            else
+            {
+                set_print_color(c);
+                printf("%c ", 219);
+                reset_print_color();
+            }
         }
         printf("\n");
     }
