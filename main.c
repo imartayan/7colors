@@ -17,7 +17,7 @@ int main(void)
     char c;
     printf("quelle couleur voulez vous jouer ?");
     scanf("%c", &c);
-    update_board('1', c);
+    bad_update_board('1', c);
     print_board();
 
     return 0; // Everything went well
