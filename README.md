@@ -2,9 +2,9 @@
 An implementation of the 7 colors game written in C.
 
 ## Project structure
-* board.c: Implementation file of a board module (+some tests at the end).
-* main.c: Main function of the game.
-* (feel free to add more modules here if appropriate)
+* board.c: gestion of the board (random generation, update, print...)
+* main.c: main function of the game
+* queue.c: queue data structure with linked lists
 
 ## Done
 * generate the board
@@ -12,6 +12,11 @@ An implementation of the 7 colors game written in C.
 * list and queue structure
 
 ## Todo
+* create a function to play turns
 * add real colors to the board
 * create a random player
 * create a greedy player
+* create a tournament
+* write documentation (duh)
+* write a detailed report
+* (improve artificial intelligence (minimax ?))
