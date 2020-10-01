@@ -1,9 +1,10 @@
 /* Template of the 7 wonders of the world of the 7 colors assigment. */
 
 #include <stdio.h> /* Import the system's printf */
-#include "board.h" /* Import our board module */
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
+#include "board.h" /* Import our board module */
+#include "queue.h"
 
 /** Program entry point */
 int main(void)

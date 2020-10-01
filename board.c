@@ -4,7 +4,8 @@
 #include <stdio.h> /* Import printf */
 #include <stdlib.h>
 #include <stdbool.h>
-#include "board.h"            /* Enforce that the header file matches the declarations */
+#include "board.h" /* Enforce that the header file matches the declarations */
+#include "queue.h"
 #include "simple_unit_test.h" /* Import the testing infrastructure */
 
 /* Note: This template comes with several global definitions. For now.
