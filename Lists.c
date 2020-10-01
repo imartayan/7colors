@@ -1,21 +1,23 @@
-bool test_liste_vide(cell *head)
+#include "Lists.h"
+
+bool empty_list(cell *head)
 {
     return head == NULL;
 }
 
-void ajouter_liste(cell **head, point *p)
+void add_list(cell **head, point *p)
 {
+    cell *old = *head;
     cell *new = (cell *)malloc(sizeof(cell));
-    cell *old_head = *head;
     head = &new;
-    new->next = old_head;
+    new->next = old;
     new->val.x = p->x;
     new->val.y = p->y;
 }
 
-void tete(cell **head, point *p)
+void pop_list(cell **head, point *p)
 {
-    if (test_liste_vide(*head))
+    if (empty_list(*head))
     {
         fprintf(stderr, "impossible de retirer la t%cte d'une liste vide", 136);
         exit(69);
@@ -30,20 +32,15 @@ void tete(cell **head, point *p)
     free(**head);
 }
 
-void reverse(cell **src, cell **dest)
+void reverse_list(cell **src, cell **dest)
 {
     point *p = (point *)malloc(sizeof(point));
     while (*src != NULL)
     {
-        tete(src, p);
-        ajouter_liste(dest, p);
+        pop_list(src, p);
+        add_list(dest, p);
     }
     free(p);
-}
-
-bool empty_queue(queue *q)
-{
-    return (test_liste_vide(q->in) && test_liste_vide(q->out));
 }
 
 queue *create_queue()
@@ -53,9 +50,14 @@ queue *create_queue()
     q->out = NULL;
 }
 
+bool empty_queue(queue *q)
+{
+    return (empty_list(q->in) && empty_list(q->out));
+}
+
 void add_queue(queue **q, point *p)
 {
-    ajouter_liste(&((*q)->in), p);
+    add_list(&((*q)->in), p);
 }
 
 void pop_queue(queue **q, point *p)
@@ -65,7 +67,7 @@ void pop_queue(queue **q, point *p)
         fprintf(stderr, "impossible de retirer un %cl%cment d'une file vide", 233, 233);
         exit(42);
     }
-  if(test_liste_vide((*q)->out)
-    reverse(&(*q)->in, &(*q)->out);
-  tete((*q)->out, p);
+  if(empty_list((*q)->out)
+    reverse_list(&(*q)->in, &(*q)->out);
+  pop_list((*q)->out, p);
 }

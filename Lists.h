@@ -7,10 +7,10 @@ typedef struct cell
     struct cell *next;
 } cell;
 
-bool test_liste_vide(cell *head);
-void ajouter_liste(cell **head, point *p);
-void tete(cell **head, point *p);
-void reverse(cell **src, cell **dest);
+bool empty_list(cell *head);
+void add_list(cell **head, point *p);
+void pop_list(cell **head, point *p);
+void reverse_list(cell **src, cell **dest);
 
 typedef struct queue
 {
