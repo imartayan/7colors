@@ -11,7 +11,6 @@
 
 #define NB_COLORS 7
 
-
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
 

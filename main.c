@@ -1,7 +1,7 @@
 /* Template of the 7 wonders of the world of the 7 colors assigment. */
 
-#include <stdio.h>     /* Import the system's printf */
-#include "board.h"     /* Import our board module */
+#include <stdio.h> /* Import the system's printf */
+#include "board.h" /* Import our board module */
 #include <time.h>
 #include <stdlib.h>
 
@@ -10,13 +10,13 @@ int main(void)
 {
     srand((unsigned)time(NULL));
     printf("\n\nWelcome to the 7 wonders of the world of the 7 colors\n"
-	   "*****************************************************\n\n"
-	   "Current board state:\n");
+           "*****************************************************\n\n"
+           "Current board state:\n");
     init_board();
     print_board();
     char c;
     printf("quelle couleur voulez vous jouer ?");
-    scanf("%c",&c);
+    scanf("%c", &c);
     update_board('1', c);
     print_board();
 
