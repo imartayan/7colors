@@ -6,12 +6,20 @@
 
 /* Note: feel free to modify this API if you need it to clean your code */
 
+/* We want a 30x30 board game by default */
+#define BOARD_SIZE 30
+
+#define NB_COLORS 7
+
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
 
 /** Changes the color of a given board cell */
 void set_cell(int x, int y, char color);
+
+void init_board();
+void update_board(char curr_player, char color);
 
 /** Prints the current state of the board on screen
  *
