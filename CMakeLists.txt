@@ -4,7 +4,7 @@ project(7colors)
 
 set(CMAKE_C_FLAGS   "-Werror -Wall -Wextra -g -Wmissing-declarations -Wno-unused-parameter ${CMAKE_C_FLAGS}")
 
-set(sources board.c
+set(sources board.c queue.c
     # YOUR CODE HERE: List your source files right after board.c (only the c files are mandatory)
 )
 
