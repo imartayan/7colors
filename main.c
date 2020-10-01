@@ -2,6 +2,7 @@
 
 #include <stdio.h> /* Import the system's printf */
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
 #include "board.h" /* Import our board module */
 #include "queue.h"
