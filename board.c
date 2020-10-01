@@ -87,6 +87,55 @@ void bad_update_board(char curr_player, char color)
     }
 }
 
+// Properly printing colors
+void reset_print_color()
+{
+    printf("\033[0m");
+}
+
+void set_print_color(char c)
+{
+    switch (c)
+    {
+    case 'R':
+        //rouge
+        printf("\033[0;31m");
+        break;
+
+    case 'V':
+        //vert
+        printf("\033[0;32m");
+        break;
+
+    case 'B':
+        //bleu
+        printf("\033[0;34m");
+        break;
+
+    case 'J':
+        //jaune
+        printf("\033[0;33m");
+        break;
+
+    case 'G':
+        // gris/blanc (couleur de départ)
+        break;
+
+    case 'M':
+        // magenta
+        printf("\033[0;35m");
+        break;
+
+    case 'C':
+        // cyan
+        printf("\033[0;36m");
+        break;
+
+    default:
+        reset_print_color();
+    }
+}
+
 /** Prints the current state of the board on screen
  *
  * It would be nicer to do this with ncurse or even SFML or SDL,

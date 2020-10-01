@@ -30,6 +30,8 @@ void bad_update_board(char curr_player, char color);
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
+void reset_print_color();
+void set_print_color(char c);
 void print_board(void);
 
 #endif
