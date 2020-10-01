@@ -4,39 +4,40 @@
 #include "board.h"
 #include "queue.h"
 
-bool empty_list(cell *head)
+bool empty_list(list head)
 {
     return head == NULL;
 }
 
-void add_list(cell **head, point *p)
+void add_list(list *lst, point *p)
 {
-    cell *old = *head;
-    cell *new = (cell *)malloc(sizeof(cell));
-    head = &new;
-    new->next = old;
+    list head = *lst;
+    list new = (cell *)malloc(sizeof(cell));
+    lst = &new;
+    new->next = head;
     new->val.x = p->x;
     new->val.y = p->y;
 }
 
-void pop_list(cell **head, point *p)
+void pop_list(list *lst, point *p)
 {
-    if (empty_list(*head))
+    if (empty_list(*lst))
     {
         fprintf(stderr, "impossible de retirer la t%cte d'une liste vide", 136);
         exit(69);
     }
-    p->x = (*head)->val.x;
-    p->y = (*head)->val.y;
 
-    if ((*head)->next == NULL)
-        (*head) = NULL;
+    p->x = (*lst)->val.x;
+    p->y = (*lst)->val.y;
+
+    if ((*lst)->next == NULL)
+        (*lst) = NULL;
     else
-        (*head)->next = (*head)->next->next;
-    free(**head);
+        (*lst)->next = (*lst)->next->next;
+    free(*lst);
 }
 
-void reverse_list(cell **src, cell **dest)
+void reverse_list(list *src, list *dest)
 {
     point *p = (point *)malloc(sizeof(point));
     while (*src != NULL)
@@ -52,6 +53,7 @@ queue *create_queue()
     queue *q = (queue *)malloc(sizeof(queue));
     q->in = NULL;
     q->out = NULL;
+    return q;
 }
 
 bool empty_queue(queue *q)
@@ -59,19 +61,19 @@ bool empty_queue(queue *q)
     return (empty_list(q->in) && empty_list(q->out));
 }
 
-void add_queue(queue **q, point *p)
+void add_queue(queue *q, point *p)
 {
-    add_list(&((*q)->in), p);
+    add_list(&(q->in), p);
 }
 
-void pop_queue(queue **q, point *p)
+void pop_queue(queue *q, point *p)
 {
-    if (empty_queue(*q))
+    if (empty_queue(q))
     {
         fprintf(stderr, "impossible de retirer un %cl%cment d'une file vide", 233, 233);
         exit(42);
     }
-    if (empty_list((*q)->out))
-        reverse_list(&(*q)->in, &(*q)->out);
-    pop_list((*q)->out, p);
+    if (empty_list(q->out))
+        reverse_list(&q->in, &q->out);
+    pop_list(&q->out, p);
 }

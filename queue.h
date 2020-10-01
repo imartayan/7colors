@@ -7,20 +7,22 @@ typedef struct cell
     struct cell *next;
 } cell;
 
-bool empty_list(cell *head);
-void add_list(cell **head, point *p);
-void pop_list(cell **head, point *p);
-void reverse_list(cell **src, cell **dest);
+typedef cell *list;
+
+bool empty_list(list head);
+void add_list(list *head, point *p);
+void pop_list(list *head, point *p);
+void reverse_list(list *src, list *dest);
 
 typedef struct queue
 {
-    cell *in;
-    cell *out;
+    list in;
+    list out;
 } queue;
 
 bool empty_queue(queue *q);
 queue *create_queue();
-void add_queue(queue **q, point *p);
-void pop_queue(queue **q, point *p);
+void add_queue(queue *q, point *p);
+void pop_queue(queue *q, point *p);
 
 #endif
