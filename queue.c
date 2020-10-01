@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "board.h"
 #include "queue.h"
 
 bool empty_list(cell *head)
@@ -67,7 +71,7 @@ void pop_queue(queue **q, point *p)
         fprintf(stderr, "impossible de retirer un %cl%cment d'une file vide", 233, 233);
         exit(42);
     }
-  if(empty_list((*q)->out)
-    reverse_list(&(*q)->in, &(*q)->out);
-  pop_list((*q)->out, p);
+    if (empty_list((*q)->out))
+        reverse_list(&(*q)->in, &(*q)->out);
+    pop_list((*q)->out, p);
 }
