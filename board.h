@@ -10,11 +10,11 @@
 #define BOARD_SIZE 30
 #define NB_COLORS 7
 
-struct point
+typedef struct point
 {
     int x;
     int y;
-};
+} point;
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
