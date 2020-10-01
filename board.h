@@ -8,8 +8,13 @@
 
 /* We want a 30x30 board game by default */
 #define BOARD_SIZE 30
-
 #define NB_COLORS 7
+
+struct point
+{
+    int x;
+    int y;
+};
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
@@ -18,7 +23,7 @@ char get_cell(int x, int y);
 void set_cell(int x, int y, char color);
 
 void init_board();
-void update_board(char curr_player, char color);
+void bad_update_board(char curr_player, char color);
 
 /** Prints the current state of the board on screen
  *

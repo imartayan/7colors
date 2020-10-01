@@ -19,11 +19,6 @@
 
 /** Represent the actual current board game */
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
-struct point
-{
-    int x;
-    int y;
-};
 
 int score1 = 0, score2 = 0;
 
