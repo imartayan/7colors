@@ -4,11 +4,24 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "queue.h"
+#include <stdbool.h>
 /* Note: feel free to modify this API if you need it to clean your code */
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 10
+#define BOARD_SIZE 30
+#define NB_CASES BOARD_SIZE * BOARD_SIZE
 #define NB_COLORS 7
+
+#define PLAYER1 '1'
+#define PLAYER2 '2'
+
+extern char board[BOARD_SIZE * BOARD_SIZE]; // Filled with zeros
+extern point start1, start2;
+
+extern const char colors[];
+extern const point direction[];
+
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
@@ -18,27 +31,10 @@ void set_cell(int x, int y, char color);
 
 void init_board();
 
-void propagate(point *p, char curr_player, char color, bool *change);
-void bad_update_board(char curr_player, char color);
+void propagate(point *p, char curr_player, char color, bool *change, int* score1, int* score2);
+void bad_update_board(char curr_player, char color, int* score1, int* score2);
 
-void visit_bfs(point *p, bool *seen, queue *q, char player, char color);
-void update_board_bfs(char player, char color);
-
-int run_game();
-
-bool in_colors(char c);
-char get_player_move();
-
-void change_player(char *curr_player, int *tour);
-
-/** Prints the current state of the board on screen
- *
- * It would be nicer to do this with ncurse or even SFML or SDL,
- * but this is not required in this assignment. See the extensions.
- */
-void reset_print_color();
-void set_print_color(char c);
-void print_board(char curr_player, int tour);
-void print_end_screen(int winner);
+void visit_bfs(point *p, bool *seen, queue *q, char player, char color, int* score1, int* score2);
+void update_board_bfs(char player, char color, int* score1, int* score2);
 
 #endif

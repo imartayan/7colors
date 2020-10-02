@@ -20,14 +20,10 @@
 
 /** Represent the actual current board game */
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
-const int NB_CASES = BOARD_SIZE * BOARD_SIZE;
-
-const char player1 = '1', player2 = '2';
 point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-int score1 = 1, score2 = 1;
 
 const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
-point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+const point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y)
@@ -55,11 +51,11 @@ void init_board()
             set_cell(i, j, color);
         }
     }
-    set_cell(start1.x, start1.y, player1);
-    set_cell(start2.x, start2.y, player2);
+    set_cell(start1.x, start1.y, PLAYER1);
+    set_cell(start2.x, start2.y, PLAYER2);
 }
 
-void propagate(point *p, char curr_player, char color, bool *change)
+void propagate(point *p, char curr_player, char color, bool *change, int* score1, int* score2)
 {
     point pvoisin;
     for (int k = 0; k < 4; k++)
@@ -72,16 +68,16 @@ void propagate(point *p, char curr_player, char color, bool *change)
         {
             *change = true;
             set_cell(pvoisin.x, pvoisin.y, curr_player);
-            if (curr_player == player1)
-                score1++;
+            if (curr_player == PLAYER1)
+                (*score1)++;
             else
-                score2++;
-            propagate(&pvoisin, curr_player, color, change);
+                (*score2)++;
+            propagate(&pvoisin, curr_player, color, change, score1, score2);
         }
     }
 }
 
-void bad_update_board(char curr_player, char color)
+void bad_update_board(char curr_player, char color, int* score1, int* score2)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -96,7 +92,7 @@ void bad_update_board(char curr_player, char color)
                 {
                     p->x = i;
                     p->y = j;
-                    propagate(p, curr_player, color, &change);
+                    propagate(p, curr_player, color, &change, score1, score2);
                 }
             }
         }
@@ -104,7 +100,7 @@ void bad_update_board(char curr_player, char color)
     free(p);
 }
 
-void visit_bfs(point *p, bool *seen, queue *visit, char player, char color)
+void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int* score1, int* score2)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -112,10 +108,10 @@ void visit_bfs(point *p, bool *seen, queue *visit, char player, char color)
         if (get_cell(p->x, p->y) == color)
         {
             set_cell(p->x, p->y, player);
-            if (player == player1)
-                score1++;
+            if (player == PLAYER1)
+                (*score1)++;
             else
-                score2++;
+                (*score2)++;
         }
         if (get_cell(p->x, p->y) == player)
         {
@@ -135,11 +131,11 @@ void visit_bfs(point *p, bool *seen, queue *visit, char player, char color)
     }
 }
 
-void update_board_bfs(char player, char color)
+void update_board_bfs(char player, char color, int* score1, int* score2)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == player1)
+    if (player == PLAYER1)
         add_queue(visit, &start1);
     else
         add_queue(visit, &start2);
@@ -147,150 +143,10 @@ void update_board_bfs(char player, char color)
     while (!empty_queue(visit))
     {
         pop_queue(visit, p);
-        visit_bfs(p, seen, visit, player, color);
+        visit_bfs(p, seen, visit, player, color, score1, score2);
     }
     free(p);
     free(visit);
-}
-
-bool in_colors(char c)
-{
-    for (int i = 0; i < NB_COLORS; i++)
-    {
-        if (c == colors[i])
-            return true;
-    }
-    return false;
-}
-
-/*main game function, contains the game cycle
- return the number of the winning player*/
-int run_game()
-{
-    char color;
-    char curr_player = player1;
-    int tour = 1;
-    // game cycle
-    while (2 * score1 <= NB_CASES && 2 * score2 <= NB_CASES)
-    {
-        print_board(curr_player, tour);
-        color = get_player_move();
-        // bad_update_board(curr_player, color);
-        update_board_bfs(curr_player, color);
-        change_player(&curr_player, &tour);
-        system("clear"); // efface la console
-    }
-    return (tour & 1 + 1); // équivalent de %2 demandant beaucoup moins de calcul
-}
-
-char get_player_move()
-{
-    char c = '\0';
-    bool lettreAutorisee = false;
-    while (!lettreAutorisee)
-    {
-        printf("Quelle couleur voulez-vous jouer ? Choix possibles : R, V, B, J, G, M, C\n");
-        scanf(" %c", &c);
-        lettreAutorisee = in_colors(c);
-        if (!lettreAutorisee)
-            printf("Entree non valide, veuilliez entrer une valeur parmis les couleurs possibles");
-    }
-    return c;
-}
-
-void change_player(char *curr_player, int *tour)
-{
-    if (*curr_player == player1)
-        *curr_player = player2;
-    else
-    {
-        *curr_player = player1;
-        (*tour)++;
-    }
-}
-
-// Properly printing colors
-void reset_print_color()
-{
-    printf("\033[0m");
-}
-
-void set_print_color(char c)
-{
-    switch (c)
-    {
-    case 'R':
-        //rouge
-        printf("\033[0;31m");
-        break;
-
-    case 'V':
-        //vert
-        printf("\033[0;32m");
-        break;
-
-    case 'B':
-        //bleu
-        printf("\033[0;34m");
-        break;
-
-    case 'J':
-        //jaune
-        printf("\033[0;33m");
-        break;
-
-    case 'G':
-        // gris/blanc (couleur de départ)
-        break;
-
-    case 'M':
-        // magenta
-        printf("\033[0;35m");
-        break;
-
-    case 'C':
-        // cyan
-        printf("\033[0;36m");
-        break;
-
-    default:
-        reset_print_color();
-    }
-}
-
-/** Prints the current state of the board on screen
- *
- * It would be nicer to do this with ncurse or even SFML or SDL,
- * but this is not required in this assignment. See the extensions.
- */
-void print_board(char curr_player, int tour)
-{
-    system("clear");
-    printf("Tour %d - Score J1: %d - Score J2: %d\n", tour, score1, score2);
-    printf("C'est au tour du joueur %c\n", curr_player);
-    printf("Current board state :\n");
-    int i, j;
-    for (i = 0; i < BOARD_SIZE; i++)
-    {
-        for (j = 0; j < BOARD_SIZE; j++)
-        {
-            char c = get_cell(i, j);
-            if (c == player1 || c == player2)
-                printf("%c", c);
-            else
-            {
-                set_print_color(c);
-                printf("%c ", 219);
-                reset_print_color();
-            }
-        }
-        printf("\n");
-    }
-}
-
-void print_end_screen(int winner)
-{
-    printf("Le joueur %d remporte la partie !", winner);
 }
 
 /************ The tests **************/
