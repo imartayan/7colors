@@ -10,8 +10,9 @@ An implementation of the 7 colors game written in C.
 * generate the board
 * naive search of accessible colors
 * list and queue structure
-* better propagation function
 * correctly handling colors
+* better propagation function
+* 2 players mode
 
 ## Todo
 * create a function to play turns
