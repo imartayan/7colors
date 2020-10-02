@@ -19,9 +19,9 @@ void set_cell(int x, int y, char color);
 void init_board();
 
 void propagate(point *p, char curr_player, char color, bool *change);
-bool bad_update_board(char curr_player, char color);
+void bad_update_board(char curr_player, char color);
 
-void visit_bfs(point *p, bool *seen, queue *q, char player);
+void visit_bfs(point *p, bool *seen, queue *q, char player, char color);
 void update_board_bfs(char player, char color);
 
 int run_game();

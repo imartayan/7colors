@@ -20,9 +20,10 @@
 
 /** Represent the actual current board game */
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
+const int NB_CASES = BOARD_SIZE * BOARD_SIZE;
 
 const char player1 = '1', player2 = '2';
-const point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
+point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
 int score1 = 1, score2 = 1;
 
 const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
@@ -80,7 +81,7 @@ void propagate(point *p, char curr_player, char color, bool *change)
     }
 }
 
-bool bad_update_board(char curr_player, char color)
+void bad_update_board(char curr_player, char color)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -101,51 +102,56 @@ bool bad_update_board(char curr_player, char color)
         }
     }
     free(p);
-    return true;
 }
 
-// void visit_bfs(point *p, bool *seen, queue *q, char player)
-// {
-//     if (!seen[p->x + p->y * BOARD_SIZE])
-//     {
-//         seen[p->x + p->y * BOARD_SIZE] = true;
-//         add_queue(q, p);
-//     }
-// }
+void visit_bfs(point *p, bool *seen, queue *visit, char player, char color)
+{
+    if (!seen[p->x + p->y * BOARD_SIZE])
+    {
+        seen[p->x + p->y * BOARD_SIZE] = true;
+        if (get_cell(p->x, p->y) == color)
+        {
+            set_cell(p->x, p->y, player);
+            if (player == player1)
+                score1++;
+            else
+                score2++;
+        }
+        if (get_cell(p->x, p->y) == player)
+        {
+            int x, y;
+            for (int k = 0; k < 4; k++)
+            {
+                x = p->x + direction[k].x;
+                y = p->y + direction[k].y;
+                bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
+                if (in_bounds)
+                {
+                    point voisin = {x, y};
+                    add_queue(visit, &voisin);
+                }
+            }
+        }
+    }
+}
 
-// void update_board_bfs(char player, char color)
-// {
-//     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
-//     queue *q = create_queue();
-//     if (player == player1)
-//         add_queue(q, &start1);
-//     else if (player == player2)
-//         add_queue(q, &start2);
-//     // TODO
-//     int x, y;
-//     point *p = (point *)malloc(sizeof(point));
-//     while (!empty_queue(q))
-//     {
-//         pop_queue(q, p);
-//         visit_bfs(p, seen, q, player);
-//         // if (get_cell(p->x, p->y) == player)
-//         // {
-//         //     for (int k = 0; k < 4; k++)
-//         //     {
-//         //         x = p->x + direction[k].x;
-//         //         y = p->y + direction[k].y;
-//         //         bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
-//         //         bool chosen_color = (get_cell(x, y) == color);
-//         //         if (in_bounds && chosen_color)
-//         //         {
-//         //             set_cell(x, y, player);
-//         //         }
-//         //     }
-//         // }
-//     }
-//     free(p);
-//     free(q);
-// }
+void update_board_bfs(char player, char color)
+{
+    bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
+    queue *visit = create_queue();
+    if (player == player1)
+        add_queue(visit, &start1);
+    else
+        add_queue(visit, &start2);
+    point *p = (point *)malloc(sizeof(point));
+    while (!empty_queue(visit))
+    {
+        pop_queue(visit, p);
+        visit_bfs(p, seen, visit, player, color);
+    }
+    free(p);
+    free(visit);
+}
 
 bool in_colors(char c)
 {
@@ -161,20 +167,20 @@ bool in_colors(char c)
  return the number of the winning player*/
 int run_game()
 {
-    char c;
+    char color;
     char curr_player = player1;
     int tour = 1;
-    bool game_running = true;
     // game cycle
-    while (game_running)
+    while (2 * score1 <= NB_CASES && 2 * score2 <= NB_CASES)
     {
         print_board(curr_player, tour);
-        c = get_player_move();
-        game_running = bad_update_board(curr_player, c); // renvoie false ssi la partie est terminée
+        color = get_player_move();
+        // bad_update_board(curr_player, color);
+        update_board_bfs(curr_player, color);
         change_player(&curr_player, &tour);
         system("clear"); // efface la console
     }
-    return (tour & 1); // équivalent de %2 demandant beaucoup moins de calcul
+    return (tour & 1 + 1); // équivalent de %2 demandant beaucoup moins de calcul
 }
 
 char get_player_move()
@@ -183,7 +189,7 @@ char get_player_move()
     bool lettreAutorisee = false;
     while (!lettreAutorisee)
     {
-        printf("Quelle couleur voulez vous jouer ? couleurs possibles : R, V, B, J, G, M, C\n");
+        printf("Quelle couleur voulez-vous jouer ? Choix possibles : R, V, B, J, G, M, C\n");
         scanf(" %c", &c);
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
