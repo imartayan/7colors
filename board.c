@@ -265,7 +265,7 @@ void print_board(char curr_player, int tour)
         {
             char c = get_cell(i, j);
             if (c == player1 || c == player2)
-                printf("%c ", c);
+                printf("%c", c);
             else
             {
                 set_print_color(c);
