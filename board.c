@@ -21,8 +21,9 @@
 /** Represent the actual current board game */
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
 
-point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-int score1 = 0, score2 = 0;
+const char player1 = '1', player2 = '2';
+const point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
+const int score1 = 0, score2 = 0;
 
 const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -53,8 +54,8 @@ void init_board()
             set_cell(i, j, color);
         }
     }
-    set_cell(start1.x, start1.y, '1');
-    set_cell(start2.x, start2.y, '2');
+    set_cell(start1.x, start1.y, player1);
+    set_cell(start2.x, start2.y, player2);
 }
 
 void propagate(point *p, char curr_player, char color, bool *change)
@@ -75,7 +76,7 @@ void propagate(point *p, char curr_player, char color, bool *change)
     }
 }
 
-void bad_update_board(char curr_player, char color)
+bool bad_update_board(char curr_player, char color)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -96,6 +97,7 @@ void bad_update_board(char curr_player, char color)
         }
     }
     free(p);
+    return true;
 }
 
 // void visit_bfs(point *p, bool *seen, queue *q, char player)
@@ -111,9 +113,9 @@ void bad_update_board(char curr_player, char color)
 // {
 //     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
 //     queue *q = create_queue();
-//     if (player == '1')
+//     if (player == player1)
 //         add_queue(q, &start1);
-//     else if (player == '2')
+//     else if (player == player2)
 //         add_queue(q, &start2);
 //     // TODO
 //     int x, y;
@@ -140,6 +142,62 @@ void bad_update_board(char curr_player, char color)
 //     free(p);
 //     free(q);
 // }
+
+bool in_colors(char c)
+{
+    for (int i = 0; i < NB_COLORS; i++)
+    {
+        if (c == colors[i])
+            return true;
+    }
+    return false;
+}
+
+/*main game function, contains the game cycle
+ return the number of the winning player*/
+int run_game()
+{
+    char c;
+    char curr_player = player1;
+    int tour = 1;
+    bool game_running = true;
+    // game cycle
+    while (game_running)
+    {
+        print_board(curr_player, tour);
+        c = get_player_move();
+        game_running = bad_update_board(curr_player, c); // renvoie false ssi la partie est terminée
+        change_player(&curr_player, &tour);
+        system("clear"); // efface la console
+    }
+    return (tour & 1); // équivalent de %2 demandant beaucoup moins de calcul
+}
+
+char get_player_move()
+{
+    char c = '\0';
+    bool lettreAutorisee = false;
+    while (!lettreAutorisee)
+    {
+        printf("quelle couleur voulez vous jouer ? couleurs possibles : R, V, B, J, G, M, C\n");
+        scanf(" %c", &c);
+        lettreAutorisee = in_colors(c);
+        if (!lettreAutorisee)
+            printf("entree non valide, veuilliez entrer une valeur parmis les couleurs possibles");
+    }
+    return c;
+}
+
+void change_player(char *curr_player, int *tour)
+{
+    if (*curr_player == player1)
+        *curr_player = player2;
+    else
+    {
+        *curr_player = player1;
+        (*tour)++;
+    }
+}
 
 // Properly printing colors
 void reset_print_color()
@@ -195,16 +253,18 @@ void set_print_color(char c)
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
-void print_board(void)
+void print_board(char curr_player, int tour)
 {
     system("clear");
+    printf("tour %d : a %c de jouer\n", tour, curr_player);
+    printf("Current board state :\n");
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
         {
             char c = get_cell(i, j);
-            if (c == '1' || c == '2')
+            if (c == player1 || c == player2)
                 printf("%c ", c);
             else
             {
@@ -215,6 +275,11 @@ void print_board(void)
         }
         printf("\n");
     }
+}
+
+void print_end_screen(int winner)
+{
+    printf("le joueur %d gagne !", winner);
 }
 
 /************ The tests **************/

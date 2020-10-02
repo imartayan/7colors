@@ -11,16 +11,12 @@
 int main(void)
 {
     srand((unsigned)time(NULL));
+    init_board();
     printf("\n\nWelcome to the 7 wonders of the world of the 7 colors\n"
            "*****************************************************\n\n"
            "Current board state:\n");
-    init_board();
-    print_board();
-    char c;
-    printf("quelle couleur voulez vous jouer ?");
-    scanf("%c", &c);
-    bad_update_board('1', c);
-    print_board();
+    int winner = run_game();
+    print_end_screen(winner);
 
     return 0; // Everything went well
 }

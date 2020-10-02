@@ -19,10 +19,17 @@ void set_cell(int x, int y, char color);
 void init_board();
 
 void propagate(point *p, char curr_player, char color, bool *change);
-void bad_update_board(char curr_player, char color);
+bool bad_update_board(char curr_player, char color);
 
 void visit_bfs(point *p, bool *seen, queue *q, char player);
 void update_board_bfs(char player, char color);
+
+int run_game();
+
+bool in_colors(char c);
+char get_player_move();
+
+void change_player(char *curr_player, int *tour);
 
 /** Prints the current state of the board on screen
  *
@@ -31,6 +38,7 @@ void update_board_bfs(char player, char color);
  */
 void reset_print_color();
 void set_print_color(char c);
-void print_board(void);
+void print_board(char curr_player, int tour);
+void print_end_screen(int winner);
 
 #endif
