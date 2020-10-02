@@ -9,14 +9,22 @@ bool empty_list(list head)
     return head == NULL;
 }
 
+void print_list(list head)
+{
+    while (!empty_list(head))
+    {
+        printf("(%d,%d) -> ", head->val.x, head->val.y);
+        head = head->next;
+    }
+    printf("\n");
+}
+
 void add_list(list *lst, point *p)
 {
-    list head = *lst;
     list new = (cell *)malloc(sizeof(cell));
-    lst = &new;
-    new->next = head;
-    new->val.x = p->x;
-    new->val.y = p->y;
+    new->next = *lst;
+    new->val = *p;
+    *lst = new;
 }
 
 void pop_list(list *lst, point *p)
@@ -30,17 +38,15 @@ void pop_list(list *lst, point *p)
     p->x = (*lst)->val.x;
     p->y = (*lst)->val.y;
 
-    if ((*lst)->next == NULL)
-        (*lst) = NULL;
-    else
-        (*lst)->next = (*lst)->next->next;
-    free(*lst);
+    list old = *lst;
+    (*lst) = (*lst)->next;
+    free(old);
 }
 
 void reverse_list(list *src, list *dest)
 {
     point *p = (point *)malloc(sizeof(point));
-    while (*src != NULL)
+    while (!empty_list(*src))
     {
         pop_list(src, p);
         add_list(dest, p);
@@ -59,6 +65,14 @@ queue *create_queue()
 bool empty_queue(queue *q)
 {
     return (empty_list(q->in) && empty_list(q->out));
+}
+
+void print_queue(queue *q)
+{
+    printf("IN: ");
+    print_list(q->in);
+    printf("OUT: ");
+    print_list(q->out);
 }
 
 void add_queue(queue *q, point *p)

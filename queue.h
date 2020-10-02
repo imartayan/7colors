@@ -16,6 +16,7 @@ typedef struct cell
 typedef cell *list;
 
 bool empty_list(list head);
+void print_list(list head);
 void add_list(list *head, point *p);
 void pop_list(list *head, point *p);
 void reverse_list(list *src, list *dest);
@@ -26,8 +27,9 @@ typedef struct queue
     list out;
 } queue;
 
-bool empty_queue(queue *q);
 queue *create_queue();
+bool empty_queue(queue *q);
+void print_queue(queue *q);
 void add_queue(queue *q, point *p);
 void pop_queue(queue *q, point *p);
 
