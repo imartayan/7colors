@@ -23,7 +23,7 @@ char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
 
 const char player1 = '1', player2 = '2';
 const point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-const int score1 = 0, score2 = 0;
+int score1 = 1, score2 = 1;
 
 const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -71,6 +71,10 @@ void propagate(point *p, char curr_player, char color, bool *change)
         {
             *change = true;
             set_cell(pvoisin.x, pvoisin.y, curr_player);
+            if (curr_player == player1)
+                score1++;
+            else
+                score2++;
             propagate(&pvoisin, curr_player, color, change);
         }
     }
@@ -179,11 +183,11 @@ char get_player_move()
     bool lettreAutorisee = false;
     while (!lettreAutorisee)
     {
-        printf("quelle couleur voulez vous jouer ? couleurs possibles : R, V, B, J, G, M, C\n");
+        printf("Quelle couleur voulez vous jouer ? couleurs possibles : R, V, B, J, G, M, C\n");
         scanf(" %c", &c);
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
-            printf("entree non valide, veuilliez entrer une valeur parmis les couleurs possibles");
+            printf("Entree non valide, veuilliez entrer une valeur parmis les couleurs possibles");
     }
     return c;
 }
@@ -256,7 +260,8 @@ void set_print_color(char c)
 void print_board(char curr_player, int tour)
 {
     system("clear");
-    printf("tour %d : a %c de jouer\n", tour, curr_player);
+    printf("Tour %d - Score J1: %d - Score J2: %d\n", tour, score1, score2);
+    printf("C'est au tour du joueur %c\n", curr_player);
     printf("Current board state :\n");
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
@@ -279,7 +284,7 @@ void print_board(char curr_player, int tour)
 
 void print_end_screen(int winner)
 {
-    printf("le joueur %d gagne !", winner);
+    printf("Le joueur %d remporte la partie !", winner);
 }
 
 /************ The tests **************/
