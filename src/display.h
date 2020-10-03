@@ -9,8 +9,9 @@
 void reset_print_color();
 void set_print_color(char c);
 void print_welcome_screen();
-void print_informations(char curr_player, int tour, int score1, int score2);
+void print_score(int score1, int score2);
+void print_turn(char curr_player, int turn);
 void print_board();
-void print_end_screen(int winner, int nb_players);
+void print_end_screen(int winner, int nb_players, int score1, int score2);
 
 #endif

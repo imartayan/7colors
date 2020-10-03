@@ -64,25 +64,31 @@ void print_welcome_screen()
 {
     system("clear");
     printf("Welcome to the 7 wonders of the world of the 7 colors\n");
-    printf("*****************************************************\n");
+    printf("*****************************************************\n\n");
 }
 
-void print_informations(char curr_player, int tour, int score1, int score2)
+void print_score(int score1, int score2)
 {
     double p1 = (double)score1 / NB_CASES * 100;
     double p2 = (double)score2 / NB_CASES * 100;
-    printf("Tour %d - Joueur 1 ", tour);
+    printf("\nScore : J1 ");
     set_print_color(PLAYER1);
     printf("%.0f%%", p1);
     reset_print_color();
-    printf(" - Joueur 2 ");
+    printf(" - J2 ");
     set_print_color(PLAYER2);
     printf("%.0f%%\n", p2);
     reset_print_color();
-    printf("C'est au tour du ");
+}
+
+void print_turn(char curr_player, int turn)
+{
+    printf("Tour %d - ", turn);
+    printf("C'est à ");
     set_print_color(curr_player);
-    printf("joueur %c\n", curr_player);
+    printf("J%c", curr_player);
     reset_print_color();
+    printf(" de jouer !\n");
 }
 
 /** Prints the current state of the board on screen
@@ -92,8 +98,8 @@ void print_informations(char curr_player, int tour, int score1, int score2)
  */
 void print_board()
 {
-    // printf("Etat actuel du plateau :\n");
     int i, j;
+    printf("\n");
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
@@ -105,11 +111,13 @@ void print_board()
         }
         printf("\n");
     }
+    printf("\n");
 }
 
-void print_end_screen(int winner, int nb_players)
+void print_end_screen(int winner, int nb_players, int score1, int score2)
 {
     system("clear");
+    print_score(score1, score2);
     print_board();
     if ((nb_players == 2 && winner) || (nb_players == 1 && winner == 1))
         printf("Le joueur %d remporte la partie !\n", winner);

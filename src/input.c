@@ -62,7 +62,7 @@ bool ask_new_game()
     char c = 'A';
     while (c != 'O' && c != 'o' && c != 'N' && c != 'n')
     {
-        printf("Voulez vous jouer une nouvelle partie ? (O / N)\n");
+        printf("Voulez-vous jouer une nouvelle partie ? (O / N)\n");
         c = getchar();
         clear_buffer();
         if (c != 'O' && c != 'o' && c != 'N' && c != 'n')

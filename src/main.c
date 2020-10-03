@@ -22,7 +22,7 @@ int main(void)
             winner = run_single_player_game(&score1, &score2);
         else if (mode == 2)
             winner = run_two_players_game(&score1, &score2);
-        print_end_screen(winner, mode);
+        print_end_screen(winner, mode, score1, score2);
         continue_playing = ask_new_game();
     }
     return 0; // Everything went well
