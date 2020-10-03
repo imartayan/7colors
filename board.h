@@ -10,7 +10,7 @@
 
 /* We want a 30x30 board game by default */
 #define BOARD_SIZE 30
-#define NB_CASES (BOARD_SIZE * BOARD_SIZE)
+#define NB_CASES BOARD_SIZE * BOARD_SIZE
 #define NB_COLORS 7
 
 #define PLAYER1 '1'
@@ -22,6 +22,7 @@ extern point start1, start2;
 extern const char colors[];
 extern const point direction[];
 
+
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y);
 
@@ -30,10 +31,10 @@ void set_cell(int x, int y, char color);
 
 void init_board();
 
-void propagate(point *p, char curr_player, char color, bool *change, int *score1, int *score2);
-void bad_update_board(char curr_player, char color, int *score1, int *score2);
+void propagate(point *p, char curr_player, char color, bool *change, int* score1, int* score2);
+void bad_update_board(char curr_player, char color, int* score1, int* score2);
 
-void visit_bfs(point *p, bool *seen, queue *q, char player, char color, int *score1, int *score2);
-void update_board_bfs(char player, char color, int *score1, int *score2);
+void visit_bfs(point *p, bool *seen, queue *q, char player, char color, int* score1, int* score2);
+void update_board_bfs(char player, char color, int* score1, int* score2);
 
 #endif
