@@ -17,7 +17,7 @@ bool in_colors(char c)
 
 /*main game function, contains the game cycle
  return the number of the winning player*/
-int run_game(int* score1, int* score2)
+int run_game(int *score1, int *score2)
 {
     char color;
     char curr_player = PLAYER1;
@@ -41,11 +41,18 @@ char get_player_move()
     bool lettreAutorisee = false;
     while (!lettreAutorisee)
     {
-        printf("Quelle couleur voulez-vous jouer ? Choix possibles : R, V, B, J, G, M, C\n");
+        printf("Quelle couleur voulez-vous jouer ? Choix possibles : ");
+        for (int k = 0; k < NB_COLORS; k++)
+        {
+            set_print_color(colors[k]);
+            printf("%c ", colors[k]);
+            reset_print_color();
+        }
+        printf("\n");
         scanf(" %c", &c);
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
-            printf("Entree non valide, veuilliez entrer une valeur parmis les couleurs possibles");
+            printf("Entree non valide, veuilliez entrer une valeur parmis les couleurs possibles.\n");
     }
     return c;
 }

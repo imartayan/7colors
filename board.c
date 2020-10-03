@@ -55,7 +55,7 @@ void init_board()
     set_cell(start2.x, start2.y, PLAYER2);
 }
 
-void propagate(point *p, char curr_player, char color, bool *change, int* score1, int* score2)
+void propagate(point *p, char curr_player, char color, bool *change, int *score1, int *score2)
 {
     point pvoisin;
     for (int k = 0; k < 4; k++)
@@ -77,7 +77,7 @@ void propagate(point *p, char curr_player, char color, bool *change, int* score1
     }
 }
 
-void bad_update_board(char curr_player, char color, int* score1, int* score2)
+void bad_update_board(char curr_player, char color, int *score1, int *score2)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -100,7 +100,7 @@ void bad_update_board(char curr_player, char color, int* score1, int* score2)
     free(p);
 }
 
-void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int* score1, int* score2)
+void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int *score1, int *score2)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -131,7 +131,7 @@ void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int*
     }
 }
 
-void update_board_bfs(char player, char color, int* score1, int* score2)
+void update_board_bfs(char player, char color, int *score1, int *score2)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();

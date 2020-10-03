@@ -13,38 +13,49 @@ void set_print_color(char c)
 {
     switch (c)
     {
-    case 'R':
+    case PLAYER1:
         //rouge
         printf("\033[0;31m");
         break;
 
-    case 'V':
-        //vert
-        printf("\033[0;32m");
-        break;
-
-    case 'B':
+    case PLAYER2:
         //bleu
         printf("\033[0;34m");
         break;
 
+    case 'R':
+        //rouge
+        printf("\033[1;31m");
+        break;
+
+    case 'V':
+        //vert
+        printf("\033[1;32m");
+        break;
+
+    case 'B':
+        //bleu
+        printf("\033[1;34m");
+        break;
+
     case 'J':
         //jaune
-        printf("\033[0;33m");
+        printf("\033[1;33m");
         break;
 
     case 'G':
         // gris/blanc (couleur de départ)
+        printf("\033[1m");
         break;
 
     case 'M':
         // magenta
-        printf("\033[0;35m");
+        printf("\033[1;35m");
         break;
 
     case 'C':
         // cyan
-        printf("\033[0;36m");
+        printf("\033[1;36m");
         break;
 
     default:
@@ -59,9 +70,21 @@ void set_print_color(char c)
  */
 void print_board(char curr_player, int tour, int score1, int score2)
 {
+    double p1 = (double)score1 / NB_CASES * 100;
+    double p2 = (double)score2 / NB_CASES * 100;
     system("clear");
-    printf("Tour %d - Score J1: %d - Score J2: %d\n", tour, score1, score2);
-    printf("C'est au tour du joueur %c\n", curr_player);
+    printf("Tour %d - Joueur 1 ", tour);
+    set_print_color(PLAYER1);
+    printf("%.0f%%", p1);
+    reset_print_color();
+    printf(" - Joueur 2 ");
+    set_print_color(PLAYER2);
+    printf("%.0f%%\n", p2);
+    reset_print_color();
+    printf("C'est au tour du ");
+    set_print_color(curr_player);
+    printf("joueur %c\n", curr_player);
+    reset_print_color();
     printf("Etat actuel du plateau :\n");
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
@@ -69,14 +92,9 @@ void print_board(char curr_player, int tour, int score1, int score2)
         for (j = 0; j < BOARD_SIZE; j++)
         {
             char c = get_cell(i, j);
-            if (c == PLAYER1 || c == PLAYER2)
-                printf("%c ", c);
-            else
-            {
-                set_print_color(c);
-                printf("%c ", 219);
-                reset_print_color();
-            }
+            set_print_color(c);
+            printf("%c ", c);
+            reset_print_color();
         }
         printf("\n");
     }
