@@ -14,10 +14,10 @@ char random_color()
 
 void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors, int *nb_possible_colors)
 {
-    char cell_color = get_cell(p->x, p->y);
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
         seen[p->x + p->y * BOARD_SIZE] = true;
+        char cell_color = get_cell(p->x, p->y);
         if (cell_color == PLAYER2)
         {
             int x, y;
@@ -41,6 +41,8 @@ void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors,
             {
                 if (cell_color == possible_colors[i])
                     color_seen = true;
+                else
+                    i++;
             }
             if (!color_seen)
             {
@@ -93,6 +95,6 @@ char random_possible_color()
 char get_AI_move()
 {
     // AI plays randomly
-    // return random_possible_color();
-    return random_color();
+    return random_possible_color();
+    // return random_color();
 }
