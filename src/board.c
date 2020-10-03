@@ -73,12 +73,14 @@ void update_board_bfs(point *p, bool *seen, queue *visit, char player, char colo
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
         seen[p->x + p->y * BOARD_SIZE] = true;
-        if (get_cell(p->x, p->y) == color)
+        char cell_color = get_cell(p->x, p->y);
+        if (cell_color == color)
         {
             set_cell(p->x, p->y, player);
+            cell_color = player;
             (*score)++;
         }
-        if (get_cell(p->x, p->y) == player)
+        if (cell_color == player)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
