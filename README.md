@@ -16,9 +16,9 @@ An implementation of the 7 colors game written in C.
 * better propagation function
 * 2 players mode
 * better update function using BFS
+* single player mode with random player
 
 ## Todo
-* create a random player
 * create a greedy player
 * create a tournament
 * write documentation (duh)
