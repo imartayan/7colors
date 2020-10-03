@@ -7,6 +7,7 @@
 #include "queue.h"
 #include "board.h"            /* Enforce that the header file matches the declarations */
 #include "simple_unit_test.h" /* Import the testing infrastructure */
+#include "AI.h"
 
 /* Note: This template comes with several global definitions. For now.
  *
@@ -40,14 +41,12 @@ void set_cell(int x, int y, char color)
 // init the board with random colors
 void init_board()
 {
-    int n;
     char color;
     for (int i = 0; i < BOARD_SIZE; i++)
     {
         for (int j = 0; j < BOARD_SIZE; j++)
         {
-            n = rand() % NB_COLORS;
-            color = colors[n];
+            color = random_color();
             set_cell(i, j, color);
         }
     }
@@ -55,7 +54,7 @@ void init_board()
     set_cell(start2.x, start2.y, PLAYER2);
 }
 
-void propagate(point *p, char curr_player, char color, bool *change, int *score1, int *score2)
+void propagate(point *p, char curr_player, char color, bool *change, int* score1, int* score2)
 {
     point pvoisin;
     for (int k = 0; k < 4; k++)
@@ -77,7 +76,7 @@ void propagate(point *p, char curr_player, char color, bool *change, int *score1
     }
 }
 
-void bad_update_board(char curr_player, char color, int *score1, int *score2)
+void bad_update_board(char curr_player, char color, int* score1, int* score2)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -100,7 +99,7 @@ void bad_update_board(char curr_player, char color, int *score1, int *score2)
     free(p);
 }
 
-void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int *score1, int *score2)
+void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int* score1, int* score2)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -131,7 +130,7 @@ void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int 
     }
 }
 
-void update_board_bfs(char player, char color, int *score1, int *score2)
+void update_board_bfs(char player, char color, int* score1, int* score2)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
