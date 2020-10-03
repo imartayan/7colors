@@ -52,10 +52,11 @@ Mkfile.old
 dkms.conf
 
 # CMake
-CMakeCache.txt
 CMakeFiles/
+CMakeCache.txt
 CTestTestfile.cmake
-Makefile
 cmake_install.cmake
+Makefile
+7colors-static
 7colors
 tests
