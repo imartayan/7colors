@@ -1,6 +1,8 @@
 # 7colors
 An implementation of the 7 colors game written in C.
 
+![Preview](preview.png)
+
 ## Project structure
 * board.c: gestion of the board (random generation, update, print...)
 * main.c: main function of the game
