@@ -2,17 +2,15 @@ cmake_minimum_required(VERSION 2.8.8)
 
 project(7colors)
 
-set(CMAKE_C_FLAGS   "-Werror -Wall -Wextra -g -Wmissing-declarations -Wno-unused-parameter ${CMAKE_C_FLAGS}")
+set(CMAKE_C_FLAGS "-Werror -Wall -Wextra -g -Wmissing-declarations -Wno-unused-parameter ${CMAKE_C_FLAGS}")
 
-set(sources board.c queue.c display.c game.c AI.c
-    # YOUR CODE HERE: List your source files right after board.c (only the c files are mandatory)
-)
+set(sources src/board.c src/queue.c src/display.c src/game.c src/AI.c)
 
 # The game binary
-add_executable(7colors main.c ${sources})
+add_executable(7colors src/main.c ${sources})
 
 # A binary containing the unit tests
-add_executable(tests tests.c ${sources})
+add_executable(tests src/tests.c ${sources})
 
 # Register the tests to the CMake mechanisms
 ENABLE_TESTING()
