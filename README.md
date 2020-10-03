@@ -4,7 +4,7 @@ An implementation of the 7 colors game written in C.
 ![Preview](preview.png)
 
 ## Project structure
-* `defaults.h` contains the defaults values for the number of colors, the size of the board...
+* `defaults.c` contains all the defaults values
 * `structures.c` contains point, linked list and queue data structures
 * `utils.c` contains some basic functions for reading or writing a cell, creating a random number...
 * `display.c` contains functions for printing the board and the score
