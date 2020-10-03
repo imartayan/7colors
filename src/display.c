@@ -14,47 +14,38 @@ void set_print_color(char c)
         // rouge
         printf("\033[0;31m");
         break;
-
     case PLAYER2:
         // bleu
         printf("\033[0;34m");
         break;
-
     case 'R':
         // rouge
         printf("\033[1;31m");
         break;
-
     case 'V':
         // vert
         printf("\033[1;32m");
         break;
-
     case 'B':
         // bleu
         printf("\033[1;34m");
         break;
-
     case 'J':
         // jaune
         printf("\033[1;33m");
         break;
-
     case 'G':
         // gris/blanc (couleur de départ)
         printf("\033[1m");
         break;
-
     case 'M':
         // magenta
         printf("\033[1;35m");
         break;
-
     case 'C':
         // cyan
         printf("\033[1;36m");
         break;
-
     default:
         reset_print_color();
     }
@@ -131,4 +122,3 @@ void print_end_screen(char winner, int mode, int score1, int score2)
             printf("L'ordinateur remporte la partie !\n");
     }
 }
-// winner as a char would be better
