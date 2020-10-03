@@ -26,7 +26,7 @@ int main(void)
             winner = run_game(&score1, &score2, get_player_move, get_player_move);
             break;
         case 2:
-            // Partie contre une IA stupide
+            // Partie contre une IA aveugle
             winner = run_game(&score1, &score2, get_player_move, random_color);
             break;
         case 3:
@@ -35,6 +35,10 @@ int main(void)
             break;
         case 4:
             // Partie contre une IA gloutonne
+            winner = run_game(&score1, &score2, get_player_move, best_reachable_color);
+            break;
+        case 5:
+            // Partie contre une IA hégémonique
             winner = run_game(&score1, &score2, get_player_move, best_reachable_color);
             break;
         }

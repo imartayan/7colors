@@ -54,8 +54,8 @@ void set_print_color(char c)
 void print_welcome_screen()
 {
     system("clear");
-    printf("Welcome to the 7 wonders of the world of the 7 colors\n");
-    printf("*****************************************************\n\n");
+    printf("Bienvenue dans le jeu des 7 couleurs !\n");
+    printf("**************************************\n\n");
 }
 
 void print_score(int score1, int score2)

@@ -14,16 +14,17 @@ int choose_game_mode()
     int n = 0;
     printf("Choix du mode :\n");
     printf("1: Partie à deux joueurs\n");
-    printf("2: Partie contre une IA stupide\n");
+    printf("2: Partie contre une IA aveugle\n");
     printf("3: Partie contre une IA aléatoire\n");
     printf("4: Partie contre une IA gloutonne\n");
-    while (n < 1 || n > 4)
+    printf("5: Partie contre une IA hégémonique\n");
+    while (n < 1 || n > 5)
     {
         printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 4)
-            printf("Entree incorecte, veuillez reessayer.\n");
+        if (n < 1 || n > 5)
+            printf("Entrée incorecte, veuillez réessayer.\n");
     }
     return n;
 }
@@ -56,7 +57,7 @@ char get_player_move()
         clear_buffer();
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
-            printf("Entree non valide, veuillez entrer une valeur parmis les couleurs possibles.\n");
+            printf("Entrée non valide, veuillez entrer une valeur parmis les couleurs possibles.\n");
     }
     return c;
 }
@@ -71,7 +72,7 @@ bool ask_new_game()
         c = getchar();
         clear_buffer();
         if (c != 'O' && c != 'o' && c != 'N' && c != 'n')
-            printf("Entree non valide, veuillez entrer  O ou N.\n");
+            printf("Entrée non valide, veuillez entrer  O ou N.\n");
     }
     return (c == 'O' || c == 'o');
 }
