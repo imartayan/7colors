@@ -5,7 +5,7 @@
 
 #define NB_COLORS 7
 
-#define BOARD_SIZE 10
+#define BOARD_SIZE 30
 #define SCORE_MAX (BOARD_SIZE * BOARD_SIZE)
 
 #define PLAYER1 '1'

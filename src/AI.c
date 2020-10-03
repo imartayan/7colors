@@ -1,5 +1,10 @@
 #include "AI.h"
 
+char play_random_color(char player)
+{
+    return random_color();
+}
+
 void reachable_color_bfs(point *p, bool *seen, queue *visit, char player, bool *reachable)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
@@ -47,10 +52,10 @@ void reachable_colors(char player, bool *reachable)
     free(visit);
 }
 
-char random_reachable_color()
+char random_reachable_color(char player)
 {
     bool reachable[NB_COLORS] = {false};
-    reachable_colors(PLAYER2, reachable);
+    reachable_colors(player, reachable);
     int count = count_true(reachable, NB_COLORS);
     int n = 1 + randint(count);
     return colors[get_nth_true(reachable, NB_COLORS, n)];
@@ -104,10 +109,10 @@ int simulate_color(char player, char color)
     return score;
 }
 
-char best_reachable_color()
+char best_reachable_color(char player)
 {
     bool reachable[NB_COLORS] = {false};
-    reachable_colors(PLAYER2, reachable);
+    reachable_colors(player, reachable);
     char best = 0;
     int score_max = 0;
     char color;
@@ -117,7 +122,7 @@ char best_reachable_color()
         if (reachable[i])
         {
             color = colors[i];
-            score = simulate_color(PLAYER2, color);
+            score = simulate_color(player, color);
             if (score > score_max)
             {
                 best = color;

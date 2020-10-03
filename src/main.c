@@ -23,23 +23,27 @@ int main(void)
         {
         case 1:
             // Partie à deux joueurs
-            winner = run_game(&score1, &score2, get_player_move, get_player_move);
+            winner = run_game(&score1, &score2, get_player_move, get_player_move, false);
             break;
         case 2:
             // Partie contre une IA aveugle
-            winner = run_game(&score1, &score2, get_player_move, random_color);
+            winner = run_game(&score1, &score2, get_player_move, play_random_color, false);
             break;
         case 3:
             // Partie contre une IA aléatoire
-            winner = run_game(&score1, &score2, get_player_move, random_reachable_color);
+            winner = run_game(&score1, &score2, get_player_move, random_reachable_color, false);
             break;
         case 4:
             // Partie contre une IA gloutonne
-            winner = run_game(&score1, &score2, get_player_move, best_reachable_color);
+            winner = run_game(&score1, &score2, get_player_move, best_reachable_color, false);
             break;
         case 5:
             // Partie contre une IA hégémonique
-            winner = run_game(&score1, &score2, get_player_move, best_reachable_color);
+            winner = run_game(&score1, &score2, get_player_move, best_reachable_color, false);
+            break;
+        case 6:
+            // Partie entre IA aléatoire et gloutonne
+            winner = run_game(&score1, &score2, random_reachable_color, best_reachable_color, true);
             break;
         }
         print_end_screen(winner, mode, score1, score2);

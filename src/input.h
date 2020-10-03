@@ -9,7 +9,8 @@
 void clear_buffer();
 int choose_game_mode();
 bool in_colors(char c);
-char get_player_move();
+char ask_player_move();
+char get_player_move(char player);
 bool ask_new_game();
 
 #endif

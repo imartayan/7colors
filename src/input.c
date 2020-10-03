@@ -18,12 +18,13 @@ int choose_game_mode()
     printf("3: Partie contre une IA aléatoire\n");
     printf("4: Partie contre une IA gloutonne\n");
     printf("5: Partie contre une IA hégémonique\n");
-    while (n < 1 || n > 5)
+    printf("6: Partie entre IA aléatoire et gloutonne\n");
+    while (n < 1 || n > 6)
     {
         printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 5)
+        if (n < 1 || n > 6)
             printf("Entrée incorecte, veuillez réessayer.\n");
     }
     return n;
@@ -39,7 +40,7 @@ bool in_colors(char c)
     return false;
 }
 
-char get_player_move()
+char ask_player_move()
 {
     char c = '\0';
     bool lettreAutorisee = false;
@@ -60,6 +61,11 @@ char get_player_move()
             printf("Entrée non valide, veuillez entrer une valeur parmis les couleurs possibles.\n");
     }
     return c;
+}
+
+char get_player_move(char player)
+{
+    return ask_player_move();
 }
 
 // ask if the user wants to play a new game
