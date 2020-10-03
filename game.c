@@ -49,7 +49,6 @@ int run_two_players_game(int *score1, int *score2)
     if (*score1 == *score2)
         return 0;
     return ((tour & 1) + 1); // équivalent de %2 demandant beaucoup moins de calcul
-    // VRAIMENT ?
 }
 
 int run_single_player_game(int *score1, int *score2)
@@ -58,33 +57,24 @@ int run_single_player_game(int *score1, int *score2)
     int tour = 1;
     // game cycle
     while (*score1 + *score2 < NB_CASES && 2 * *score1 <= NB_CASES && 2 * *score2 <= NB_CASES)
-    // VRAIMENT ?
     {
         system("clear"); // efface la console
         print_informations(PLAYER1, tour, *score1, *score2);
         print_board();
-        // printf("A\n");
         color = get_player_move();
-        // printf("B\n");
         update_board_bfs(PLAYER1, color, score1, score2);
-        // printf("C\n");
         if (2 * *score1 <= NB_CASES)
         {
-            // printf("D\n");
             // AI's turn
             color = get_AI_move();
             update_board_bfs(PLAYER2, color, score1, score2);
-            // system("clear"); // efface la console
-            // the AI wins
             if (2 * *score2 > NB_CASES)
                 return 2;
         }
         else if (2 * *score1 == NB_CASES && 2 * *score2 == NB_CASES)
             return 0;
-        // printf("E\n");
         tour++;
     }
-    // printf("F\n");
     // the player wins
     return 1;
 }
