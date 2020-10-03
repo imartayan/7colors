@@ -23,6 +23,8 @@ An implementation of the 7 colors game written in C.
 * 2 players mode
 * better update function using BFS
 * single player mode with random player
+* mode selection screen
+* generic function for running a game
 
 ## Todo
 * create a greedy player
