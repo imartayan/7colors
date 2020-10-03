@@ -25,9 +25,9 @@ An implementation of the 7 colors game written in C.
 * single player mode with random player
 * mode selection screen
 * generic function for running a game
+* greedy artificial intelligence
 
 ## Todo
-* create a greedy player
 * create a tournament
 * write documentation (duh)
 * write a detailed report
