@@ -14,15 +14,16 @@ int choose_game_mode()
     int n = 0;
     printf("Choix du mode :\n");
     printf("1: Partie à deux joueurs\n");
-    printf("2: Partie contre une IA stupide\n");
-    printf("3: Partie contre une IA aléatoire\n");
+    printf("2: Partie contre une IA aleatoire\n");
+    printf("3: Partie contre une IA qui joue un coup aleatoire parmi les couleurs qui augmentent son score\n");
     printf("4: Partie contre une IA gloutonne\n");
-    while (n < 1 || n > 4)
+    printf("5 : Partie cotre une IA hegemonique\n");
+    while (n < 1 || n > 5)
     {
         printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 4)
+        if (n < 1 || n > 5)
             printf("Entree incorecte, veuillez reessayer.\n");
     }
     return n;

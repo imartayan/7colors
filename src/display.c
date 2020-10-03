@@ -87,49 +87,37 @@ void print_turn(char curr_player, int turn)
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
-void print_board()
+void print_board(char* board)
 {
+    // printf("Etat actuel du plateau :\n");
     int i, j;
-    printf("\n");
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
         {
-            char c = get_cell(i, j);
+            char c = get_cell(board, i, j);
             set_print_color(c);
             printf("%c ", c);
             reset_print_color();
         }
         printf("\n");
     }
-    printf("\n");
 }
 
-void print_end_screen(char winner, int mode, int score1, int score2)
+void print_end_screen(char* board, char winner, int mode, int score1, int score2)
 {
     system("clear");
     print_score(score1, score2);
-    print_board();
+    print_board(board);
     if (winner == '0')
         printf("Egalite !\n");
     else if (mode == 1)
-    {
-        set_print_color(winner);
         printf("Le joueur %c remporte la partie !\n", winner);
-        reset_print_color();
-    }
     else
     {
         if (winner == PLAYER1)
-        {
-            set_print_color(PLAYER1);
             printf("Vous remportez la partie !\n");
-        }
         else
-        {
-            set_print_color(PLAYER2);
             printf("L'ordinateur remporte la partie !\n");
-        }
-        reset_print_color();
     }
 }
