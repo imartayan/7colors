@@ -11,9 +11,9 @@
 #define PLAYER1 '1'
 #define PLAYER2 '2'
 
-extern const char colors[];
-extern char board[BOARD_SIZE * BOARD_SIZE];
-extern const point direction[];
-extern point start1, start2;
+const char colors[NB_COLORS];
+char board[BOARD_SIZE * BOARD_SIZE];
+const point direction[4];
+point start1, start2;
 
 #endif

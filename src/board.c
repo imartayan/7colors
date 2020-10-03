@@ -11,11 +11,6 @@
  * Plus, this path often leads to simpler code, that is easier to test.
  */
 
-const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
-char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
-point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-const point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
 // init the board with random colors
 void init_board()
 {
