@@ -12,12 +12,17 @@ void clear_buffer()
 int choose_game_mode()
 {
     int n = 0;
-    while (n != 1 && n != 2)
+    printf("Choix du mode :\n");
+    printf("1: Partie à deux joueurs\n");
+    printf("2: Partie contre une IA stupide\n");
+    printf("3: Partie contre une IA aléatoire\n");
+    printf("4: Partie contre une IA gloutonne\n");
+    while (n < 1 || n > 4)
     {
-        printf("Combien de joueurs ? (1 / 2)\n");
+        printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n != 1 && n != 2)
+        if (n < 1 || n > 4)
             printf("Entree incorecte, veuillez reessayer.\n");
     }
     return n;

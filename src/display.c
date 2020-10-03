@@ -69,8 +69,8 @@ void print_welcome_screen()
 
 void print_score(int score1, int score2)
 {
-    double p1 = (double)score1 / NB_CASES * 100;
-    double p2 = (double)score2 / NB_CASES * 100;
+    double p1 = (double)score1 / SCORE_MAX * 100;
+    double p2 = (double)score2 / SCORE_MAX * 100;
     printf("\nScore : J1 ");
     set_print_color(PLAYER1);
     printf("%.0f%%", p1);
@@ -121,7 +121,7 @@ void print_end_screen(char winner, int mode, int score1, int score2)
     print_board();
     if (winner == '0')
         printf("Egalite !\n");
-    else if (mode == 2)
+    else if (mode == 1)
         printf("Le joueur %c remporte la partie !\n", winner);
     else
     {
