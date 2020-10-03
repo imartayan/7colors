@@ -9,7 +9,7 @@
 /* Note: feel free to modify this API if you need it to clean your code */
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 30
+#define BOARD_SIZE 10
 #define NB_CASES (BOARD_SIZE * BOARD_SIZE)
 #define NB_COLORS 7
 

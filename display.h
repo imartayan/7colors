@@ -3,7 +3,8 @@
 
 void reset_print_color();
 void set_print_color(char c);
-void print_board(char curr_player, int tour, int score1, int score2);
-void print_end_screen(int winner);
+void print_informations(char curr_player, int tour, int score1, int score2);
+void print_board();
+void print_end_screen(int winner, int nb_players);
 
 #endif

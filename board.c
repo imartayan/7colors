@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "queue.h"
-#include "board.h"            /* Enforce that the header file matches the declarations */
+#include "board.h" /* Enforce that the header file matches the declarations */
+#include "game.h"
+#include "AI.h"
 #include "simple_unit_test.h" /* Import the testing infrastructure */
 
 /* Note: This template comes with several global definitions. For now.
@@ -40,14 +42,12 @@ void set_cell(int x, int y, char color)
 // init the board with random colors
 void init_board()
 {
-    int n;
     char color;
     for (int i = 0; i < BOARD_SIZE; i++)
     {
         for (int j = 0; j < BOARD_SIZE; j++)
         {
-            n = rand() % NB_COLORS;
-            color = colors[n];
+            color = random_color();
             set_cell(i, j, color);
         }
     }
