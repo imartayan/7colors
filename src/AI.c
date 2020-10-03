@@ -13,8 +13,7 @@ void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors,
             {
                 x = p->x + direction[k].x;
                 y = p->y + direction[k].y;
-                bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
-                if (in_bounds)
+                if (in_bounds(x, y))
                 {
                     point voisin = {x, y};
                     add_queue(visit, &voisin);

@@ -5,6 +5,7 @@
 #define UTILS_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include "defaults.h"
 
 /** Retrieves the color of a given board cell */
@@ -13,7 +14,10 @@ char get_cell(int x, int y);
 /** Changes the color of a given board cell */
 void set_cell(int x, int y, char color);
 
+bool in_bounds(int x, int y);
+
 int randint(int n);
+
 char random_color();
 
 #endif

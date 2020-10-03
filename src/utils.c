@@ -12,6 +12,11 @@ void set_cell(int x, int y, char color)
     board[x + y * BOARD_SIZE] = color;
 }
 
+bool in_bounds(int x, int y)
+{
+    return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE;
+}
+
 int randint(int n)
 {
     return rand() % n;

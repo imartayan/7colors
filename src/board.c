@@ -39,9 +39,8 @@ void propagate(point *p, char curr_player, char color, bool *change, int *score1
     {
         pvoisin.x = p->x + direction[k].x;
         pvoisin.y = p->y + direction[k].y;
-        bool in_bounds = (pvoisin.x >= 0 && pvoisin.x < BOARD_SIZE && pvoisin.y >= 0 && pvoisin.y < BOARD_SIZE);
         bool chosen_color = (get_cell(pvoisin.x, pvoisin.y) == color);
-        if (in_bounds && chosen_color)
+        if (in_bounds(pvoisin.x, pvoisin.y) && chosen_color)
         {
             *change = true;
             set_cell(pvoisin.x, pvoisin.y, curr_player);
@@ -97,8 +96,7 @@ void visit_bfs(point *p, bool *seen, queue *visit, char player, char color, int 
             {
                 x = p->x + direction[k].x;
                 y = p->y + direction[k].y;
-                bool in_bounds = (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
-                if (in_bounds)
+                if (in_bounds(x, y))
                 {
                     point voisin = {x, y};
                     add_queue(visit, &voisin);
