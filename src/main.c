@@ -12,7 +12,7 @@ int main(void)
     print_welcome_screen();
     int mode = choose_game_mode();
     int score1, score2;
-    int winner;
+    char winner;
     bool continue_playing = true;
     while (continue_playing)
     {

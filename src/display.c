@@ -114,16 +114,21 @@ void print_board()
     printf("\n");
 }
 
-void print_end_screen(int winner, int nb_players, int score1, int score2)
+void print_end_screen(char winner, int mode, int score1, int score2)
 {
     system("clear");
     print_score(score1, score2);
     print_board();
-    if ((nb_players == 2 && winner) || (nb_players == 1 && winner == 1))
-        printf("Le joueur %d remporte la partie !\n", winner);
-    else if (nb_players == 1 && winner == 2)
-        printf("\nL'ordinateur remporte la partie !\n");
-    else if (winner == 0)
+    if (winner == '0')
         printf("Egalite !\n");
+    else if (mode == 2)
+        printf("Le joueur %c remporte la partie !\n", winner);
+    else
+    {
+        if (winner == PLAYER1)
+            printf("Vous remportez la partie !\n");
+        else
+            printf("L'ordinateur remporte la partie !\n");
+    }
 }
 // winner as a char would be better
