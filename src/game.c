@@ -32,10 +32,15 @@ char run_game(int *score1, int *score2, char (*move1)(void), char (*move2)(void)
         print_board();
         print_turn(player, turn);
         if (player == PLAYER1)
+        {
             color = (*move1)();
+            update_board(player, color, score1);
+        }
         else
+        {
             color = (*move2)();
-        update_board_bfs(player, color, score1, score2);
+            update_board(player, color, score2);
+        }
         next_player(&player, &turn);
     }
     if (*score1 > *score2)

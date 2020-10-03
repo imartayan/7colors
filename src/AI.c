@@ -1,12 +1,12 @@
 #include "AI.h"
 
-void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors, int *nb_possible_colors)
+void reachable_color_bfs(point *p, bool *seen, queue *visit, char player, bool *reachable)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
         seen[p->x + p->y * BOARD_SIZE] = true;
-        char cell_color = get_cell(p->x, p->y);
-        if (cell_color == PLAYER2)
+        char color = get_cell(p->x, p->y);
+        if (color == player)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -20,68 +20,38 @@ void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors,
                 }
             }
         }
-        else if (cell_color != PLAYER1)
+        else
         {
-            bool color_seen = false;
-            int i = 0;
-            while (i < *nb_possible_colors && !color_seen)
-            {
-                if (cell_color == possible_colors[i])
-                    color_seen = true;
-                else
-                    i++;
-            }
-            if (!color_seen)
-            {
-                possible_colors[*nb_possible_colors] = cell_color;
-                (*nb_possible_colors)++;
-            }
+            int i = color_id(color);
+            if (i >= 0)
+                reachable[i] = true;
         }
     }
 }
 
-void get_possible_colors_bfs(char *possible_colors, int *nb_possible_colors)
+void reachable_colors(char player, bool *reachable)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
+    if (player == PLAYER1)
+        add_queue(visit, &start1);
+    else
+        add_queue(visit, &start2);
     point *p = (point *)malloc(sizeof(point));
-    add_queue(visit, &start2);
-
-    while (!empty_queue(visit) && *nb_possible_colors < NB_COLORS)
+    while (!empty_queue(visit))
     {
         pop_queue(visit, p);
-        visit_colors_bfs(p, seen, visit, possible_colors, nb_possible_colors);
+        reachable_color_bfs(p, seen, visit, player, reachable);
     }
     free(p);
     free(visit);
 }
 
-void print_possible_colors(char *possible_colors, int nb_possible_colors)
+char random_reachable_color()
 {
-    printf("couleurs possibles : ");
-    for (int i = 0; i < nb_possible_colors; i++)
-    {
-        printf("%c ", possible_colors[i]);
-    }
-    printf("\n");
-}
-
-char random_possible_color()
-{
-    char possible_colors[NB_COLORS];
-    int nb_possible_colors = 0;
-    printf("1");
-    get_possible_colors_bfs(possible_colors, &nb_possible_colors);
-    printf("2");
-    print_possible_colors(possible_colors, nb_possible_colors);
-    printf("3");
-    int n = randint(nb_possible_colors);
-    return possible_colors[n];
-}
-
-char get_AI_move()
-{
-    // AI plays randomly
-    return random_possible_color();
-    // return random_color();
+    bool reachable[NB_COLORS] = {false};
+    reachable_colors(PLAYER2, reachable);
+    int count = count_true(reachable, NB_COLORS);
+    int n = 1 + randint(count);
+    return colors[get_nth_true(reachable, NB_COLORS, n)];
 }

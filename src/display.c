@@ -72,12 +72,12 @@ void print_score(int score1, int score2)
     reset_print_color();
 }
 
-void print_turn(char curr_player, int turn)
+void print_turn(char player, int turn)
 {
     printf("Tour %d - ", turn);
     printf("C'est à ");
-    set_print_color(curr_player);
-    printf("J%c", curr_player);
+    set_print_color(player);
+    printf("J%c", player);
     reset_print_color();
     printf(" de jouer !\n");
 }

@@ -31,11 +31,11 @@ int main(void)
             break;
         case 3:
             // Partie contre une IA aléatoire
-            winner = run_game(&score1, &score2, get_player_move, get_AI_move);
+            winner = run_game(&score1, &score2, get_player_move, random_reachable_color);
             break;
         case 4:
             // Partie contre une IA gloutonne
-            winner = run_game(&score1, &score2, get_player_move, get_AI_move);
+            winner = run_game(&score1, &score2, get_player_move, random_reachable_color);
             break;
         }
         print_end_screen(winner, mode, score1, score2);

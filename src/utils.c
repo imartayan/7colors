@@ -27,3 +27,37 @@ char random_color()
     int n = randint(NB_COLORS);
     return colors[n];
 }
+
+int color_id(char c)
+{
+    for (int i = 0; i < NB_COLORS; i++)
+    {
+        if (c == colors[i])
+            return i;
+    }
+    return -1;
+}
+
+int count_true(bool *tab, int len)
+{
+    int count = 0;
+    for (int i = 0; i < len; i++)
+    {
+        if (tab[i])
+            count++;
+    }
+    return count;
+}
+
+int get_nth_true(bool *tab, int len, int n)
+{
+    int count = 0;
+    for (int i = 0; i < len; i++)
+    {
+        if (tab[i])
+            count++;
+        if (count == n)
+            return i;
+    }
+    return -1;
+}

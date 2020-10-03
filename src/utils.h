@@ -20,4 +20,10 @@ int randint(int n);
 
 char random_color();
 
+int color_id(char c);
+
+int count_true(bool *tab, int len);
+
+int get_nth_true(bool *tab, int len, int n);
+
 #endif
