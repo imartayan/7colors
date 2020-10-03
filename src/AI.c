@@ -1,16 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "queue.h"
-#include "board.h"
-#include "game.h"
 #include "AI.h"
-
-char random_color()
-{
-    int n = rand() % NB_COLORS;
-    return colors[n];
-}
 
 void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors, int *nb_possible_colors)
 {
@@ -88,7 +76,7 @@ char random_possible_color()
     printf("2");
     print_possible_colors(possible_colors, nb_possible_colors);
     printf("3");
-    int n = rand() % nb_possible_colors;
+    int n = randint(nb_possible_colors);
     return possible_colors[n];
 }
 

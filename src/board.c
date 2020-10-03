@@ -1,13 +1,4 @@
-/* Template of the 7 wonders of the world of the 7 colors assigment */
-/* Implentation of the board module */
-
-#include <stdio.h> /* Import printf */
-#include <stdlib.h>
-#include <stdbool.h>
-#include "queue.h"
-#include "board.h" /* Enforce that the header file matches the declarations */
-#include "game.h"
-#include "AI.h"
+#include "board.h"
 #include "simple_unit_test.h" /* Import the testing infrastructure */
 
 /* Note: This template comes with several global definitions. For now.
@@ -20,24 +11,10 @@
  * Plus, this path often leads to simpler code, that is easier to test.
  */
 
-/** Represent the actual current board game */
+const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 char board[BOARD_SIZE * BOARD_SIZE] = {0}; // Filled with zeros
 point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-
-const char colors[] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 const point direction[] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
-/** Retrieves the color of a given board cell */
-char get_cell(int x, int y)
-{
-    return board[y * BOARD_SIZE + x];
-}
-
-/** Changes the color of a given board cell */
-void set_cell(int x, int y, char color)
-{
-    board[y * BOARD_SIZE + x] = color;
-}
 
 // init the board with random colors
 void init_board()

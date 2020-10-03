@@ -4,7 +4,7 @@ project(7colors)
 
 set(CMAKE_C_FLAGS "-Werror -Wall -Wextra -g -Wmissing-declarations -Wno-unused-parameter ${CMAKE_C_FLAGS}")
 
-set(sources src/board.c src/queue.c src/display.c src/game.c src/AI.c)
+set(sources src/board.c src/structures.c src/display.c src/game.c src/input.c src/utils.c src/AI.c)
 
 # The game binary
 add_executable(7colors src/main.c ${sources})

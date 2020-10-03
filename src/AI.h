@@ -1,7 +1,12 @@
 #ifndef AI_H
 #define AI_H
 
-char random_color();
+#include <stdbool.h>
+#include "defaults.h"
+#include "structures.h"
+#include "utils.h"
+#include "board.h"
+
 char get_AI_move();
 
 void visit_colors_bfs(point *p, bool *seen, queue *visit, char *possible_colors, int *nb_possible_colors);

@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "display.h"
-#include "board.h"
 
 // Properly printing colors
 void reset_print_color()
@@ -14,32 +11,32 @@ void set_print_color(char c)
     switch (c)
     {
     case PLAYER1:
-        //rouge
+        // rouge
         printf("\033[0;31m");
         break;
 
     case PLAYER2:
-        //bleu
+        // bleu
         printf("\033[0;34m");
         break;
 
     case 'R':
-        //rouge
+        // rouge
         printf("\033[1;31m");
         break;
 
     case 'V':
-        //vert
+        // vert
         printf("\033[1;32m");
         break;
 
     case 'B':
-        //bleu
+        // bleu
         printf("\033[1;34m");
         break;
 
     case 'J':
-        //jaune
+        // jaune
         printf("\033[1;33m");
         break;
 
@@ -61,6 +58,13 @@ void set_print_color(char c)
     default:
         reset_print_color();
     }
+}
+
+void print_welcome_screen()
+{
+    system("clear");
+    printf("Welcome to the 7 wonders of the world of the 7 colors\n");
+    printf("*****************************************************\n");
 }
 
 void print_informations(char curr_player, int tour, int score1, int score2)
@@ -114,3 +118,4 @@ void print_end_screen(int winner, int nb_players)
     else if (winner == 0)
         printf("Egalite !\n");
 }
+// winner as a char would be better

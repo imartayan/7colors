@@ -1,32 +1,10 @@
-/* Template of the 7 wonders of the world of the 7 colors assigment */
-/* Header file of the board module */
-
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "queue.h"
 #include <stdbool.h>
-/* Note: feel free to modify this API if you need it to clean your code */
-
-/* We want a 30x30 board game by default */
-#define BOARD_SIZE 10
-#define NB_CASES (BOARD_SIZE * BOARD_SIZE)
-#define NB_COLORS 7
-
-#define PLAYER1 '1'
-#define PLAYER2 '2'
-
-extern char board[BOARD_SIZE * BOARD_SIZE]; // Filled with zeros
-extern point start1, start2;
-
-extern const char colors[];
-extern const point direction[];
-
-/** Retrieves the color of a given board cell */
-char get_cell(int x, int y);
-
-/** Changes the color of a given board cell */
-void set_cell(int x, int y, char color);
+#include "defaults.h"
+#include "structures.h"
+#include "utils.h"
 
 void init_board();
 

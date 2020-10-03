@@ -1,6 +1,8 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct point

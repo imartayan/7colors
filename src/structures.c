@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "queue.h"
-#include "board.h"
+#include "structures.h"
 
 bool empty_list(list head)
 {
