@@ -113,12 +113,23 @@ void print_end_screen(char winner, int mode, int score1, int score2)
     if (winner == '0')
         printf("Egalite !\n");
     else if (mode == 1)
+    {
+        set_print_color(winner);
         printf("Le joueur %c remporte la partie !\n", winner);
+        reset_print_color();
+    }
     else
     {
         if (winner == PLAYER1)
+        {
+            set_print_color(PLAYER1);
             printf("Vous remportez la partie !\n");
+        }
         else
+        {
+            set_print_color(PLAYER2);
             printf("L'ordinateur remporte la partie !\n");
+        }
+        reset_print_color();
     }
 }
