@@ -1,18 +1,17 @@
 #ifndef AI_H
 #define AI_H
 
-#include <stdbool.h>
-#include "defaults.h"
-#include "structures.h"
-#include "utils.h"
-#include "board.h"
+char random_color();
+char get_AI_move();
 
-void reachable_color_bfs(point *p, bool *seen, queue *visit, char player, bool *reachable);
-void reachable_colors(char player, bool *reachable);
-char random_reachable_color(char player);
+void visit_colors_bfs(char* board, point *p, bool *seen, queue *visit, char *possible_colors, int *nb_possible_colors);
+void get_possible_colors_bfs(char* board, char *possible_colors, int *nb_possible_colors);
 
-void simulate_color_bfs(point *p, bool *seen, queue *visit, char player, char color, int *score);
-int simulate_color(char player, char color);
-char best_reachable_color(char player);
+void print_possible_colors(char *possible_colors, int nb_possible_colors);
+char random_possible_color(char* board);
+
+void perimeter_visit_bfs(char* board, point *p, bool *seen, queue *visit, int *perimeter);
+int get_perimeter_bfs(char* board);
+char hegemonic_AI(char* board);
 
 #endif
