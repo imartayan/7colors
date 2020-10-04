@@ -27,10 +27,11 @@ An implementation of the 7 colors game written in C.
 * generic function for running a game
 * greedy artificial intelligence
 * hegemonic artificial intelligence
+* tournament mode with statistics
 
 ## Todo
-* create a tournament
-* write documentation (duh)
+* write tests
+* write documentation
 * write a detailed report
 * improve artificial intelligence (minimax ?)
 
