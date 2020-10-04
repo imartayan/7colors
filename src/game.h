@@ -1,8 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+typedef char (*strategy)(char);
+
 void next_player(char *player, int *turn);
-char run_game(int *score1, int *score2, char (*move1)(char), char (*move2)(char), bool wait);
-char run_game_fast(int *score1, int *score2, char (*move1)(char), char (*move2)(char));
+void select_strategy(int *mode, strategy *strat);
+char run_game(int *score1, int *score2, strategy strat1, strategy strat2, bool wait);
+char run_fast_game(int *score1, int *score2, strategy strat1, strategy strat2);
 
 #endif

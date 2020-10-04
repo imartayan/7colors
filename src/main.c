@@ -11,60 +11,45 @@ int main(void)
 {
     srand((unsigned)time(NULL));
     print_welcome_screen();
-    int mode, score1, score2;
+    int mode[3];
+    choose_game_mode(mode);
+    strategy strat[2];
+    select_strategy(mode, strat);
+    int score1, score2;
     char winner;
-    mode = choose_game_mode();
-    bool continue_playing = true;
-    while (continue_playing)
+    if (mode[0] == 1)
     {
-        init_board();
-        score1 = score2 = 1;
-        switch (mode)
+        bool wait = !(mode[1] == 1 || mode[2] == 1);
+        bool continue_playing = true;
+        while (continue_playing)
         {
-        case 1:
-            // Partie à deux joueurs
-            winner = run_game(&score1, &score2, get_player_move, get_player_move, false);
-            break;
-        case 2:
-            // Partie contre une IA aveugle
-            winner = run_game(&score1, &score2, get_player_move, play_random_color, false);
-            break;
-        case 3:
-            // Partie contre une IA aléatoire
-            winner = run_game(&score1, &score2, get_player_move, random_reachable_color, false);
-            break;
-        case 4:
-            // Partie contre une IA gloutonne
-            winner = run_game(&score1, &score2, get_player_move, best_score, false);
-            break;
-        case 5:
-            // Partie contre une IA hégémonique sans bord
-            winner = run_game(&score1, &score2, get_player_move, best_perimeter, false);
-            break;
-        case 6:
-            // Partie entre IA aléatoire et gloutonne
-            winner = run_game(&score1, &score2, random_reachable_color, best_score, true);
-            break;
-        case 7:
-            // Partie entre IA gloutonne et hégémonique sans bord
-            winner = run_game(&score1, &score2, best_score, best_perimeter, true);
-            break;
-        case 8:
-            // Partie entre IA gloutonne et hégémonique avec bord
-            winner = run_game(&score1, &score2, best_score, best_perimeter_with_border, true);
-            break;
-        case 9:
-            // Partie entre IA hégémonique sans bord et avec bord
-            winner = run_game(&score1, &score2, best_perimeter, best_perimeter_with_border, true);
-            break;
-        case 10:
-            // Parties rapides entre IA sans bord et avec bord
-            winner = run_game_fast(&score1, &score2, best_perimeter, best_perimeter_with_border);
-            break;
+            init_board();
+            score1 = score2 = 1;
+            winner = run_game(&score1, &score2, strat[0], strat[1], wait);
+            print_end_screen(winner, score1, score2);
+            continue_playing = ask_new_game();
         }
-        print_end_screen(winner, mode, score1, score2);
-        continue_playing = ask_new_game();
-        system("clear");
+    }
+    else
+    {
+        int nb_games = 100;
+        int wins1 = 0;
+        int wins2 = 0;
+        int total1 = 0;
+        int total2 = 0;
+        for (int i = 0; i < nb_games; i++)
+        {
+            init_board();
+            score1 = score2 = 1;
+            winner = run_fast_game(&score1, &score2, strat[0], strat[1]);
+            if (winner == PLAYER1)
+                wins1++;
+            else if (winner == PLAYER2)
+                wins2++;
+            total1 += score1;
+            total2 += score2;
+        }
+        print_statistics(nb_games, wins1, wins2, total1, total2);
     }
     return 0; // Everything went well
 }

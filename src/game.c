@@ -19,8 +19,36 @@ void next_player(char *player, int *turn)
     }
 }
 
+void select_strategy(int *mode, strategy *strat)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        switch (mode[i + 1])
+        {
+        case 1:
+            strat[i] = get_player_move;
+            break;
+        case 2:
+            strat[i] = play_random_color;
+            break;
+        case 3:
+            strat[i] = random_reachable_color;
+            break;
+        case 4:
+            strat[i] = best_score;
+            break;
+        case 5:
+            strat[i] = best_perimeter;
+            break;
+        case 6:
+            strat[i] = best_perimeter_with_border;
+            break;
+        }
+    }
+}
+
 // main game function, contains the game cycle, returns the winning player
-char run_game(int *score1, int *score2, char (*move1)(char), char (*move2)(char), bool wait)
+char run_game(int *score1, int *score2, strategy strat1, strategy strat2, bool wait)
 {
     char color;
     int turn = 1;
@@ -34,23 +62,16 @@ char run_game(int *score1, int *score2, char (*move1)(char), char (*move2)(char)
         print_turn(player, turn);
         if (player == PLAYER1)
         {
-            color = (*move1)(player);
+            color = (*strat1)(player);
             update_board(player, color, score1);
         }
         else
         {
-            color = (*move2)(player);
+            color = (*strat2)(player);
             update_board(player, color, score2);
         }
         if (wait)
-        {
-            clock_t t0 = clock();
-            clock_t t1 = clock();
-            while (t1 - t0 < CLOCKS_PER_SEC / 4)
-            {
-                t1 = clock();
-            }
-        }
+            system("sleep 0.25s");
         next_player(&player, &turn);
     }
     if (*score1 > *score2)
@@ -61,7 +82,7 @@ char run_game(int *score1, int *score2, char (*move1)(char), char (*move2)(char)
         return '0';
 }
 
-char run_game_fast(int *score1, int *score2, char (*move1)(char), char (*move2)(char))
+char run_fast_game(int *score1, int *score2, strategy strat1, strategy strat2)
 {
     char color;
     int turn = 1;
@@ -71,12 +92,12 @@ char run_game_fast(int *score1, int *score2, char (*move1)(char), char (*move2)(
     {
         if (player == PLAYER1)
         {
-            color = (*move1)(player);
+            color = (*strat1)(player);
             update_board(player, color, score1);
         }
         else
         {
-            color = (*move2)(player);
+            color = (*strat2)(player);
             update_board(player, color, score2);
         }
         next_player(&player, &turn);

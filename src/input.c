@@ -9,29 +9,42 @@ void clear_buffer()
     }
 }
 
-int choose_game_mode()
+int ask_int(int lower_bound, int upper_bound)
 {
     int n = 0;
-    printf("Choix du mode :\n");
-    printf("1: Partie à deux joueurs\n");
-    printf("2: Partie contre une IA aveugle\n");
-    printf("3: Partie contre une IA aléatoire\n");
-    printf("4: Partie contre une IA gloutonne\n");
-    printf("5: Partie contre une IA hégémonique sans bord\n");
-    printf("6: Partie entre IA aléatoire et gloutonne\n");
-    printf("7: Partie entre IA gloutonne et hégémonique sans bord\n");
-    printf("8: Partie entre IA gloutonne et hégémonique avec bord\n");
-    printf("9: Partie entre IA hégémonique sans bord et avec bord\n");
-    printf("10: Parties rapides entre IA sans bord et avec bord\n");
-    while (n < 1 || n > 10)
+    while (n < lower_bound || n > upper_bound)
     {
-        printf("Quel est votre choix ?\n");
+        printf("Quel est votre choix ? ");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 10)
+        if (n < lower_bound || n > upper_bound)
             printf("Entrée incorecte, veuillez réessayer.\n");
     }
     return n;
+}
+
+void choose_game_mode(int *mode)
+{
+    printf("Choix du mode de jeu :\n");
+    printf("1: Partie normale\n");
+    printf("2: Tournoi de 100 parties\n");
+    mode[0] = ask_int(1, 2);
+    for (int i = 1; i < 3; i++)
+    {
+        if (i == 1)
+            set_print_color(PLAYER1);
+        else
+            set_print_color(PLAYER2);
+        printf("\nChoix du joueur %d :\n", i);
+        printf("1: Humain\n");
+        printf("2: IA aveugle\n");
+        printf("3: IA aléatoire\n");
+        printf("4: IA gloutonne\n");
+        printf("5: IA hégémonique (sans bords)\n");
+        printf("6: IA hégémonique (avec bords)\n");
+        mode[i] = ask_int(1, 6);
+    }
+    reset_print_color();
 }
 
 bool in_colors(char c)
@@ -46,7 +59,7 @@ bool in_colors(char c)
 
 char ask_player_move()
 {
-    char c = '\0';
+    char c;
     bool lettreAutorisee = false;
     while (!lettreAutorisee)
     {

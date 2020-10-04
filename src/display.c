@@ -103,35 +103,29 @@ void print_board()
     }
 }
 
-void print_end_screen(char winner, int mode, int score1, int score2)
+void print_end_screen(char winner, int score1, int score2)
 {
     system("clear");
     print_score(score1, score2);
     print_board();
     if (winner == '0')
-        printf("Egalité !\n");
-    else if (mode == 1)
+        printf("Égalité !\n");
+    else
     {
         set_print_color(winner);
         printf("Le joueur %c remporte la partie !\n", winner);
+        reset_print_color();
     }
-    else if (mode >= 6)
-    {
-        set_print_color(winner);
-        printf("L'ordinateur %c remporte la partie !\n", winner);
-    }
-    else
-    {
-        if (winner == PLAYER1)
-        {
-            set_print_color(PLAYER1);
-            printf("Vous remportez la partie !\n");
-        }
-        else
-        {
-            set_print_color(PLAYER2);
-            printf("L'ordinateur remporte la partie !\n");
-        }
-    }
+}
+
+void print_statistics(int nb_games, int wins1, int wins2, int total1, int total2)
+{
+    double avg1 = (double)total1 / (nb_games * SCORE_MAX) * 100;
+    double avg2 = (double)total2 / (nb_games * SCORE_MAX) * 100;
+    printf("\nRésultats du tournoi :\n");
+    set_print_color(PLAYER1);
+    printf("Joueur 1 : %d victoires - score moyen %.1f%%\n", wins1, avg1);
+    set_print_color(PLAYER2);
+    printf("Joueur 2 : %d victoires - score moyen %.1f%%\n", wins2, avg2);
     reset_print_color();
 }
