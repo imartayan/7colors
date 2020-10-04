@@ -26,12 +26,13 @@ An implementation of the 7 colors game written in C.
 * mode selection screen
 * generic function for running a game
 * greedy artificial intelligence
+* hegemonic artificial intelligence
 
 ## Todo
 * create a tournament
 * write documentation (duh)
 * write a detailed report
-* (improve artificial intelligence (minimax ?))
+* improve artificial intelligence (minimax ?)
 
 ## Sources
 * http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf
