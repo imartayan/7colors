@@ -35,27 +35,27 @@ int main(void)
             break;
         case 4:
             // Partie contre une IA gloutonne
-            winner = run_game(&score1, &score2, get_player_move, best_score_color, false);
+            winner = run_game(&score1, &score2, get_player_move, best_score, false);
             break;
         case 5:
             // Partie contre une IA hégémonique sans bord
-            winner = run_game(&score1, &score2, get_player_move, best_perimeter_color, false);
+            winner = run_game(&score1, &score2, get_player_move, best_perimeter, false);
             break;
         case 6:
             // Partie entre IA aléatoire et gloutonne
-            winner = run_game(&score1, &score2, random_reachable_color, best_score_color, true);
+            winner = run_game(&score1, &score2, random_reachable_color, best_score, true);
             break;
         case 7:
             // Partie entre IA gloutonne et hégémonique sans bord
-            winner = run_game(&score1, &score2, best_score_color, best_perimeter_color, true);
+            winner = run_game(&score1, &score2, best_score, best_perimeter, true);
             break;
         case 8:
             // Partie entre IA gloutonne et hégémonique avec bord
-            winner = run_game(&score1, &score2, best_score_color, best_perimeter_with_border_color, true);
+            winner = run_game(&score1, &score2, best_score, best_perimeter_with_border, true);
             break;
         case 9:
             // Partie entre IA sans bord vs avec bord
-            winner = run_game(&score1, &score2, best_perimeter_color, best_perimeter_with_border_color, true);
+            winner = run_game(&score1, &score2, best_perimeter, best_perimeter_with_border, true);
             break;
         }
         print_end_screen(winner, mode, score1, score2);

@@ -109,7 +109,7 @@ int color_score(char player, char color)
     return score;
 }
 
-char best_score_color(char player)
+char best_score(char player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
@@ -133,7 +133,7 @@ char best_score_color(char player)
     return best;
 }
 
-int expansion(point *p)
+int cell_expansion(point *p, char player)
 {
     int x, y;
     int expansion = 4;
@@ -144,8 +144,9 @@ int expansion(point *p)
         if (in_bounds(x, y))
         {
             char cell_color = get_cell(x, y);
-            if (cell_color == PLAYER1 || cell_color == PLAYER2)
+            if (cell_color == player)
                 expansion--;
+            // blocking the enemy is considered as an expansion
         }
         else
             expansion--;
@@ -178,7 +179,7 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, char player, char c
                 }
             }
         }
-        else if (expansion(p) > 0)
+        else if (cell_expansion(p, player) > 1)
             (*perimeter)++;
     }
 }
@@ -203,7 +204,7 @@ int color_perimeter(char player, char color)
     return perimeter;
 }
 
-char best_perimeter_color(char player)
+char best_perimeter(char player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
@@ -255,7 +256,7 @@ void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, char pl
                 // On compte le bord du plateau
             }
         }
-        else if (expansion(p) > 0)
+        else if (cell_expansion(p, player) > 1)
             (*perimeter)++;
     }
 }
@@ -280,7 +281,7 @@ int color_perimeter_with_border(char player, char color)
     return perimeter;
 }
 
-char best_perimeter_with_border_color(char player)
+char best_perimeter_with_border(char player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
