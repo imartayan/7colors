@@ -13,10 +13,10 @@ int main(void)
     print_welcome_screen();
     int mode, score1, score2;
     char winner;
+    mode = choose_game_mode();
     bool continue_playing = true;
     while (continue_playing)
     {
-        mode = choose_game_mode();
         init_board();
         score1 = score2 = 1;
         switch (mode)
@@ -54,8 +54,12 @@ int main(void)
             winner = run_game(&score1, &score2, best_score, best_perimeter_with_border, true);
             break;
         case 9:
-            // Partie entre IA sans bord vs avec bord
+            // Partie entre IA hégémonique sans bord et avec bord
             winner = run_game(&score1, &score2, best_perimeter, best_perimeter_with_border, true);
+            break;
+        case 10:
+            // Parties rapides entre IA sans bord et avec bord
+            winner = run_game_fast(&score1, &score2, best_perimeter, best_perimeter_with_border);
             break;
         }
         print_end_screen(winner, mode, score1, score2);

@@ -21,13 +21,14 @@ int choose_game_mode()
     printf("6: Partie entre IA aléatoire et gloutonne\n");
     printf("7: Partie entre IA gloutonne et hégémonique sans bord\n");
     printf("8: Partie entre IA gloutonne et hégémonique avec bord\n");
-    printf("9: Partie entre IA sans bord vs avec bord\n");
-    while (n < 1 || n > 9)
+    printf("9: Partie entre IA hégémonique sans bord et avec bord\n");
+    printf("10: Parties rapides entre IA sans bord et avec bord\n");
+    while (n < 1 || n > 10)
     {
         printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 9)
+        if (n < 1 || n > 10)
             printf("Entrée incorecte, veuillez réessayer.\n");
     }
     return n;

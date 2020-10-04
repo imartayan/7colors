@@ -60,3 +60,31 @@ char run_game(int *score1, int *score2, char (*move1)(char), char (*move2)(char)
     else
         return '0';
 }
+
+char run_game_fast(int *score1, int *score2, char (*move1)(char), char (*move2)(char))
+{
+    char color;
+    int turn = 1;
+    char player = PLAYER1;
+    // game cycle
+    while (*score1 + *score2 < SCORE_MAX && 2 * *score1 <= SCORE_MAX && 2 * *score2 <= SCORE_MAX)
+    {
+        if (player == PLAYER1)
+        {
+            color = (*move1)(player);
+            update_board(player, color, score1);
+        }
+        else
+        {
+            color = (*move2)(player);
+            update_board(player, color, score2);
+        }
+        next_player(&player, &turn);
+    }
+    if (*score1 > *score2)
+        return PLAYER1;
+    else if (*score1 < *score2)
+        return PLAYER2;
+    else
+        return '0';
+}
