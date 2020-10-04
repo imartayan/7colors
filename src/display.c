@@ -62,7 +62,7 @@ void print_score(int score1, int score2)
 {
     double p1 = (double)score1 / SCORE_MAX * 100;
     double p2 = (double)score2 / SCORE_MAX * 100;
-    printf("\nScore : J1 ");
+    printf("Score : J1 ");
     set_print_color(PLAYER1);
     printf("%.0f%%", p1);
     reset_print_color();
@@ -90,19 +90,17 @@ void print_turn(char player, int turn)
 void print_board()
 {
     int i, j;
-    printf("\n");
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
         {
             char c = get_cell(i, j);
             set_print_color(c);
-            printf("%c ", c);
+            printf(" %c", c);
             reset_print_color();
         }
         printf("\n");
     }
-    printf("\n");
 }
 
 void print_end_screen(char winner, int mode, int score1, int score2)
@@ -117,7 +115,7 @@ void print_end_screen(char winner, int mode, int score1, int score2)
         set_print_color(winner);
         printf("Le joueur %c remporte la partie !\n", winner);
     }
-    else if (mode == 6)
+    else if (mode >= 6)
     {
         set_print_color(winner);
         printf("L'ordinateur %c remporte la partie !\n", winner);

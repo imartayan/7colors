@@ -19,12 +19,13 @@ int choose_game_mode()
     printf("4: Partie contre une IA gloutonne\n");
     printf("5: Partie contre une IA hégémonique\n");
     printf("6: Partie entre IA aléatoire et gloutonne\n");
-    while (n < 1 || n > 6)
+    printf("7: Partie entre deux IA gloutonnes\n");
+    while (n < 1 || n > 7)
     {
         printf("Quel est votre choix ?\n");
         scanf("%d", &n);
         clear_buffer();
-        if (n < 1 || n > 6)
+        if (n < 1 || n > 7)
             printf("Entrée incorecte, veuillez réessayer.\n");
     }
     return n;
@@ -46,14 +47,14 @@ char ask_player_move()
     bool lettreAutorisee = false;
     while (!lettreAutorisee)
     {
-        printf("Quelle couleur voulez-vous jouer ? Choix possibles : ");
+        printf("Quelle couleur voulez-vous jouer ? (Choix possibles :");
         for (int k = 0; k < NB_COLORS; k++)
         {
             set_print_color(colors[k]);
-            printf("%c ", colors[k]);
-            reset_print_color();
+            printf(" %c", colors[k]);
         }
-        printf("\n");
+        reset_print_color();
+        printf(") ");
         c = getchar();
         clear_buffer();
         lettreAutorisee = in_colors(c);
@@ -74,11 +75,11 @@ bool ask_new_game()
     char c = 'A';
     while (c != 'O' && c != 'o' && c != 'N' && c != 'n')
     {
-        printf("Voulez-vous jouer une nouvelle partie ? (O / N)\n");
+        printf("Voulez-vous jouer une nouvelle partie ? (O / N) ");
         c = getchar();
         clear_buffer();
         if (c != 'O' && c != 'o' && c != 'N' && c != 'n')
-            printf("Entrée non valide, veuillez entrer  O ou N.\n");
+            printf("Entrée non valide, veuillez entrer O ou N.\n");
     }
     return (c == 'O' || c == 'o');
 }

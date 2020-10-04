@@ -45,6 +45,10 @@ int main(void)
             // Partie entre IA aléatoire et gloutonne
             winner = run_game(&score1, &score2, random_reachable_color, best_reachable_color, true);
             break;
+        case 7:
+            // Partie entre deux IA gloutonnes
+            winner = run_game(&score1, &score2, best_reachable_color, best_reachable_color, true);
+            break;
         }
         print_end_screen(winner, mode, score1, score2);
         continue_playing = ask_new_game();
