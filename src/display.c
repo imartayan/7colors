@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "display.h"
+#include "defaults.h"
+#include "utils.h"
 
 // Properly printing colors
 void reset_print_color()

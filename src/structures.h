@@ -1,8 +1,6 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct point
@@ -10,6 +8,15 @@ typedef struct point
     int x;
     int y;
 } point;
+
+typedef struct Player
+{
+    char id;
+    int score;
+    point *start;
+} Player;
+
+typedef char (*strategy)(Player *);
 
 typedef struct cell
 {

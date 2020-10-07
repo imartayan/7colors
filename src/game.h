@@ -1,11 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
-typedef char (*strategy)(char);
+#include "structures.h"
 
-void next_player(char *player, int *turn);
-void select_strategy(int *mode, strategy *strat);
-char run_game(int *score1, int *score2, strategy strat1, strategy strat2, bool wait);
-char run_fast_game(int *score1, int *score2, strategy strat1, strategy strat2);
+void select_strategy(int player_type, strategy *strat);
+char run_game(Player *player1, Player *player2, strategy strat1, strategy strat2, bool wait);
+char run_fast_game(Player *player1, Player *player2, strategy strat1, strategy strat2);
 
 #endif

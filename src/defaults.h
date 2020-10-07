@@ -14,6 +14,5 @@
 const char colors[NB_COLORS];
 char board[BOARD_SIZE * BOARD_SIZE];
 const point direction[4];
-point start1, start2;
 
 #endif

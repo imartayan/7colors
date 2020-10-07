@@ -1,17 +1,27 @@
-#include "AI.h"
+#include <stdlib.h>
+#include "strategies.h"
+#include "defaults.h"
+#include "input.h"
+#include "utils.h"
+#include "board.h"
 
-char play_random_color(char player)
+char play_human_move(Player *player)
+{
+    return ask_player_move();
+}
+
+char play_random_move(Player *player)
 {
     return random_color();
 }
 
-void reachable_colors_bfs(point *p, bool *seen, queue *visit, char player, bool *reachable)
+void reachable_colors_bfs(point *p, bool *seen, queue *visit, Player *player, bool *reachable)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
         seen[p->x + p->y * BOARD_SIZE] = true;
         char cell_color = get_cell(p->x, p->y);
-        if (cell_color == player)
+        if (cell_color == player->id)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -34,14 +44,11 @@ void reachable_colors_bfs(point *p, bool *seen, queue *visit, char player, bool 
     }
 }
 
-void reachable_colors(char player, bool *reachable)
+void reachable_colors(Player *player, bool *reachable)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == PLAYER1)
-        add_queue(visit, &start1);
-    else
-        add_queue(visit, &start2);
+    add_queue(visit, player->start);
     point *p = (point *)malloc(sizeof(point));
     while (!empty_queue(visit))
     {
@@ -52,7 +59,7 @@ void reachable_colors(char player, bool *reachable)
     free(visit);
 }
 
-char random_reachable_color(char player)
+char random_reachable_color(Player *player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
@@ -61,7 +68,7 @@ char random_reachable_color(char player)
     return colors[get_nth_true(reachable, NB_COLORS, n)];
 }
 
-void color_score_bfs(point *p, bool *seen, queue *visit, char player, char color, int *score)
+void color_score_bfs(point *p, bool *seen, queue *visit, Player *player, char color, int *score)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -69,10 +76,10 @@ void color_score_bfs(point *p, bool *seen, queue *visit, char player, char color
         char cell_color = get_cell(p->x, p->y);
         if (cell_color == color)
         {
-            cell_color = player;
+            cell_color = player->id;
             (*score)++;
         }
-        if (cell_color == player)
+        if (cell_color == player->id)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -89,15 +96,12 @@ void color_score_bfs(point *p, bool *seen, queue *visit, char player, char color
     }
 }
 
-int color_score(char player, char color)
+int color_score(Player *player, char color)
 {
     int score = 0;
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == PLAYER1)
-        add_queue(visit, &start1);
-    else
-        add_queue(visit, &start2);
+    add_queue(visit, player->start);
     point *p = (point *)malloc(sizeof(point));
     while (!empty_queue(visit))
     {
@@ -109,7 +113,7 @@ int color_score(char player, char color)
     return score;
 }
 
-char best_score(char player)
+char best_score(Player *player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
@@ -133,7 +137,7 @@ char best_score(char player)
     return best;
 }
 
-int cell_expansion(point *p, char player)
+int cell_expansion(point *p, Player *player)
 {
     int x, y;
     int expansion = 4;
@@ -144,7 +148,7 @@ int cell_expansion(point *p, char player)
         if (in_bounds(x, y))
         {
             char cell_color = get_cell(x, y);
-            if (cell_color == player)
+            if (cell_color == player->id)
                 expansion--;
             // blocking the enemy is considered as an expansion
         }
@@ -154,7 +158,7 @@ int cell_expansion(point *p, char player)
     return expansion;
 }
 
-void color_perimeter_bfs(point *p, bool *seen, queue *visit, char player, char color, int *perimeter)
+void color_perimeter_bfs(point *p, bool *seen, queue *visit, Player *player, char color, int *perimeter)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -162,10 +166,10 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, char player, char c
         char cell_color = get_cell(p->x, p->y);
         if (cell_color == color)
         {
-            cell_color = player;
+            cell_color = player->id;
             (*perimeter)++;
         }
-        if (cell_color == player)
+        if (cell_color == player->id)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -184,15 +188,12 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, char player, char c
     }
 }
 
-int color_perimeter(char player, char color)
+int color_perimeter(Player *player, char color)
 {
     int perimeter = 0;
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == PLAYER1)
-        add_queue(visit, &start1);
-    else
-        add_queue(visit, &start2);
+    add_queue(visit, player->start);
     point *p = (point *)malloc(sizeof(point));
     while (!empty_queue(visit))
     {
@@ -204,7 +205,7 @@ int color_perimeter(char player, char color)
     return perimeter;
 }
 
-char best_perimeter(char player)
+char best_perimeter(Player *player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);
@@ -228,7 +229,7 @@ char best_perimeter(char player)
     return best;
 }
 
-void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, char player, char color, int *perimeter)
+void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, Player *player, char color, int *perimeter)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -236,10 +237,10 @@ void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, char pl
         char cell_color = get_cell(p->x, p->y);
         if (cell_color == color)
         {
-            cell_color = player;
+            cell_color = player->id;
             (*perimeter)++;
         }
-        if (cell_color == player)
+        if (cell_color == player->id)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -261,15 +262,12 @@ void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, char pl
     }
 }
 
-int color_perimeter_with_border(char player, char color)
+int color_perimeter_with_border(Player *player, char color)
 {
     int perimeter = 0;
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == PLAYER1)
-        add_queue(visit, &start1);
-    else
-        add_queue(visit, &start2);
+    add_queue(visit, player->start);
     point *p = (point *)malloc(sizeof(point));
     while (!empty_queue(visit))
     {
@@ -281,7 +279,7 @@ int color_perimeter_with_border(char player, char color)
     return perimeter;
 }
 
-char best_perimeter_with_border(char player)
+char best_perimeter_with_border(Player *player)
 {
     bool reachable[NB_COLORS] = {false};
     reachable_colors(player, reachable);

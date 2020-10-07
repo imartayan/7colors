@@ -1,4 +1,6 @@
 #include "board.h"
+#include "defaults.h"
+#include "utils.h"
 #include "simple_unit_test.h" /* Import the testing infrastructure */
 
 /* Note: This template comes with several global definitions. For now.
@@ -12,7 +14,7 @@
  */
 
 // init the board with random colors
-void init_board()
+void init_board(Player *player1, Player *player2)
 {
     char color;
     for (int i = 0; i < BOARD_SIZE; i++)
@@ -23,11 +25,11 @@ void init_board()
             set_cell(i, j, color);
         }
     }
-    set_cell(start1.x, start1.y, PLAYER1);
-    set_cell(start2.x, start2.y, PLAYER2);
+    set_cell(player1->start->x, player1->start->y, player1->id);
+    set_cell(player2->start->x, player2->start->y, player2->id);
 }
 
-void propagate(point *p, char player, char color, bool *change, int *score)
+void propagate(point *p, Player *player, char color, bool *change)
 {
     point voisin;
     for (int k = 0; k < 4; k++)
@@ -38,14 +40,14 @@ void propagate(point *p, char player, char color, bool *change, int *score)
         if (in_bounds(voisin.x, voisin.y) && chosen_color)
         {
             *change = true;
-            set_cell(voisin.x, voisin.y, player);
-            (*score)++;
-            propagate(&voisin, player, color, change, score);
+            set_cell(voisin.x, voisin.y, player->id);
+            (player->score)++;
+            propagate(&voisin, player, color, change);
         }
     }
 }
 
-void bad_update_board(char player, char color, int *score)
+void bad_update_board(Player *player, char color)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
@@ -56,11 +58,11 @@ void bad_update_board(char player, char color, int *score)
         {
             for (int j = 0; j < BOARD_SIZE; j++)
             {
-                if (get_cell(i, j) == player)
+                if (get_cell(i, j) == player->id)
                 {
                     p->x = i;
                     p->y = j;
-                    propagate(p, player, color, &change, score);
+                    propagate(p, player, color, &change);
                 }
             }
         }
@@ -68,7 +70,7 @@ void bad_update_board(char player, char color, int *score)
     free(p);
 }
 
-void update_board_bfs(point *p, bool *seen, queue *visit, char player, char color, int *score)
+void update_board_bfs(point *p, bool *seen, queue *visit, Player *player, char color)
 {
     if (!seen[p->x + p->y * BOARD_SIZE])
     {
@@ -76,11 +78,11 @@ void update_board_bfs(point *p, bool *seen, queue *visit, char player, char colo
         char cell_color = get_cell(p->x, p->y);
         if (cell_color == color)
         {
-            set_cell(p->x, p->y, player);
-            cell_color = player;
-            (*score)++;
+            set_cell(p->x, p->y, player->id);
+            cell_color = player->id;
+            (player->score)++;
         }
-        if (cell_color == player)
+        if (cell_color == player->id)
         {
             int x, y;
             for (int k = 0; k < 4; k++)
@@ -97,19 +99,16 @@ void update_board_bfs(point *p, bool *seen, queue *visit, char player, char colo
     }
 }
 
-void update_board(char player, char color, int *score)
+void update_board(Player *player, char color)
 {
     bool seen[BOARD_SIZE * BOARD_SIZE] = {false};
     queue *visit = create_queue();
-    if (player == PLAYER1)
-        add_queue(visit, &start1);
-    else
-        add_queue(visit, &start2);
+    add_queue(visit, player->start);
     point *p = (point *)malloc(sizeof(point));
     while (!empty_queue(visit))
     {
         pop_queue(visit, p);
-        update_board_bfs(p, seen, visit, player, color, score);
+        update_board_bfs(p, seen, visit, player, color);
     }
     free(p);
     free(visit);

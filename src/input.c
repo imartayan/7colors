@@ -1,4 +1,7 @@
+#include <stdio.h>
 #include "input.h"
+#include "defaults.h"
+#include "display.h"
 
 void clear_buffer()
 {
@@ -78,11 +81,6 @@ char ask_player_move()
             printf("Entrée non valide, veuillez entrer une valeur parmis les couleurs possibles.\n");
     }
     return c;
-}
-
-char get_player_move(char player)
-{
-    return ask_player_move();
 }
 
 // ask if the user wants to play a new game

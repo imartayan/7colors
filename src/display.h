@@ -1,11 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "defaults.h"
-#include "utils.h"
-
 void reset_print_color();
 void set_print_color(char c);
 void print_welcome_screen();
