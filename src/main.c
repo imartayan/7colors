@@ -1,13 +1,10 @@
-#include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "structures.h"
-#include "defaults.h"
 #include "display.h"
 #include "input.h"
 #include "board.h"
 #include "game.h"
-#include "strategies.h"
+#include "AI.h"
 
 /** Program entry point */
 int main(void)
@@ -16,23 +13,20 @@ int main(void)
     print_welcome_screen();
     int mode[3];
     choose_game_mode(mode);
-    point start1 = {BOARD_SIZE - 1, 0}, start2 = {0, BOARD_SIZE - 1};
-    Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    strategy strat1, strat2;
-    select_strategy(mode[1], &strat1);
-    select_strategy(mode[2], &strat2);
-    char winner;
+    strategy strat[2];
+    select_strategy(mode, strat);
+    char board[NB_CASES] = {0};
+    struct state state = {'\0', board, 1, 1, '\0'};
     if (mode[0] == 1)
     {
         bool wait = !(mode[1] == 1 || mode[2] == 1);
         bool continue_playing = true;
         while (continue_playing)
         {
-            init_board(&player1, &player2);
-            player1.score = 1;
-            player2.score = 1;
-            winner = run_game(&player1, &player2, strat1, strat2, wait);
-            print_end_screen(winner, player1.score, player2.score);
+            init_board(state.board);
+            state.score1 = 1; state.score2 = 1;
+            run_game(&state, strat[0], strat[1], wait);
+            print_end_screen(&state);
             continue_playing = ask_new_game();
         }
     }
@@ -45,19 +39,14 @@ int main(void)
         int total2 = 0;
         for (int i = 0; i < nb_games; i++)
         {
-            init_board(&player1, &player2);
-            player1.score = 1;
-            player2.score = 1;
-            if (i % 2 == 0)
-                winner = run_fast_game(&player1, &player2, strat1, strat2);
-            else
-                winner = run_fast_game(&player2, &player1, strat2, strat1);
-            if (winner == player1.id)
+            init_board(state.board);
+            run_fast_game(&state, strat[0], strat[1]);
+            if (state.curr_player == PLAYER1)
                 wins1++;
-            else if (winner == player2.id)
+            else if (state.curr_player == PLAYER2)
                 wins2++;
-            total1 += player1.score;
-            total2 += player2.score;
+            total1 += state.score1;
+            total2 += state.score2;
         }
         print_statistics(nb_games, wins1, wins2, total1, total2);
     }

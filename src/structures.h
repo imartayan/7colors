@@ -1,6 +1,8 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct point
@@ -8,15 +10,6 @@ typedef struct point
     int x;
     int y;
 } point;
-
-typedef struct Player
-{
-    char id;
-    int score;
-    point *start;
-} Player;
-
-typedef char (*strategy)(Player *);
 
 typedef struct cell
 {
@@ -43,5 +36,15 @@ bool empty_queue(queue *q);
 void print_queue(queue *q);
 void add_queue(queue *q, point *p);
 void pop_queue(queue *q, point *p);
+
+struct state{
+  char last_move;
+  char* board;
+  int score1;
+  int score2;
+  char curr_player;
+};
+
+typedef struct state* pstate;
 
 #endif

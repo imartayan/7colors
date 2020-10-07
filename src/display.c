@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "display.h"
-#include "defaults.h"
-#include "utils.h"
 
 // Properly printing colors
 void reset_print_color()
@@ -91,14 +87,14 @@ void print_turn(char player, int turn)
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
-void print_board()
+void print_board(char* board)
 {
     int i, j;
     for (i = 0; i < BOARD_SIZE; i++)
     {
         for (j = 0; j < BOARD_SIZE; j++)
         {
-            char c = get_cell(i, j);
+            char c = get_cell(board, i, j);
             set_print_color(c);
             printf(" %c", c);
             reset_print_color();
@@ -107,17 +103,17 @@ void print_board()
     }
 }
 
-void print_end_screen(char winner, int score1, int score2)
+void print_end_screen(pstate state)
 {
     system("clear");
-    print_score(score1, score2);
-    print_board();
-    if (winner == '0')
+    print_score(state->score1, state->score2);
+    print_board(state->board);
+    if (state->curr_player == '0')
         printf("Égalité !\n");
     else
     {
-        set_print_color(winner);
-        printf("Le joueur %c remporte la partie !\n", winner);
+        set_print_color(state->curr_player);
+        printf("Le joueur %c remporte la partie !\n", state->curr_player);
         reset_print_color();
     }
 }

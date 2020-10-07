@@ -2,14 +2,16 @@
 #define BOARD_H
 
 #include <stdbool.h>
+#include "defaults.h"
 #include "structures.h"
+#include "utils.h"
 
-void init_board(Player *player1, Player *player2);
+void init_board(char* board);
 
-void propagate(point *p, Player *player, char color, bool *change);
-void bad_update_board(Player *player, char color);
+void propagate(char* board, point *p, char player, char color, bool *change, int *score);
+void bad_update_board(char* board, char player, char color, int *score);
 
-void update_board_bfs(point *p, bool *seen, queue *q, Player *player, char color);
-void update_board(Player *player, char color);
+void visit_bfs(pstate state, point *p, bool *seen, queue *visit);
+void update_board_bfs(pstate state);
 
 #endif
