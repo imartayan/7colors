@@ -5,13 +5,13 @@ An implementation of the 7 colors game written in C.
 
 ## Project structure
 * `defaults.c` contains all the defaults values
-* `structures.c` contains point, linked list and queue data structures
-* `utils.c` contains some basic functions for reading or writing a cell, creating a random number...
-* `display.c` contains functions for printing the board and the score
-* `input.c` contains functions for asking game modes, next move...
+* `structures.c` contains all the structures used in the projects : player, strategy, linked list, queue...
+* `utils.c` contains basic functions such as reading or writing a cell, choosing a random color...
+* `display.c` contains functions for printing the board, the score and the results of a game
+* `input.c` contains functions for asking game modes, next move and new game
 * `board.c` contains functions for creating the board and updating it after each move
-* `AI.c` contains different strategies for the artificial intelligence
-* `game.c` contains functions for the different modes of the game
+* `strategies.c` contains different strategies for artificial intelligence
+* `game.c` contains functions for selecting strategies and running normal or fast games
 * `main.c` contains the main loop of the game
 
 ## Done
@@ -28,9 +28,10 @@ An implementation of the 7 colors game written in C.
 * greedy artificial intelligence
 * hegemonic artificial intelligence
 * tournament mode with statistics
+* abstract structures to replace globals
 
 ## Todo
-* write tests
+* __write tests__
 * write documentation
 * write a detailed report
 * improve artificial intelligence (minimax ?)
