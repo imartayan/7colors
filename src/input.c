@@ -1,7 +1,4 @@
-#include <stdio.h>
 #include "input.h"
-#include "defaults.h"
-#include "display.h"
 
 void clear_buffer()
 {
@@ -45,7 +42,8 @@ void choose_game_mode(int *mode)
         printf("4: IA gloutonne\n");
         printf("5: IA hégémonique (sans bords)\n");
         printf("6: IA hégémonique (avec bords)\n");
-        mode[i] = ask_int(1, 6);
+        printf("7 : MiniMax\n");
+        mode[i] = ask_int(1, 7);
     }
     reset_print_color();
 }
@@ -81,6 +79,11 @@ char ask_player_move()
             printf("Entrée non valide, veuillez entrer une valeur parmis les couleurs possibles.\n");
     }
     return c;
+}
+
+char get_player_move(pstate state)
+{
+    return ask_player_move();
 }
 
 // ask if the user wants to play a new game

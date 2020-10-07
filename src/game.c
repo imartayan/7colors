@@ -3,99 +3,116 @@
 #include <stdlib.h>
 #include <time.h>
 #include "board.h"
-#include "defaults.h"
 #include "display.h"
 #include "input.h"
 #include "game.h"
-#include "strategies.h"
+#include "AI.h"
 
-void select_strategy(int player_type, strategy *strat)
+void next_player(char *player, int *turn)
 {
-    switch (player_type)
+    if (*player == PLAYER1)
+        *player = PLAYER2;
+    else
     {
-    case 1:
-        *strat = play_human_move;
-        break;
-    case 2:
-        *strat = play_random_move;
-        break;
-    case 3:
-        *strat = random_reachable_color;
-        break;
-    case 4:
-        *strat = best_score;
-        break;
-    case 5:
-        *strat = best_perimeter;
-        break;
-    case 6:
-        *strat = best_perimeter_with_border;
-        break;
+        *player = PLAYER1;
+        (*turn)++;
     }
 }
 
-// main game function, contains the game cycle, returns the winning player
-// char run_game(int player1->score, int player2->score, strategy strat1, strategy strat2, bool wait)
-char run_game(Player *player1, Player *player2, strategy strat1, strategy strat2, bool wait)
+void select_strategy(int *mode, strategy *strat)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        switch (mode[i + 1])
+        {
+        case 1:
+            strat[i] = get_player_move;
+            break;
+        case 2:
+            strat[i] = play_random_color;
+            break;
+        case 3:
+            strat[i] = random_reachable_color;
+            break;
+        case 4:
+            strat[i] = best_score;
+            break;
+        case 5:
+            strat[i] = best_perimeter;
+            break;
+        case 6:
+            strat[i] = best_perimeter_with_border;
+            break;
+        case 7:
+            strat[i] = AI_minimax;
+            break;
+        }
+    }
+}
+
+// main game function, contains the game cycle, state->curr_player is the winner when the function ends
+void run_game(pstate state, strategy strat1, strategy strat2, bool wait)
 {
     char color;
     int turn = 1;
-    Player *player = player1;
+    state->curr_player = PLAYER1;
     // game cycle
-    while (player1->score + player2->score < SCORE_MAX && 2 * player1->score <= SCORE_MAX && 2 * player2->score <= SCORE_MAX)
+    while ((state->score1 + state->score2) < SCORE_MAX && (2 * state->score1 <= SCORE_MAX) && (2 * state->score2 <= SCORE_MAX))
     {
         system("clear");
-        print_score(player1->score, player2->score);
-        print_board();
-        print_turn(player->id, turn);
-        if (player == player1)
+        print_score(state->score1, state->score2);
+        print_board(state->board);
+        print_turn(state->curr_player, turn);
+        if (state->curr_player == PLAYER1)
         {
-            color = (*strat1)(player);
-            update_board(player, color);
-            player = player2;
+            color = (*strat1)(state);
+            state->last_move = color;
+            update_board_bfs(state);
         }
         else
         {
-            color = (*strat2)(player);
-            update_board(player, color);
-            player = player1;
-            turn++;
+            color = (*strat2)(state);
+            state->last_move = color;
+            update_board_bfs(state);
         }
         if (wait)
             system("sleep 0.25s");
+        next_player(&(state->curr_player), &turn);
     }
-    if (player1->score > player2->score)
-        return player1->id;
-    else if (player1->score < player2->score)
-        return player2->id;
+    if (state->score1 > state->score2)
+        state->curr_player = PLAYER1;
+    else if (state->score1 < state->score2)
+        state->curr_player = PLAYER2;
     else
-        return '0';
+        state->curr_player = '0';
 }
 
-char run_fast_game(Player *player1, Player *player2, strategy strat1, strategy strat2)
+void run_fast_game(pstate state, strategy strat1, strategy strat2)
 {
     char color;
-    Player *player = player1;
+    int turn = 1;
+    state -> curr_player = PLAYER1;
     // game cycle
-    while (player1->score + player2->score < SCORE_MAX && 2 * player1->score <= SCORE_MAX && 2 * player2->score <= SCORE_MAX)
+    while ((state->score1 + state->score2) < SCORE_MAX && (2 * state->score1 <= SCORE_MAX) && (2 * state->score2 <= SCORE_MAX))
     {
-        if (player == player1)
+        if (state -> curr_player == PLAYER1)
         {
-            color = (*strat1)(player);
-            update_board(player, color);
-            player = player2;
+            color = (*strat1)(state);
+            state->last_move = color;
+            update_board_bfs(state);
         }
         else
         {
-            color = (*strat2)(player);
-            update_board(player, color);
-            player = player1;
+            color = (*strat2)(state);
+            state->last_move = color;
+            update_board_bfs(state);
         }
+        next_player(&(state->curr_player), &turn);
     }
-    if (player1->score > player2->score)
-        return player1->id;
-    else if (player1->score < player2->score)
-        return player2->id;
+    if (state->score1 > state->score2)
+        state->curr_player = PLAYER1;
+    else if (state->score1 < state->score2)
+        state->curr_player = PLAYER2;
     else
-        return '0';
+        state->curr_player = '0';
 }
