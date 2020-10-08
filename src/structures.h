@@ -16,7 +16,18 @@ typedef struct Player
     point *start;
 } Player;
 
-typedef char (*strategy)(Player *);
+typedef struct State
+{
+    char *board;
+    int board_size;
+    Player *player1;
+    Player *player2;
+    Player *curr_player;
+    char curr_move;
+    int turn;
+} State;
+
+typedef char (*strategy)(State *);
 
 typedef struct cell
 {

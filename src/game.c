@@ -35,67 +35,74 @@ void select_strategy(int player_type, strategy *strat)
 }
 
 // main game function, contains the game cycle, returns the winning player
-// char run_game(int player1->score, int player2->score, strategy strat1, strategy strat2, bool wait)
-char run_game(Player *player1, Player *player2, strategy strat1, strategy strat2, bool wait)
+char run_game(State *state, strategy strat1, strategy strat2, bool wait)
 {
+    init_board(state);
+    state->player1->score = 1;
+    state->player2->score = 1;
+    state->turn = 1;
+    int score_max = state->board_size * state->board_size;
     char color;
-    int turn = 1;
-    Player *player = player1;
     // game cycle
-    while (player1->score + player2->score < SCORE_MAX && 2 * player1->score <= SCORE_MAX && 2 * player2->score <= SCORE_MAX)
+    while (state->player1->score + state->player2->score < score_max && 2 * state->player1->score <= score_max && 2 * state->player2->score <= score_max)
     {
         system("clear");
-        print_score(player1->score, player2->score);
-        print_board();
-        print_turn(player->id, turn);
-        if (player == player1)
+        print_score(state);
+        print_board(state);
+        print_turn(state);
+        if (state->curr_player == state->player1)
         {
-            color = (*strat1)(player);
-            update_board(player, color);
-            player = player2;
+            color = (*strat1)(state);
+            update_board(state, color);
+            state->curr_player = state->player2;
         }
         else
         {
-            color = (*strat2)(player);
-            update_board(player, color);
-            player = player1;
-            turn++;
+            color = (*strat2)(state);
+            update_board(state, color);
+            state->curr_player = state->player1;
         }
+        state->turn++;
         if (wait)
             system("sleep 0.25s");
     }
-    if (player1->score > player2->score)
-        return player1->id;
-    else if (player1->score < player2->score)
-        return player2->id;
+    if (state->player1->score > state->player2->score)
+        return state->player1->id;
+    else if (state->player1->score < state->player2->score)
+        return state->player2->id;
     else
         return '0';
 }
 
-char run_fast_game(Player *player1, Player *player2, strategy strat1, strategy strat2)
+char run_fast_game(State *state, strategy strat1, strategy strat2)
 {
+    init_board(state);
+    state->player1->score = 1;
+    state->player2->score = 1;
+    state->turn = 1;
+    int score_max = state->board_size * state->board_size;
     char color;
-    Player *player = player1;
     // game cycle
-    while (player1->score + player2->score < SCORE_MAX && 2 * player1->score <= SCORE_MAX && 2 * player2->score <= SCORE_MAX)
+    while (state->player1->score + state->player2->score < score_max && 2 * state->player1->score <= score_max && 2 * state->player2->score <= score_max)
     {
-        if (player == player1)
+        if (state->curr_player == state->player1)
         {
-            color = (*strat1)(player);
-            update_board(player, color);
-            player = player2;
+            color = (*strat1)(state);
+            update_board(state, color);
+            state->curr_player = state->player2;
         }
         else
         {
-            color = (*strat2)(player);
-            update_board(player, color);
-            player = player1;
+            color = (*strat2)(state);
+            update_board(state, color);
+            state->curr_player = state->player1;
         }
+        state->turn++;
     }
-    if (player1->score > player2->score)
-        return player1->id;
-    else if (player1->score < player2->score)
-        return player2->id;
+    if (state->player1->score > state->player2->score)
+        return state->player1->id;
+    else if (state->player1->score < state->player2->score)
+        return state->player2->id;
     else
         return '0';
 }

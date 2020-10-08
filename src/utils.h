@@ -7,12 +7,12 @@
 #include <stdbool.h>
 
 /** Retrieves the color of a given board cell */
-char get_cell(int x, int y);
+char get_cell(char *board, int board_size, int x, int y);
 
 /** Changes the color of a given board cell */
-void set_cell(int x, int y, char color);
+void set_cell(char *board, int board_size, int x, int y, char color);
 
-bool in_bounds(int x, int y);
+bool in_bounds(int board_size, int x, int y);
 
 int randint(int n);
 

@@ -4,12 +4,12 @@
 #include <stdbool.h>
 #include "structures.h"
 
-void init_board(Player *player1, Player *player2);
+void init_board(State *state);
 
-void propagate(point *p, Player *player, char color, bool *change);
-void bad_update_board(Player *player, char color);
+void propagate(point *p, State *state, char color, bool *change);
+void bad_update_board(State *state, char color);
 
-void update_board_bfs(point *p, bool *seen, queue *q, Player *player, char color);
-void update_board(Player *player, char color);
+void update_board_bfs(point *p, bool *seen, queue *q, State *state, char color);
+void update_board(State *state, char color);
 
 #endif

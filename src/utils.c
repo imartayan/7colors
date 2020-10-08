@@ -3,20 +3,20 @@
 #include "defaults.h"
 
 /** Retrieves the color of a given board cell */
-char get_cell(int x, int y)
+char get_cell(char *board, int board_size, int x, int y)
 {
-    return board[x + y * BOARD_SIZE];
+    return board[x + y * board_size];
 }
 
 /** Changes the color of a given board cell */
-void set_cell(int x, int y, char color)
+void set_cell(char *board, int board_size, int x, int y, char color)
 {
-    board[x + y * BOARD_SIZE] = color;
+    board[x + y * board_size] = color;
 }
 
-bool in_bounds(int x, int y)
+bool in_bounds(int board_size, int x, int y)
 {
-    return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE;
+    return x >= 0 && x < board_size && y >= 0 && y < board_size;
 }
 
 int randint(int n)

@@ -14,13 +14,13 @@ void set_print_color(char c)
 {
     switch (c)
     {
-    case PLAYER1:
-        // rouge
-        printf("\033[0;31m");
+    case '1':
+        // cyan
+        printf("\033[0;36m");
         break;
-    case PLAYER2:
-        // bleu
-        printf("\033[0;34m");
+    case '2':
+        // magenta
+        printf("\033[0;35m");
         break;
     case 'R':
         // rouge
@@ -62,26 +62,27 @@ void print_welcome_screen()
     printf("**************************************\n\n");
 }
 
-void print_score(int score1, int score2)
+void print_score(State *state)
 {
-    double p1 = (double)score1 / SCORE_MAX * 100;
-    double p2 = (double)score2 / SCORE_MAX * 100;
+    int score_max = state->board_size * state->board_size;
+    double p1 = (double)state->player1->score / score_max * 100;
+    double p2 = (double)state->player2->score / score_max * 100;
     printf("Score : J1 ");
-    set_print_color(PLAYER1);
-    printf("%.0f%%", p1);
+    set_print_color(state->player1->id);
+    printf("%.1f%%", p1);
     reset_print_color();
     printf(" - J2 ");
-    set_print_color(PLAYER2);
-    printf("%.0f%%\n", p2);
+    set_print_color(state->player2->id);
+    printf("%.1f%%\n", p2);
     reset_print_color();
 }
 
-void print_turn(char player, int turn)
+void print_turn(State *state)
 {
-    printf("Tour %d - ", turn);
+    printf("Tour %d - ", state->turn);
     printf("C'est à ");
-    set_print_color(player);
-    printf("J%c", player);
+    set_print_color(state->curr_player->id);
+    printf("J%c", state->curr_player->id);
     reset_print_color();
     printf(" de jouer !\n");
 }
@@ -91,14 +92,14 @@ void print_turn(char player, int turn)
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
-void print_board()
+void print_board(State *state)
 {
     int i, j;
-    for (i = 0; i < BOARD_SIZE; i++)
+    for (i = 0; i < state->board_size; i++)
     {
-        for (j = 0; j < BOARD_SIZE; j++)
+        for (j = 0; j < state->board_size; j++)
         {
-            char c = get_cell(i, j);
+            char c = get_cell(state->board, state->board_size, i, j);
             set_print_color(c);
             printf(" %c", c);
             reset_print_color();
@@ -107,11 +108,11 @@ void print_board()
     }
 }
 
-void print_end_screen(char winner, int score1, int score2)
+void print_end_screen(char winner, State *state)
 {
     system("clear");
-    print_score(score1, score2);
-    print_board();
+    print_score(state);
+    print_board(state);
     if (winner == '0')
         printf("Égalité !\n");
     else
@@ -122,14 +123,15 @@ void print_end_screen(char winner, int score1, int score2)
     }
 }
 
-void print_statistics(int nb_games, int wins1, int wins2, int total1, int total2)
+void print_statistics(State *state, int nb_games, int wins1, int wins2, int total1, int total2)
 {
-    double avg1 = (double)total1 / (nb_games * SCORE_MAX) * 100;
-    double avg2 = (double)total2 / (nb_games * SCORE_MAX) * 100;
+    int score_max = state->board_size * state->board_size;
+    double avg1 = (double)total1 / (nb_games * score_max) * 100;
+    double avg2 = (double)total2 / (nb_games * score_max) * 100;
     printf("\nRésultats du tournoi :\n");
-    set_print_color(PLAYER1);
+    set_print_color(state->player1->id);
     printf("Joueur 1 : %d victoires - score moyen %.1f%%\n", wins1, avg1);
-    set_print_color(PLAYER2);
+    set_print_color(state->player2->id);
     printf("Joueur 2 : %d victoires - score moyen %.1f%%\n", wins2, avg2);
     reset_print_color();
 }
