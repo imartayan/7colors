@@ -39,3 +39,5 @@ An implementation of the 7 colors game written in C.
 ## Sources
 * http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf
 * http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/
+* https://en.wikipedia.org/wiki/Minimax
+* https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
