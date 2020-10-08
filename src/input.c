@@ -6,7 +6,6 @@
 void clear_buffer()
 {
     char c;
-    // vider le buffer
     while ((c = getchar()) != '\n' && c != EOF)
     {
     }
@@ -74,7 +73,7 @@ char ask_player_move()
         }
         reset_print_color();
         printf(") ");
-        c = getchar();
+        scanf("%c", &c);
         clear_buffer();
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)

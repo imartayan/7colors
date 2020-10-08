@@ -15,10 +15,10 @@ int main(void)
     srand((unsigned)time(NULL));
     print_welcome_screen();
     int board_size = 30;
-    char *board = malloc(board_size * sizeof(char));
+    char *board = malloc(board_size * board_size * sizeof(char));
     point start1 = {board_size - 1, 0}, start2 = {0, board_size - 1};
     Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    State state = {board, board_size, &player1, &player2, &player1, '0', 0};
+    State state = {board, board_size, &player1, &player2, &player1, '?', 1};
     int mode[3];
     choose_game_mode(mode);
     strategy strat1, strat2;
