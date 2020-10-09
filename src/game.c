@@ -7,6 +7,7 @@
 #include "display.h"
 #include "input.h"
 #include "game.h"
+#include "utils.h"
 #include "strategies.h"
 
 void select_strategy(int player_type, strategy *strat)
@@ -44,7 +45,7 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
     int score_max = state->board_size * state->board_size;
     char color;
     // game cycle
-    while (state->player1->score + state->player2->score < score_max && 2 * state->player1->score <= score_max && 2 * state->player2->score <= score_max)
+    while (!game_ended(state->player1->score, state->player2->score, score_max))
     {
         system("clear");
         print_score(state);
@@ -83,7 +84,7 @@ char run_fast_game(State *state, strategy strat1, strategy strat2)
     int score_max = state->board_size * state->board_size;
     char color;
     // game cycle
-    while (state->player1->score + state->player2->score < score_max && 2 * state->player1->score <= score_max && 2 * state->player2->score <= score_max)
+    while (!game_ended(state->player1->score, state->player2->score, score_max))
     {
         if (state->curr_player == state->player1)
         {
