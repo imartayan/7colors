@@ -77,12 +77,12 @@ void print_score(State *state)
     reset_print_color();
 }
 
-void print_turn(State *state)
+void print_turn(int turn, char player)
 {
-    printf("Tour %d - ", state->turn);
+    printf("Tour %d - ", turn);
     printf("C'est à ");
-    set_print_color(state->curr_player->id);
-    printf("J%c", state->curr_player->id);
+    set_print_color(player);
+    printf("J%c", player);
     reset_print_color();
     printf(" de jouer !\n");
 }
@@ -92,14 +92,14 @@ void print_turn(State *state)
  * It would be nicer to do this with ncurse or even SFML or SDL,
  * but this is not required in this assignment. See the extensions.
  */
-void print_board(State *state)
+void print_board(char *board, int board_size)
 {
-    int i, j;
-    for (i = 0; i < state->board_size; i++)
+    int x, y;
+    for (y = board_size - 1; y >= 0; y--)
     {
-        for (j = 0; j < state->board_size; j++)
+        for (x = 0; x < board_size; x++)
         {
-            char c = get_cell(state->board, state->board_size, i, j);
+            char c = get_cell(board, board_size, x, y);
             set_print_color(c);
             printf(" %c", c);
             reset_print_color();
@@ -112,7 +112,7 @@ void print_end_screen(char winner, State *state)
 {
     system("clear");
     print_score(state);
-    print_board(state);
+    print_board(state->board, state->board_size);
     if (winner == '0')
         printf("Égalité !\n");
     else

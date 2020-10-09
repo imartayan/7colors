@@ -49,8 +49,8 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
     {
         system("clear");
         print_score(state);
-        print_board(state);
-        print_turn(state);
+        print_board(state->board, state->board_size);
+        print_turn(state->turn, state->curr_player->id);
         if (state->curr_player == state->player1)
         {
             color = (*strat1)(state);
