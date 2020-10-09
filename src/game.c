@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "board.h"
-#include "defaults.h"
 #include "display.h"
 #include "input.h"
 #include "game.h"

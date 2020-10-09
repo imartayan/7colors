@@ -6,6 +6,12 @@
 
 #include <stdbool.h>
 
+#define PLAYER1 '1'
+#define PLAYER2 '2'
+#define NB_COLORS 7
+
+const char colors[NB_COLORS];
+
 /** Retrieves the color of a given board cell */
 char get_cell(char *board, int board_size, int x, int y);
 

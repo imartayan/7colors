@@ -1,17 +1,8 @@
 #include "board.h"
-#include "defaults.h"
 #include "utils.h"
-#include "simple_unit_test.h" /* Import the testing infrastructure */
+#include "simple_unit_test.h"
 
-/* Note: This template comes with several global definitions. For now.
- *
- * Such globals are usually discouraged, but having a few of them is OK in a C program.
- * At first, no dinosaure will get you if you use globals, but you should seek for a better
- * solution for your final version.
- *
- * Encapuslating them in an appropriate data structure, and removing all globals would be a must.
- * Plus, this path often leads to simpler code, that is easier to test.
- */
+const point direction[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
 // init the board with random colors
 void init_board(State *state)
@@ -118,30 +109,22 @@ void update_board(State *state, char color)
     free(seen);
 }
 
-/************ The tests **************/
+/************ Tests **************/
 
-/* Tests that the initialization works */
-// SUT_TEST(init_cell)
-// {
-//     char c = get_cell(5, 5);
-//     SUT_CHAR_EQUAL(c, '\0', "Creating the board does not initialize the cells to '\\0' but to '%c'", c);
+SUT_TEST(_update_board)
+{
+    char board[] = {'1', 'R', 'V', 'V', 'R', 'R', 'R', 'V', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 3, &player1, &player2, &player1, '?', 1};
+    update_board(&state, 'R');
+    char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
+    for (int x = 0; x < 2; x++)
+        for (int y = 0; y < 2; y++)
+            SUT_CHAR_EQUAL(board[x + 3 * y], expected[x + 3 * y], "The cell (%d,%d) is not correctly changed with update_board.", x, y);
+    return 1;
+}
 
-//     return 1;
-// }
-
-/* Tests that the get_cell and set_cell work */
-// SUT_TEST(getset_cell)
-// {
-//     char c;
-
-//     set_cell(5, 5, 'A');
-//     c = get_cell(5, 5);
-//     SUT_CHAR_EQUAL(c, 'A', "Setting a cell to 'A' leads to '%c' as a value instead", c);
-
-//     return 1;
-// }
-
-// SUT_TEST_SUITE(board) = {
-//     SUT_TEST_SUITE_ADD(init_cell),
-//     SUT_TEST_SUITE_ADD(getset_cell),
-//     SUT_TEST_SUITE_END};
+SUT_TEST_SUITE(board) = {
+    SUT_TEST_SUITE_ADD(_update_board),
+    SUT_TEST_SUITE_END};

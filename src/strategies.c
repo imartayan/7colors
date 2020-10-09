@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "strategies.h"
-#include "defaults.h"
 #include "input.h"
 #include "utils.h"
 #include "board.h"

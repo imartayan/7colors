@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "input.h"
-#include "defaults.h"
+#include "utils.h"
 #include "display.h"
 
 void clear_buffer()

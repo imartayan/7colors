@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include "utils.h"
-#include "defaults.h"
 #include "simple_unit_test.h"
+
+const char colors[NB_COLORS] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 
 /** Retrieves the color of a given board cell */
 char get_cell(char *board, int board_size, int x, int y)

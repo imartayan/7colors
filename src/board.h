@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include "structures.h"
 
+const point direction[4];
+
 void init_board(State *state);
 
 void propagate(point *p, State *state, char color, bool *change);

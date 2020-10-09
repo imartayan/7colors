@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "display.h"
-#include "defaults.h"
 #include "utils.h"
 
 // Properly printing colors
@@ -14,11 +13,11 @@ void set_print_color(char c)
 {
     switch (c)
     {
-    case '1':
+    case PLAYER1:
         // cyan
         printf("\033[0;36m");
         break;
-    case '2':
+    case PLAYER2:
         // magenta
         printf("\033[0;35m");
         break;

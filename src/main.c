@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "structures.h"
-#include "defaults.h"
+#include "utils.h"
 #include "display.h"
 #include "input.h"
 #include "board.h"
