@@ -23,4 +23,6 @@ int color_id(char c);
 int count_true(bool *tab, int len);
 int get_nth_true(bool *tab, int len, int n);
 
+bool game_ended(int score1, int score2, int max_score);
+
 #endif

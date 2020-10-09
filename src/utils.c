@@ -63,3 +63,8 @@ int get_nth_true(bool *tab, int len, int n)
     }
     return -1;
 }
+
+bool game_ended(int score1, int score2, int score_max)
+{
+    return (score1 * 2 > score_max) || (score2 * 2 > score_max) || (score1 + score2 == score_max);
+}
