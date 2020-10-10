@@ -73,7 +73,7 @@ bool game_ended(int score1, int score2, int score_max)
 
 /************ Tests **************/
 
-SUT_TEST(_get_cell)
+SUT_TEST(test_get_cell)
 {
     char board[] = {'1', 'R', 'G', 'C', 'J', 'M', 'V', 'B', '2'};
     char c = get_cell(board, 3, 0, 1);
@@ -81,7 +81,7 @@ SUT_TEST(_get_cell)
     return 1;
 }
 
-SUT_TEST(_set_cell)
+SUT_TEST(test_set_cell)
 {
     char board[] = {'1', 'R', 'G', 'C', 'J', 'M', 'V', 'B', '2'};
     set_cell(board, 3, 0, 1, 'V');
@@ -90,7 +90,7 @@ SUT_TEST(_set_cell)
     return 1;
 }
 
-SUT_TEST(_in_bounds)
+SUT_TEST(test_in_bounds)
 {
     bool b = in_bounds(3, 1, 4);
     SUT_ASSERT_FALSE(b, "These coordinates should be out of bounds.");
@@ -99,7 +99,7 @@ SUT_TEST(_in_bounds)
     return 1;
 }
 
-SUT_TEST(_count_true)
+SUT_TEST(test_count_true)
 {
     bool tab[] = {true, false, false, true};
     int c = count_true(tab, 4);
@@ -107,7 +107,7 @@ SUT_TEST(_count_true)
     return 1;
 }
 
-SUT_TEST(_get_nth_true)
+SUT_TEST(test_get_nth_true)
 {
     bool tab[] = {true, false, false, true};
     int c = get_nth_true(tab, 4, 2);
@@ -115,7 +115,7 @@ SUT_TEST(_get_nth_true)
     return 1;
 }
 
-SUT_TEST(_game_ended)
+SUT_TEST(test_game_ended)
 {
     bool b = game_ended(3, 4, 9);
     SUT_ASSERT_FALSE(b, "The game should not be ended.");
@@ -125,10 +125,10 @@ SUT_TEST(_game_ended)
 }
 
 SUT_TEST_SUITE(utils) = {
-    SUT_TEST_SUITE_ADD(_get_cell),
-    SUT_TEST_SUITE_ADD(_set_cell),
-    SUT_TEST_SUITE_ADD(_in_bounds),
-    SUT_TEST_SUITE_ADD(_count_true),
-    SUT_TEST_SUITE_ADD(_get_nth_true),
-    SUT_TEST_SUITE_ADD(_game_ended),
+    SUT_TEST_SUITE_ADD(test_get_cell),
+    SUT_TEST_SUITE_ADD(test_set_cell),
+    SUT_TEST_SUITE_ADD(test_in_bounds),
+    SUT_TEST_SUITE_ADD(test_count_true),
+    SUT_TEST_SUITE_ADD(test_get_nth_true),
+    SUT_TEST_SUITE_ADD(test_game_ended),
     SUT_TEST_SUITE_END};

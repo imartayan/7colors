@@ -111,7 +111,7 @@ void update_board(State *state, char color)
 
 /************ Tests **************/
 
-SUT_TEST(_update_board)
+SUT_TEST(test_update_board)
 {
     char board[] = {'1', 'R', 'V', 'V', 'R', 'R', 'R', 'V', '2'};
     point start1 = {0, 0}, start2 = {2, 2};
@@ -126,5 +126,5 @@ SUT_TEST(_update_board)
 }
 
 SUT_TEST_SUITE(board) = {
-    SUT_TEST_SUITE_ADD(_update_board),
+    SUT_TEST_SUITE_ADD(test_update_board),
     SUT_TEST_SUITE_END};
