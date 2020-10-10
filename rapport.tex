@@ -7,13 +7,104 @@
 \begin{document}
 \maketitle
 
+\section*{Introduction}
+
+Le but de ce projet est d'implémenter le jeu des 7 couleurs en C, avec un code aussi clair et structuré que possible.
+Nous avons essayé de faire un code suffisamment générique pour qu'il soit facilement ajustable et réutilisable par la suite : cela passe par l'utilisation de structures et de méthodes générales, ainsi qu'un découpage en modules relativement indépendants les uns des autres.
+Au-delà du développement du jeu en tant que tel, nous nous sommes aussi beaucoup intéressés à la conception de joueurs artificiels avec différentes stratégies : aléatoire, gloutonne, expansionniste, minimax\etc
+
+\subsection*{Structure du projet}
+
+Au fil des questions, nous ferons référence à plusieurs fonctions réparties dans différents modules, c'est pourquoi il peut être utile de d'expliquer rapidement la structure générale du projet pour s'y retrouver plus facilement :
+
+\begin{itemize}
+	\item \verb|structures.c| contains all the structures used in the projects : player, strategy, linked list, queue...
+	\item \verb|utils.c| contains basic functions such as reading or writing a cell, choosing a random color...
+	\item \verb|display.c| contains functions for printing the board, the score and the results of a game
+	\item \verb|input.c| contains functions for asking game modes, next move and new game
+	\item \verb|board.c| contains functions for creating the board and updating it after each move
+	\item \verb|strategies.c| contains different strategies for artificial intelligence
+	\item \verb|game.c| contains functions for selecting strategies and running normal or fast games
+	\item \verb|main.c| contains the main loop of the game
+\end{itemize}
+
+\section{Voir le monde en 7 couleurs}
+
 \begin{qu}
-	On utilise la fonction \verb|rand| de \verb|stdlib| pour la génération aléatoire du tableau.
-	Les deux joueurs sont repréntés par les caractères \verb|'1'| et \verb|'2'|.
+	(fonction \verb|rand| de \verb|stdlib|, joueurs représentés par \verb|'1'| et \verb|'2'|)
 \end{qu}
 
 \begin{qu}
-	Dans le pire des cas ("serpent"), le nombre de parcours est en \(\Theta(n^2)\).
+	("serpent", nombre de parcours est en \(\Theta(n^2)\).)
 \end{qu}
+
+\begin{qu}
+	(parcours en largeur, file)
+\end{qu}
+
+\section{À la conquête du monde}
+
+\begin{qu}
+	(limites d'implémentation ?)
+\end{qu}
+
+\begin{qu}
+	(voir \verb|game_ended|)
+\end{qu}
+
+\section{La stratégie de l'aléa}
+
+\begin{qu}
+	(rien de passionnant)
+\end{qu}
+
+\begin{qu}
+	(toujours un bfs)
+\end{qu}
+
+\section{La loi du plus fort}
+
+\begin{qu}
+	(plus intéressant, on simule chaque coup possible)
+\end{qu}
+
+\begin{qu}
+	(glouton ftw, équitable ? terrain symétrique ? premier joueur avantagé)
+\end{qu}
+
+\begin{qu}
+	(glouton ftw)
+\end{qu}
+
+\section{Les nombreuses huitièmes merveilles du monde}
+
+\begin{qu}
+	(glouton < hégémonique)
+\end{qu}
+
+\begin{qu}
+	(cf minimax, \(7^n\) ?)
+\end{qu}
+
+\section{Le pire du monde merveilleux des 7 couleurs}
+
+\begin{qu}
+	(compliqué)
+\end{qu}
+
+\begin{qu}
+	(cf hégémonique ?)
+\end{qu}
+
+\section*{Synthèse}
+
+\section*{Bibliographie}
+
+\begin{itemize}
+	\item \url{http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf}
+	\item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/}
+	\item \url{https://en.wikipedia.org/wiki/Minimax}
+	\item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning}
+\end{itemize}
 
 \end{document}
