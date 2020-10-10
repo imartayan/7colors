@@ -9,6 +9,8 @@ typedef struct point
     int y;
 } point;
 
+bool equal_points(point* p1, point* p2);
+
 typedef struct Player
 {
     char id;
@@ -37,6 +39,7 @@ typedef struct cell
 
 typedef cell *list;
 
+bool equal_lists(list list1, list list2);
 bool empty_list(list head);
 void print_list(list head);
 void add_list(list *head, point *p);
