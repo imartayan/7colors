@@ -8,8 +8,8 @@ const point direction[4];
 
 void init_board(State *state);
 
-void propagate(point *p, State *state, char color, bool *change);
-void bad_update_board(State *state, char color);
+void propagate_color(point *p, State *state, char color, bool *change);
+void slow_update_board(State *state, char color);
 
 void update_board_bfs(point *p, bool *seen, queue *q, State *state, char color);
 void update_board(State *state, char color);

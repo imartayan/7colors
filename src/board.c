@@ -20,7 +20,7 @@ void init_board(State *state)
     set_cell(state->board, state->board_size, state->player2->start->x, state->player2->start->y, state->player2->id);
 }
 
-void propagate(point *p, State *state, char color, bool *change)
+void propagate_color(point *p, State *state, char color, bool *change)
 {
     point voisin;
     for (int k = 0; k < 4; k++)
@@ -38,7 +38,7 @@ void propagate(point *p, State *state, char color, bool *change)
     }
 }
 
-void bad_update_board(State *state, char color)
+void slow_update_board(State *state, char color)
 {
     bool change = true;
     point *p = (point *)malloc(sizeof(point));
