@@ -3,29 +3,34 @@
 #include "structures.h"
 #include "simple_unit_test.h"
 
-bool equal_points(point* p1, point* p2){
-  return ((p1->x == p2->x) && (p1->y == p2->y));
+bool equal_points(point *p1, point *p2)
+{
+    return ((p1->x == p2->x) && (p1->y == p2->y));
 }
 
-bool empty_list(list head){
+bool empty_list(list head)
+{
     return head == NULL;
 }
 
-bool equal_lists(list list1, list list2){
-  list curr_list1 = list1;
-  list curr_list2 = list2;
-  while(!empty_list(curr_list1) && !empty_list(curr_list2)){
-    if(!equal_points(&(curr_list1->val), &(curr_list2->val)))
-      return false;
-    curr_list1 = curr_list1->next;
-    curr_list2 = curr_list2->next;
-  }
-  if((empty_list(curr_list1) && !empty_list(curr_list2)) || (!empty_list(curr_list1) && empty_list(curr_list2)))
-    return false;
-  return true;
+bool equal_lists(list list1, list list2)
+{
+    list curr_list1 = list1;
+    list curr_list2 = list2;
+    while (!empty_list(curr_list1) && !empty_list(curr_list2))
+    {
+        if (!equal_points(&(curr_list1->val), &(curr_list2->val)))
+            return false;
+        curr_list1 = curr_list1->next;
+        curr_list2 = curr_list2->next;
+    }
+    if ((empty_list(curr_list1) && !empty_list(curr_list2)) || (!empty_list(curr_list1) && empty_list(curr_list2)))
+        return false;
+    return true;
 }
 
-void print_list(list head){
+void print_list(list head)
+{
     while (!empty_list(head))
     {
         printf("(%d,%d) -> ", head->val.x, head->val.y);
@@ -34,7 +39,8 @@ void print_list(list head){
     printf("\n");
 }
 
-void add_list(list *lst, point *p){
+void add_list(list *lst, point *p)
+{
     list new = (cell *)malloc(sizeof(cell));
     new->next = *lst;
     new->val = *p;
@@ -45,7 +51,7 @@ void pop_list(list *lst, point *p)
 {
     if (empty_list(*lst))
     {
-        fprintf(stderr, "impossible de retirer la t%cte d'une liste vide", 136);
+        fprintf(stderr, "impossible de retirer la tête d'une liste vide");
         exit(69);
     }
 
@@ -98,7 +104,7 @@ void pop_queue(queue *q, point *p)
 {
     if (empty_queue(q))
     {
-        fprintf(stderr, "impossible de retirer un %cl%cment d'une file vide", 233, 233);
+        fprintf(stderr, "impossible de retirer un élément d'une file vide");
         exit(42);
     }
     if (empty_list(q->out))
@@ -106,155 +112,168 @@ void pop_queue(queue *q, point *p)
     pop_list(&q->out, p);
 }
 
-
 /************ Tests **************/
 
-SUT_TEST(test_equal_points){
-  point p1 = {0, 0};
-  point p2 = {0, 0};
-  point p3 = {0, 1};
-  point p4 = {1, 0};
-  point p5 = {1, 1};
-  SUT_ASSERT_TRUE(equal_points(&p1, &p2), "two equal points weren't caracterized so by the equal_points function");
-  SUT_ASSERT_FALSE(equal_points(&p1, &p3), "two different points were caracterized as equal");
-  SUT_ASSERT_FALSE(equal_points(&p1, &p4), "two different points were caracterized as equal");
-  SUT_ASSERT_FALSE(equal_points(&p1, &p5), "two different points were caracterized as equal");
-  return 1;
+SUT_TEST(test_equal_points)
+{
+    point p1 = {0, 0};
+    point p2 = {0, 0};
+    point p3 = {0, 1};
+    point p4 = {1, 0};
+    point p5 = {1, 1};
+    SUT_ASSERT_TRUE(equal_points(&p1, &p2), "two equal points weren't caracterized so by the equal_points function");
+    SUT_ASSERT_FALSE(equal_points(&p1, &p3), "two different points were caracterized as equal");
+    SUT_ASSERT_FALSE(equal_points(&p1, &p4), "two different points were caracterized as equal");
+    SUT_ASSERT_FALSE(equal_points(&p1, &p5), "two different points were caracterized as equal");
+    return 1;
 }
 
-SUT_TEST(test_equal_lists){
-  point points[] = {{0,0}, {0,1}, {1,0}, {1,1}, {1,2}};
-  point pfree;
-  list lst1 = NULL;
-  list lst2 = NULL;
-  list lst3 = NULL;
-  list lst4 = NULL;
-  SUT_ASSERT_TRUE(equal_lists(lst1, lst2), "two empty lists weren't caracterized as equal");
-  for(int i = 0; i < 4; i++){
-    add_list(&lst1, &(points[i]));
-    add_list(&lst2, &(points[i]));
-    add_list(&lst3, &(points[i]));
-  }
-  add_list(&lst3, &(points[4]));
-  add_list(&lst4, &(points[0]));
-  add_list(&lst4, &(points[2]));
-  add_list(&lst4, &(points[3]));
-  SUT_ASSERT_TRUE(equal_lists(lst1, lst2), "two equal lists weren't caracterized so");
-  SUT_ASSERT_FALSE(equal_lists(lst1, lst3), "two lists with the first few numbers equal but not the same number of elements were caracterized as equal");
-  SUT_ASSERT_FALSE(equal_lists(lst1, lst4), "two lists cotaining the same elements but not in the same oder were caracterized as equal");
-  // free the memory
-  for(int i = 0; i < 4; i++){
-    pop_list(&lst1, &pfree );
-    pop_list(&lst2, &pfree);
+SUT_TEST(test_equal_lists)
+{
+    point points[] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}};
+    point pfree;
+    list lst1 = NULL;
+    list lst2 = NULL;
+    list lst3 = NULL;
+    list lst4 = NULL;
+    SUT_ASSERT_TRUE(equal_lists(lst1, lst2), "two empty lists weren't caracterized as equal");
+    for (int i = 0; i < 4; i++)
+    {
+        add_list(&lst1, &(points[i]));
+        add_list(&lst2, &(points[i]));
+        add_list(&lst3, &(points[i]));
+    }
+    add_list(&lst3, &(points[4]));
+    add_list(&lst4, &(points[0]));
+    add_list(&lst4, &(points[2]));
+    add_list(&lst4, &(points[3]));
+    add_list(&lst4, &(points[1]));
+    SUT_ASSERT_TRUE(equal_lists(lst1, lst2), "two equal lists weren't caracterized so");
+    SUT_ASSERT_FALSE(equal_lists(lst1, lst3), "two lists with the first few numbers equal but not the same number of elements were caracterized as equal");
+    SUT_ASSERT_FALSE(equal_lists(lst1, lst4), "two lists cotaining the same elements but not in the same oder were caracterized as equal");
+    // free the memory
+    for (int i = 0; i < 4; i++)
+    {
+        pop_list(&lst1, &pfree);
+        pop_list(&lst2, &pfree);
+        pop_list(&lst3, &pfree);
+        pop_list(&lst4, &pfree);
+    }
     pop_list(&lst3, &pfree);
-    pop_list(&lst4, &pfree);
-  }
-  pop_list(&lst3, &pfree);
-  return 1;
+    return 1;
 }
 
-SUT_TEST(test_empty_list){
-  list lst = NULL;
-  SUT_ASSERT_TRUE(empty_list(lst), "an empty list wasn't caracterized so by the empty_list function");
-  point p = {0,0};
-  add_list(&lst, &p);
-  SUT_ASSERT_FALSE(empty_list(lst), "a non empty list was caracterized empty by the empty_list function");
-  // free the memory
-  pop_list(&lst, &p);
-  return 1;
+SUT_TEST(test_empty_list)
+{
+    list lst = NULL;
+    SUT_ASSERT_TRUE(empty_list(lst), "an empty list wasn't caracterized so by the empty_list function");
+    point p = {0, 0};
+    add_list(&lst, &p);
+    SUT_ASSERT_FALSE(empty_list(lst), "a non empty list was caracterized empty by the empty_list function");
+    // free the memory
+    pop_list(&lst, &p);
+    return 1;
 }
 
-SUT_TEST(test_add_list){
-  list lst = NULL;
-  point p1 = {0,0};
-  point ptest = {0,0};
-  add_list(&lst, &p1);
-  SUT_ASSERT_TRUE(equal_points(&(lst->val), &ptest), "the first point in the list isn't equal to the point we added");
-  // free the memory
-  pop_list(&lst, &p1);
-  return 1;
+SUT_TEST(test_add_list)
+{
+    list lst = NULL;
+    point p1 = {0, 0};
+    point ptest = {0, 0};
+    add_list(&lst, &p1);
+    SUT_ASSERT_TRUE(equal_points(&(lst->val), &ptest), "the first point in the list isn't equal to the point we added");
+    // free the memory
+    pop_list(&lst, &p1);
+    return 1;
 }
 
-SUT_TEST(test_pop_list){
-  list lst = NULL;
-  point p1 = {0,0};
-  point p2 = {1,2};
-  point ptest;
-  add_list(&lst, &p1);
-  add_list(&lst, &p2);
-  pop_list(&lst, &ptest);
-  SUT_ASSERT_TRUE(equal_points(&p2, &ptest), "the point poped off of the list isn't equal to the last point we added");
-  // free the memory
-  pop_list(&lst, &ptest);
-  return 1;
+SUT_TEST(test_pop_list)
+{
+    list lst = NULL;
+    point p1 = {0, 0};
+    point p2 = {1, 2};
+    point ptest;
+    add_list(&lst, &p1);
+    add_list(&lst, &p2);
+    pop_list(&lst, &ptest);
+    SUT_ASSERT_TRUE(equal_points(&p2, &ptest), "the point poped off of the list isn't equal to the last point we added");
+    // free the memory
+    pop_list(&lst, &ptest);
+    return 1;
 }
 
-SUT_TEST(test_reverse_list){
-  point points[] = {{0,0}, {0,1}, {1,0}, {1,1}, {1,2}};
-  point p;
-  list lst1 = NULL;
-  list lst2 = NULL;
-  list revlst1 = NULL;
-  for(int i = 0; i < 5; i++){
-    add_list(&lst1, &(points[i]));
-    add_list(&lst2, &(points[4-i]));
-  }
-  reverse_list(&lst1, &revlst1);
-  SUT_ASSERT_TRUE(equal_lists(lst1, lst2), "the reversed list isn't equal to the list with elements added in the opposite order");
-  // free the memory
-  for(int i = 0; i < 5; i++){
-    pop_list(&lst1, &p);
-    pop_list(&lst2, &p);
-  }
-  return 1;
+SUT_TEST(test_reverse_list)
+{
+    point points[] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}, {1, 2}};
+    point p;
+    list lst1 = NULL;
+    list lst2 = NULL;
+    list revlst1 = NULL;
+    for (int i = 0; i < 5; i++)
+    {
+        add_list(&lst1, &(points[i]));
+        add_list(&lst2, &(points[4 - i]));
+    }
+    reverse_list(&lst1, &revlst1);
+    SUT_ASSERT_TRUE(equal_lists(revlst1, lst2), "the reversed list isn't equal to the list with elements added in the opposite order");
+    // free the memory
+    for (int i = 0; i < 5; i++)
+    {
+        pop_list(&revlst1, &p);
+        pop_list(&lst2, &p);
+    }
+    return 1;
 }
 
-SUT_TEST(test_empty_queue){
-  queue* q = create_queue();
-  point p = {0,0};
-  SUT_ASSERT_TRUE(empty_queue(q), "an empty queue wasn't caracterized so by the empty_queue function");
-  add_queue(q, &p);
-  SUT_ASSERT_FALSE(empty_queue(q), "a non empty queue wasn't caracterized so by the empty_queue function");
-  // free the memory
-  pop_queue(q, &p);
-  return 1;
+SUT_TEST(test_empty_queue)
+{
+    queue *q = create_queue();
+    point p = {0, 0};
+    SUT_ASSERT_TRUE(empty_queue(q), "an empty queue wasn't caracterized so by the empty_queue function");
+    add_queue(q, &p);
+    SUT_ASSERT_FALSE(empty_queue(q), "a non empty queue wasn't caracterized so by the empty_queue function");
+    // free the memory
+    pop_queue(q, &p);
+    return 1;
 }
 
-SUT_TEST(test_add_queue){
-  queue* q = create_queue();
-  list lst = NULL;
-  point p1 = {0,0};
-  point p2 = {1,0};
-  add_queue(q, &p1);
-  add_list(&lst, &p1);
-  add_queue(q, &p2);
-  add_list(&lst, &p2);
-  SUT_ASSERT_TRUE(equal_lists(lst, (q->in)), "the queue's in list isn't equal to a list created with the same elements il the same order");
-  // free the memory
-  pop_queue(q, &p1);
-  pop_queue(q, &p1);
-  pop_list(&lst, &p1);
-  pop_list(&lst, &p2);
-  return 1;
+SUT_TEST(test_add_queue)
+{
+    queue *q = create_queue();
+    list lst = NULL;
+    point p1 = {0, 0};
+    point p2 = {1, 0};
+    add_queue(q, &p1);
+    add_list(&lst, &p1);
+    add_queue(q, &p2);
+    add_list(&lst, &p2);
+    SUT_ASSERT_TRUE(equal_lists(lst, (q->in)), "the queue's in list isn't equal to a list created with the same elements il the same order");
+    // free the memory
+    pop_queue(q, &p1);
+    pop_queue(q, &p1);
+    pop_list(&lst, &p1);
+    pop_list(&lst, &p2);
+    return 1;
 }
 
-SUT_TEST(test_pop_queue){
-  queue* q = create_queue();
-  point p1 = {0,0};
-  point p2 = {1,0};
-  point ptest;
-  add_queue(q, &p1);
-  add_queue(q, &p2);
-  pop_queue(q, &ptest);
-  SUT_ASSERT_TRUE(equal_points(&ptest, &p1), "the first element inserted in the queue isn't the first out");
-  // free the memory
-  pop_queue(q, &ptest);
-  return 1;
+SUT_TEST(test_pop_queue)
+{
+    queue *q = create_queue();
+    point p1 = {0, 0};
+    point p2 = {1, 0};
+    point ptest;
+    add_queue(q, &p1);
+    add_queue(q, &p2);
+    pop_queue(q, &ptest);
+    SUT_ASSERT_TRUE(equal_points(&ptest, &p1), "the first element inserted in the queue isn't the first out");
+    // free the memory
+    pop_queue(q, &ptest);
+    return 1;
 }
 
 SUT_TEST_SUITE(structures) = {
     SUT_TEST_SUITE_ADD(test_equal_points),
-    SUT_TEST_SUITE_ADD(test_equal_lists)
+    SUT_TEST_SUITE_ADD(test_equal_lists),
     SUT_TEST_SUITE_ADD(test_empty_list),
     SUT_TEST_SUITE_ADD(test_add_list),
     SUT_TEST_SUITE_ADD(test_pop_list),
@@ -262,5 +281,4 @@ SUT_TEST_SUITE(structures) = {
     SUT_TEST_SUITE_ADD(test_empty_queue),
     SUT_TEST_SUITE_ADD(test_add_queue),
     SUT_TEST_SUITE_ADD(test_pop_queue),
-    SUT_TEST_SUITE_END
-};
+    SUT_TEST_SUITE_END};
