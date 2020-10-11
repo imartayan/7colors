@@ -51,13 +51,12 @@ void reachable_colors(State *state, bool *reachable)
         seen[i] = false;
     queue *visit = create_queue();
     add_queue(visit, state->curr_player->start);
-    point *p = (point *)malloc(sizeof(point));
+    point p;
     while (!empty_queue(visit))
     {
-        pop_queue(visit, p);
-        reachable_colors_bfs(p, seen, visit, state, reachable);
+        pop_queue(visit, &p);
+        reachable_colors_bfs(&p, seen, visit, state, reachable);
     }
-    free(p);
     free(visit);
     free(seen);
 }
@@ -113,13 +112,12 @@ int color_score(State *state, char color)
         seen[i] = false;
     queue *visit = create_queue();
     add_queue(visit, state->curr_player->start);
-    point *p = (point *)malloc(sizeof(point));
+    point p;
     while (!empty_queue(visit))
     {
-        pop_queue(visit, p);
-        color_score_bfs(p, seen, visit, state, color, &score);
+        pop_queue(visit, &p);
+        color_score_bfs(&p, seen, visit, state, color, &score);
     }
-    free(p);
     free(visit);
     free(seen);
     return score;
@@ -209,13 +207,12 @@ int color_perimeter(State *state, char color)
         seen[i] = false;
     queue *visit = create_queue();
     add_queue(visit, state->curr_player->start);
-    point *p = (point *)malloc(sizeof(point));
+    point p;
     while (!empty_queue(visit))
     {
-        pop_queue(visit, p);
-        color_perimeter_bfs(p, seen, visit, state, color, &perimeter);
+        pop_queue(visit, &p);
+        color_perimeter_bfs(&p, seen, visit, state, color, &perimeter);
     }
-    free(p);
     free(visit);
     free(seen);
     return perimeter;
@@ -287,13 +284,12 @@ int color_perimeter_with_border(State *state, char color)
         seen[i] = false;
     queue *visit = create_queue();
     add_queue(visit, state->curr_player->start);
-    point *p = (point *)malloc(sizeof(point));
+    point p;
     while (!empty_queue(visit))
     {
-        pop_queue(visit, p);
-        color_perimeter_with_border_bfs(p, seen, visit, state, color, &perimeter);
+        pop_queue(visit, &p);
+        color_perimeter_with_border_bfs(&p, seen, visit, state, color, &perimeter);
     }
-    free(p);
     free(visit);
     free(seen);
     return perimeter;

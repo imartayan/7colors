@@ -59,6 +59,13 @@ bool in_colors(char c)
     return false;
 }
 
+char to_uppercase(char c)
+{
+    if ('a' <= c && c <= 'z')
+        return c + 'A' - 'a';
+    return c;
+}
+
 char ask_player_move()
 {
     char c;
@@ -73,7 +80,7 @@ char ask_player_move()
         }
         reset_print_color();
         printf(") ");
-        scanf("%c", &c);
+        c = to_uppercase(getchar());
         clear_buffer();
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
@@ -89,10 +96,10 @@ bool ask_new_game()
     while (c != 'O' && c != 'o' && c != 'N' && c != 'n')
     {
         printf("Voulez-vous jouer une nouvelle partie ? (O / N) ");
-        c = getchar();
+        c = to_uppercase(getchar());
         clear_buffer();
-        if (c != 'O' && c != 'o' && c != 'N' && c != 'n')
+        if (c != 'O' && c != 'N')
             printf("Entrée non valide, veuillez entrer O ou N.\n");
     }
-    return (c == 'O' || c == 'o');
+    return (c == 'O');
 }

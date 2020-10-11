@@ -65,13 +65,12 @@ void pop_list(list *lst, point *p)
 
 void reverse_list(list *src, list *dest)
 {
-    point *p = (point *)malloc(sizeof(point));
+    point p;
     while (!empty_list(*src))
     {
-        pop_list(src, p);
-        add_list(dest, p);
+        pop_list(src, &p);
+        add_list(dest, &p);
     }
-    free(p);
 }
 
 queue *create_queue()
