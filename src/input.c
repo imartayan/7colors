@@ -39,13 +39,14 @@ void choose_game_mode(int *mode)
             set_print_color(PLAYER2);
         printf("\nChoix du joueur %d :\n", i);
         printf("1: Humain\n");
-        printf("2: IA aveugle\n");
-        printf("3: IA aléatoire\n");
+        printf("2: IA aléatoire\n");
+        printf("3: IA aléatoire+ (atteignable)\n");
         printf("4: IA gloutonne\n");
         printf("5: IA hégémonique\n");
-        printf("6: IA hégémonique sans bords\n");
-        printf("7: IA hybride (expansionniste)\n");
-        mode[i] = ask_int(1, 7);
+        printf("6: IA hégémonique (sans bord)\n");
+        printf("7: IA hybride\n");
+        printf("8: IA hybride (sans bord)\n");
+        mode[i] = ask_int(1, 8);
     }
     reset_print_color();
 }

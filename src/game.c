@@ -34,6 +34,9 @@ void select_strategy(int player_type, strategy *strat)
     case 7:
         *strat = best_expansion;
         break;
+    case 8:
+        *strat = best_expansion_borderless;
+        break;
     }
 }
 

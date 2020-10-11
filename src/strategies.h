@@ -29,4 +29,8 @@ void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char 
 int color_expansion(State *state, char color);
 char best_expansion(State *state);
 
+void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion);
+int color_expansion_borderless(State *state, char color);
+char best_expansion_borderless(State *state);
+
 #endif
