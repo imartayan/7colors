@@ -16,84 +16,155 @@ Au-delà du développement du jeu en tant que tel, nous nous sommes aussi beauco
 \subsection*{Structure du projet}
 
 Au fil des questions, nous ferons référence à plusieurs fonctions réparties dans différents modules, c'est pourquoi il peut être utile de d'expliquer rapidement la structure générale du projet pour s'y retrouver plus facilement :
+(à traduire)
 
 \begin{itemize}
-	\item \verb|structures.c| contains all the structures used in the projects : player, strategy, linked list, queue...
-	\item \verb|utils.c| contains basic functions such as reading or writing a cell, choosing a random color...
-	\item \verb|display.c| contains functions for printing the board, the score and the results of a game
-	\item \verb|input.c| contains functions for asking game modes, next move and new game
-	\item \verb|board.c| contains functions for creating the board and updating it after each move
-	\item \verb|strategies.c| contains different strategies for artificial intelligence
-	\item \verb|game.c| contains functions for selecting strategies and running normal or fast games
-	\item \verb|main.c| contains the main loop of the game
+    \item \verb|structures.c| contains all the structures used in the projects : player, strategy, linked list, queue...
+    \item \verb|utils.c| contains basic functions such as reading or writing a cell, choosing a random color...
+    \item \verb|display.c| contains functions for printing the board, the score and the results of a game
+    \item \verb|input.c| contains functions for asking game modes, next move and new game
+    \item \verb|board.c| contains functions for creating the board and updating it after each move
+    \item \verb|strategies.c| contains different strategies for artificial intelligence
+    \item \verb|game.c| contains functions for selecting strategies and running normal or fast games
+    \item \verb|main.c| contains the main loop of the game
 \end{itemize}
 
 \section{Voir le monde en 7 couleurs}
 
 \begin{qu}
-	(fonction \verb|rand| de \verb|stdlib|, joueurs représentés par \verb|'1'| et \verb|'2'|)
+    Le code correspondant est dans la fonction \verb|init_board| du module \verb|board.c|. On initialise chaque case du plateau avec une couleur aléatoire (en utilisant \verb|rand|). Le plateau est passé dans une structure State qui nous permet de nous affranchir de variables globales. Cela nous sera utile dans la suite du projet, notamment pour implémenter des intelligences artificielles et manipuler des copies du tableau. On initialise zones de départ de chaque joueur avec \verb|'1'| pour le premier joueur et \verb|'2'| pour le deuxième.
 \end{qu}
 
 \begin{qu}
-	("serpent", nombre de parcours est en \(\Theta(n^2)\).)
+    La version naïve est contenue dans la fonction \verb|naive_update_board| du module \verb|board.c|. On parcourt le plateau jusqu'à trouver une case de la couleur indiquée et on la modifie si l'un de ses voisins appartient au joueur.
+    À la fin du parcours, si l'une des cases a été modifiée, on recommence la procédure.
+    Pour vérifier le bon fonctionnement de la fonction, on effectue des tests pour différentes situations.
+    On peut par exemple créer un plateau dont on connaît l'état après une mise à jour pour une couleur donnée et on vérifie que le plateau qu'on a mis à jour correspond bien à celui attendu.
+    Dans le pire cas, on parcourt \(\Oh(c)\) fois le plateau, où \(c\) représente le nombre de cases du tableau.
+    La complexité totale est donc en \(\Oh(c^2)\) dans le pire des cas.
 \end{qu}
 
+\begin{Fig}
+    \begin{tabular}{|ccccc|}
+        \hl
+        \cc{green!40}V & \cc{green!40}V & \cc{green!40}V & \cc{green!40}V & \cc{red!40}2
+        \\
+        \cc{green!40}V & \cc{yellow!40}J & \cc{yellow!40}J & \cc{yellow!40}J & \cc{yellow!40}J
+        \\
+        \cc{green!40}V & \cc{green!40}V & \cc{green!40}V & \cc{green!40}V & \cc{green!40}V
+        \\
+        \cc{yellow!40}J & \cc{yellow!40}J & \cc{yellow!40}J & \cc{yellow!40}J & \cc{green!40}V
+        \\
+        \cc{blue!40}1 & \cc{green!40}V & \cc{green!40}V & \cc{green!40}V & \cc{green!40}V
+        \\\hl
+    \end{tabular}
+    \caption{Exemple de plateau pour lequel la complexité totale est en \(\Oh(c^2)\)}
+\end{Fig}
+
 \begin{qu}
-	(parcours en largeur, file)
+    En premier lieu, pour obtenir une version plus efficace, nous avons décidé d'utiliser un algorithme récursif.
+    C'est implémenté par la fonction \verb|recursive_propagation| (bof) du module \verb|board.c|.
+    On parcourt linéairement le plateau et dès que l'on trouve une case appartenant au joueur, on appelle notre procédure récursive sur chacun de ses voisins.
+    Notre procédure agit comme suit : si la case est de la couleur indiquée alors on la change pour l'inclure dans la zone du joueur et on appelle la procédure sur chacun de ses voisins, sinon on ne fait rien.
+    Cela nous permet de mettre à jour le plateau en un seul parcours.
+    La complexité totale est donc en \(\Oh(c)\) dans le pire des cas.
+    Nous avons finalement choisi d'effectuer parcours en largeur depuis la position de départ du joueur, implémenté dans la fonction \verb|update_board| du module \verb|board.c|.
+    Cette méthode a l'avantage d'être réutilisable pour plusieurs autres fonctions, notamment celles des joueurs artificiels.
+    Pour stocker les cases à visiter, nous avons implémenté une structure de file basée sur une double liste (pour plus de détails, voir le module \verb|structures.c|).
+    Pour vérifier que cette méthode fonctionne correctement, on compare le résultat obtenu avec celui de la question précédente.
 \end{qu}
 
 \section{À la conquête du monde}
 
 \begin{qu}
-	(limites d'implémentation ?)
+    Le code permettant de lancer une partie se situe dans la fonction \verb|run_game| du module \verb|game.c|.
+    Cette fonction prend en entrée l'état du jeu ainsi qu'une stratégie pour chacun des joueurs : le type \verb|strategy| correspond à un pointeur de fonction prenant un état en entrée et renvoyant une couleur.
+    Dans le cas d'un joueur humain, la stratégie correspond simplement à lire la couleur entrée par le joueur.
+    Le code correspondant est dans la fonction \verb|ask_player_move| du module \verb|input.c|.
+    En particulier, on veille à ce que la valeur entrée soit une couleur valide et on vide le buffer après chaque lecture.
+    Notre implémentation pourrait être plus agréable à jouer si on sortait du terminal en utilisant une interface graphique.
 \end{qu}
 
 \begin{qu}
-	(voir \verb|game_ended|)
+    La partie est terminée lorsque l'un des joueurs possède strictement plus de la moitié des cases du plateau ou que toutes les cases sont contrôlées par les deux joueurs.
+    Cette condition est contenue dans la fonction \verb|game_ended| du module \verb|utils.c|. L'affichage des scores se fait grâce à la fonction \verb|print_score| du module \verb|display.c|.
 \end{qu}
 
 \section{La stratégie de l'aléa}
 
 \begin{qu}
-	(rien de passionnant)
+    On tire un entier aléatoire et on joue la couleur associée, le code correspondant est dans la fonction \verb|random_color| du module \verb|utils.c|.
 \end{qu}
 
 \begin{qu}
-	(toujours un bfs)
+    On commence par effectuer un parcours en largeur en partant de la position initiale du joueur pour trouver les couleurs accessibles. On choisit ensuite au hasard l'une des couleurs accessibles. Le code correspondant est dans la fonction \verb|random_reachable_color| du module \verb|strategies.c|.
+    Cette stratégie est déjà nettement plus efficace que la précédente, on verra plus tard dans les résultats du tournoi qu'elle gagne presque systématiquement face au joueur totalement aléatoire.
 \end{qu}
 
 \section{La loi du plus fort}
 
 \begin{qu}
-	(plus intéressant, on simule chaque coup possible)
+    Pour implémenter la stratégie gloutonne, on effectue un parcours en largeur en simulant le nombre de cases ajoutées pour chacune des couleurs et on compare les résultats pour renvoyer la couleur qui maximise l'augmentation de la taille de la zone.
+    Une solution naïve aurait été de faire une copie du plateau pour chaque couleur et mettre à jour cette copie du plateau. Il s'avère en fait que ce n'est pas nécessaire pour simuler un seul coup d'avance.
 \end{qu}
 
 \begin{qu}
-	(glouton ftw, équitable ? terrain symétrique ? premier joueur avantagé)
+    Pour obtenir une partie plus équitable, l'une des possibilités serait d'avoir un plateau symétrique qui donne accès aux même cases à chacun des joueurs. Cependant, le premier joueur reste grandement avantagé par le fait qu'il a toujours un coup d'avance.
 \end{qu}
 
 \begin{qu}
-	(glouton ftw)
+    La fonction \verb|run_fast_game| du module \verb|game.c| permet de lancer des parties rapides (sans affichage ni délai entre chaque tour). On lance ensuite 100 parties rapides en changeant le joueur qui commence à chaque partie et en tenant compte des scores de chaque joueur pour en faire une moyenne.
+    Sans surprise, le joueur glouton gagne l'ensemble des parties face au joueur aléatoire.
 \end{qu}
+
+\begin{Tab}
+    \begin{BTab}[0.75]{CCCC}
+        versus & aveugle & aléatoire+ & glouton\|
+        aveugle & - & ? & 1000V - 0D\\
+        aléatoire+ & ? & - & 1000V - 0D\\
+        glouton & 0V - 1000D & 0V - 1000D & -
+    \end{BTab}
+    \caption{Résultats de 1000 parties entre les joueurs artificiels}
+\end{Tab}
 
 \section{Les nombreuses huitièmes merveilles du monde}
 
 \begin{qu}
-	(glouton < hégémonique)
+    Le développement de cette stratégie s'est fait en quatre phases :
+    \begin{itemize}
+        \item Tout d'abord, nous avons implémenté une fonction permettant de calculer le périmètre de la zone d'un joueur. Le code correspondant est dans la fonction \verb|color_perimeter|.
+        \item Ensuite, nous avons ensuite implémenté une version qui ne tenait pas compte du bord du plateau dans le calcul du périmètre puisque cela ne donne pas accès à des cases sur lesquelles le joueur peut s'étendre.
+        \item Pour améliorer les résultats obtenus, nous avons ajouté une heuristique pour ne prendre en compte que les cases permettant de s'étendre par la suite (c'est-à-dire les cases ayant au moins un voisin que l'on peut colorer). On tient également compte des cases qui sont en contact avec la zone adverse car elles empêchent sa propagation.
+        \item Enfin, nous avons mis en place une stratégie hybride entre le joueur glouton et le joueur hégémonique qui cherche à maximiser la somme du nombre de cases rajoutées et du périmètre de la zone.
+    \end{itemize}
 \end{qu}
 
+\begin{Tab}
+    \begin{BTab}[0.75]{CCCC}
+        versus & glouton & hégémonique & hybride\|
+        glouton & - & ? & ?\\
+        hégémonique & ? & - & ?\\
+        hybride & ? & ? & -
+    \end{BTab}
+    \caption{Résultats de 1000 parties entre les joueurs artificiels}
+\end{Tab}
+
 \begin{qu}
-	(cf minimax, \(7^n\) ?)
+    On remarque que le glouton prévoyant s'apparente à une implémentation de l'algorithme minimax qui utilise le score comme fonction d'évaluation et qui ne tient pas compte de l'adversaire.
+    Pour prendre en compte les n prochains coups avec un plateau contenant c cases, la complexité est en \(\Oh(7^n \x c)\).
+    Nous avons décidé d'implémenter l'algorithme minimax puis sa version avec élagage alpha beta, qui permet de ne pas calculer certaines branches de l'arbre quand on sait qu'elles ne peuvent pas mener à un meilleur résultat, dans l'espoir de pouvoir faire jouer une version qui calcule 4 coups en profondeur (en tenant compte du comportement de l'adversaire)
 \end{qu}
 
 \section{Le pire du monde merveilleux des 7 couleurs}
 
 \begin{qu}
-	(compliqué)
+    On peut difficilement construire un monde qui rende la stratégie aléatoire inefficace.
+    En revanche, on peut faire en sorte de contrer les joueurs gloutons et hégémoniques en imposant de faire des sacrifices pour accéder à des coups plus avantageux.
+    (exemples ici)
 \end{qu}
 
 \begin{qu}
-	(cf hégémonique ?)
+    On peut implémenter une version du minimax utilisant l'heuristique hybride que nous avons développée pour le joueur hégémonique comme fonction d'évaluation.
 \end{qu}
 
 \section*{Synthèse}
@@ -101,10 +172,12 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \section*{Bibliographie}
 
 \begin{itemize}
-	\item \url{http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf}
-	\item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/}
-	\item \url{https://en.wikipedia.org/wiki/Minimax}
-	\item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning}
+    \item \emph{The C Programming Language, second edition}, Brian W. Kernighan \& Denis M. Ritchie
+    \item \url{http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf}
+    \item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/}
+    \item pointeurs de fonctions
+    \item \url{https://en.wikipedia.org/wiki/Minimax}
+    \item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning}
 \end{itemize}
 
 \end{document}
