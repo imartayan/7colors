@@ -42,9 +42,10 @@ void choose_game_mode(int *mode)
         printf("2: IA aveugle\n");
         printf("3: IA aléatoire\n");
         printf("4: IA gloutonne\n");
-        printf("5: IA hégémonique (sans bords)\n");
-        printf("6: IA hégémonique (avec bords)\n");
-        mode[i] = ask_int(1, 6);
+        printf("5: IA hégémonique\n");
+        printf("6: IA hégémonique sans bords\n");
+        printf("7: IA hybride (expansionniste)\n");
+        mode[i] = ask_int(1, 7);
     }
     reset_print_color();
 }

@@ -21,8 +21,12 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, State *state, char 
 int color_perimeter(State *state, char color);
 char best_perimeter(State *state);
 
-void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter);
-int color_perimeter_with_border(State *state, char color);
-char best_perimeter_with_border(State *state);
+void color_perimeter_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter);
+int color_perimeter_borderless(State *state, char color);
+char best_perimeter_borderless(State *state);
+
+void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion);
+int color_expansion(State *state, char color);
+char best_expansion(State *state);
 
 #endif

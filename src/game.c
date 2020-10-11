@@ -29,7 +29,10 @@ void select_strategy(int player_type, strategy *strat)
         *strat = best_perimeter;
         break;
     case 6:
-        *strat = best_perimeter_with_border;
+        *strat = best_perimeter_borderless;
+        break;
+    case 7:
+        *strat = best_expansion;
         break;
     }
 }
