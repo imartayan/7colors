@@ -29,14 +29,17 @@ void select_strategy(int player_type, strategy *strat)
         *strat = best_perimeter;
         break;
     case 6:
-        *strat = best_perimeter_borderless;
+        *strat = best_perimeter_with_border;
         break;
     case 7:
-        *strat = best_expansion;
+        *strat = get_minimax;
         break;
     case 8:
-        *strat = best_expansion_borderless;
+        *strat = get_minimax_pruning;
         break;
+    default :
+        fprintf(stderr, "le type du joueur ne correspond à aucune strategie existante !");
+        exit(12);
     }
 }
 
@@ -52,7 +55,7 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
     // game cycle
     while (!game_ended(state->player1->score, state->player2->score, score_max))
     {
-        system("clear");
+        //system("clear");
         print_score(state);
         print_board(state->board, state->board_size);
         print_turn(state->turn, state->curr_player->id);

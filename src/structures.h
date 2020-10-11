@@ -29,6 +29,11 @@ typedef struct State
     int turn;
 } State;
 
+typedef State* pstate;
+
+void state_cpy(pstate* dest, pstate src, Player* new_player1, Player* new_player2);
+void free_state(pstate state);
+
 typedef char (*strategy)(State *);
 
 typedef struct cell

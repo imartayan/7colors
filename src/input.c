@@ -39,13 +39,13 @@ void choose_game_mode(int *mode)
             set_print_color(PLAYER2);
         printf("\nChoix du joueur %d :\n", i);
         printf("1: Humain\n");
-        printf("2: IA aléatoire\n");
-        printf("3: IA aléatoire+ (atteignable)\n");
+        printf("2: IA aveugle\n");
+        printf("3: IA aléatoire\n");
         printf("4: IA gloutonne\n");
-        printf("5: IA hégémonique\n");
-        printf("6: IA hégémonique (sans bord)\n");
-        printf("7: IA hybride\n");
-        printf("8: IA hybride (sans bord)\n");
+        printf("5: IA hégémonique (sans bords)\n");
+        printf("6: IA hégémonique (avec bords)\n");
+        printf("7: minimax\n");
+        printf("8: minimax avec elagage alhpa beta\n");
         mode[i] = ask_int(1, 8);
     }
     reset_print_color();
@@ -59,13 +59,6 @@ bool in_colors(char c)
             return true;
     }
     return false;
-}
-
-char to_uppercase(char c)
-{
-    if ('a' <= c && c <= 'z')
-        return c + 'A' - 'a';
-    return c;
 }
 
 char ask_player_move()
@@ -82,7 +75,7 @@ char ask_player_move()
         }
         reset_print_color();
         printf(") ");
-        c = to_uppercase(getchar());
+        scanf("%c", &c);
         clear_buffer();
         lettreAutorisee = in_colors(c);
         if (!lettreAutorisee)
@@ -98,10 +91,10 @@ bool ask_new_game()
     while (c != 'O' && c != 'o' && c != 'N' && c != 'n')
     {
         printf("Voulez-vous jouer une nouvelle partie ? (O / N) ");
-        c = to_uppercase(getchar());
+        c = getchar();
         clear_buffer();
-        if (c != 'O' && c != 'N')
+        if (c != 'O' && c != 'o' && c != 'N' && c != 'n')
             printf("Entrée non valide, veuillez entrer O ou N.\n");
     }
-    return (c == 'O');
+    return (c == 'O' || c == 'o');
 }

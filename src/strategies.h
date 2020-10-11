@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include "structures.h"
 
+#define MAX_DEPTH 3
+#define MAX_DEPTH_PRUNING 5
+
 char play_human_move(State *state);
 char play_random_move(State *state);
 
@@ -21,16 +24,13 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, State *state, char 
 int color_perimeter(State *state, char color);
 char best_perimeter(State *state);
 
-void color_perimeter_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter);
-int color_perimeter_borderless(State *state, char color);
-char best_perimeter_borderless(State *state);
+void color_perimeter_with_border_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter);
+int color_perimeter_with_border(State *state, char color);
+char best_perimeter_with_border(State *state);
 
-void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion);
-int color_expansion(State *state, char color);
-char best_expansion(State *state);
+int minimax(pstate state, int depth, bool maximizing_Player, char player_id);
+char get_minimax(pstate state);
 
-void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion);
-int color_expansion_borderless(State *state, char color);
-char best_expansion_borderless(State *state);
-
+int alpha_beta_pruning_minimax(pstate state, int depth, bool maximizing_Player, char player_id, int* alpha, int* beta);
+char get_minimax_pruning(pstate state);
 #endif
