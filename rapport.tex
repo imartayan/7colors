@@ -62,16 +62,15 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{Fig}
 
 \begin{qu}
-    En premier lieu, pour obtenir une version plus efficace, nous avons décidé d'utiliser un algorithme récursif.
-    C'est implémenté par la fonction \verb|recursive_propagation| (bof) du module \verb|board.c|.
+    En premier lieu, pour obtenir une version plus efficace, nous avons décidé d'utiliser un algorithme récursif, implémenté dans la fonction \verb|recursive_update_board| du module \verb|board.c|.
     On parcourt linéairement le plateau et dès que l'on trouve une case appartenant au joueur, on appelle notre procédure récursive sur chacun de ses voisins.
     Notre procédure agit comme suit : si la case est de la couleur indiquée alors on la change pour l'inclure dans la zone du joueur et on appelle la procédure sur chacun de ses voisins, sinon on ne fait rien.
     Cela nous permet de mettre à jour le plateau en un seul parcours.
-    La complexité totale est donc en \(\Oh(c)\) dans le pire des cas.
+    La complexité totale est donc en \(\Oh(c)\) dans le pire des cas.\\
     Nous avons finalement choisi d'effectuer parcours en largeur depuis la position de départ du joueur, implémenté dans la fonction \verb|update_board| du module \verb|board.c|.
     Cette méthode a l'avantage d'être réutilisable pour plusieurs autres fonctions, notamment celles des joueurs artificiels.
-    Pour stocker les cases à visiter, nous avons implémenté une structure de file basée sur une double liste (pour plus de détails, voir le module \verb|structures.c|).
-    Pour vérifier que cette méthode fonctionne correctement, on compare le résultat obtenu avec celui de la question précédente.
+    Pour stocker les cases à visiter, nous avons implémenté une structure de file avec deux listes chaînées (pour plus de détails, voir le module \verb|structures.c|).
+    Pour vérifier que cette méthode fonctionne correctement, on compare le résultat obtenu avec ces méthodes et avec la méthode précédente.
 \end{qu}
 
 \section{À la conquête du monde}
