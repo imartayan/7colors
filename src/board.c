@@ -20,7 +20,7 @@ void init_board(State *state)
     set_cell(state->board, state->board_size, state->player2->start->x, state->player2->start->y, state->player2->id);
 }
 
-void naive_update_board(State *state, char color)
+void naive_update_board(State *state)
 {
     bool change = true;
     while (change)
@@ -37,7 +37,7 @@ void naive_update_board(State *state, char color)
                     {
                         voisin.x = i + direction[k].x;
                         voisin.y = j + direction[k].y;
-                        if (in_bounds(state->board_size, voisin.x, voisin.y) && get_cell(state->board, state->board_size, voisin.x, voisin.y) == color)
+                        if (in_bounds(state->board_size, voisin.x, voisin.y) && get_cell(state->board, state->board_size, voisin.x, voisin.y) == state->curr_move)
                         {
                             change = true;
                             set_cell(state->board, state->board_size, voisin.x, voisin.y, state->curr_player->id);
@@ -50,24 +50,24 @@ void naive_update_board(State *state, char color)
     }
 }
 
-void propagate_color(point *p, State *state, char color, bool *change)
+void propagate_color(point *p, State *state, bool *change)
 {
     point voisin;
     for (int k = 0; k < 4; k++)
     {
         voisin.x = p->x + direction[k].x;
         voisin.y = p->y + direction[k].y;
-        if (in_bounds(state->board_size, voisin.x, voisin.y) && get_cell(state->board, state->board_size, voisin.x, voisin.y) == color)
+        if (in_bounds(state->board_size, voisin.x, voisin.y) && get_cell(state->board, state->board_size, voisin.x, voisin.y) == state->curr_move)
         {
             *change = true;
             set_cell(state->board, state->board_size, voisin.x, voisin.y, state->curr_player->id);
             (state->curr_player->score)++;
-            propagate_color(&voisin, state, color, change);
+            propagate_color(&voisin, state, change);
         }
     }
 }
 
-void recursive_update_board(State *state, char color)
+void recursive_update_board(State *state)
 {
     bool change = true;
     point p;
@@ -79,19 +79,19 @@ void recursive_update_board(State *state, char color)
             {
                 p.x = i;
                 p.y = j;
-                propagate_color(&p, state, color, &change);
+                propagate_color(&p, state, &change);
             }
         }
     }
 }
 
-void update_board_bfs(point *p, bool *seen, queue *visit, State *state, char color)
+void update_board_bfs(point *p, bool *seen, queue *visit, State *state)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
         seen[p->x + p->y * state->board_size] = true;
         char cell_color = get_cell(state->board, state->board_size, p->x, p->y);
-        if (cell_color == color)
+        if (cell_color == state->curr_move)
         {
             set_cell(state->board, state->board_size, p->x, p->y, state->curr_player->id);
             cell_color = state->curr_player->id;
@@ -114,7 +114,7 @@ void update_board_bfs(point *p, bool *seen, queue *visit, State *state, char col
     }
 }
 
-void update_board(State *state, char color)
+void update_board(State *state)
 {
     int nb_cells = state->board_size * state->board_size;
     bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
@@ -126,7 +126,7 @@ void update_board(State *state, char color)
     while (!empty_queue(visit))
     {
         pop_queue(visit, &p);
-        update_board_bfs(&p, seen, visit, state, color);
+        update_board_bfs(&p, seen, visit, state);
     }
     free(visit);
     free(seen);
@@ -140,8 +140,8 @@ SUT_TEST(test_naive_update_board)
     char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
     point start1 = {0, 0}, start2 = {2, 2};
     Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    State state = {board, 3, &player1, &player2, &player1, '?', 1};
-    naive_update_board(&state, 'R');
+    State state = {board, 3, &player1, &player2, &player1, 'R', 1};
+    naive_update_board(&state);
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
             SUT_CHAR_EQUAL(board[x + 3 * y], expected[x + 3 * y], "The cell (%d,%d) is not correctly changed with naive_update_board.", x, y);
@@ -154,8 +154,8 @@ SUT_TEST(test_recursive_update_board)
     char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
     point start1 = {0, 0}, start2 = {2, 2};
     Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    State state = {board, 3, &player1, &player2, &player1, '?', 1};
-    recursive_update_board(&state, 'R');
+    State state = {board, 3, &player1, &player2, &player1, 'R', 1};
+    recursive_update_board(&state);
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
             SUT_CHAR_EQUAL(board[x + 3 * y], expected[x + 3 * y], "The cell (%d,%d) is not correctly changed with recursive_update_board.", x, y);
@@ -167,8 +167,8 @@ SUT_TEST(test_update_board)
     char board[] = {'1', 'R', 'V', 'V', 'R', 'R', 'R', 'V', '2'};
     point start1 = {0, 0}, start2 = {2, 2};
     Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    State state = {board, 3, &player1, &player2, &player1, '?', 1};
-    update_board(&state, 'R');
+    State state = {board, 3, &player1, &player2, &player1, 'R', 1};
+    update_board(&state);
     char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
@@ -191,9 +191,10 @@ SUT_TEST(test_consistent_update_board)
     State state3 = {board3, 30, &player1, &player2, &player1, '?', 1};
     for (int i = 0; i < NB_COLORS; i++)
     {
-        naive_update_board(&state1, colors[i]);
-        recursive_update_board(&state2, colors[i]);
-        update_board(&state3, colors[i]);
+        state1.curr_move = state2.curr_move = state3.curr_move = colors[i];
+        naive_update_board(&state1);
+        recursive_update_board(&state2);
+        update_board(&state3);
     }
     for (int x = 0; x < 30; x++)
         for (int y = 0; y < 30; y++)

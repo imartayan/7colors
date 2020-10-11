@@ -48,7 +48,6 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
     state->player2->score = 1;
     state->turn = 1;
     int score_max = state->board_size * state->board_size;
-    char color;
     // game cycle
     while (!game_ended(state->player1->score, state->player2->score, score_max))
     {
@@ -58,14 +57,14 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
         print_turn(state->turn, state->curr_player->id);
         if (state->curr_player == state->player1)
         {
-            color = (*strat1)(state);
-            update_board(state, color);
+            state->curr_move = (*strat1)(state);
+            update_board(state);
             state->curr_player = state->player2;
         }
         else
         {
-            color = (*strat2)(state);
-            update_board(state, color);
+            state->curr_move = (*strat2)(state);
+            update_board(state);
             state->curr_player = state->player1;
         }
         state->turn++;
@@ -87,20 +86,19 @@ char run_fast_game(State *state, strategy strat1, strategy strat2)
     state->player2->score = 1;
     state->turn = 1;
     int score_max = state->board_size * state->board_size;
-    char color;
     // game cycle
     while (!game_ended(state->player1->score, state->player2->score, score_max))
     {
         if (state->curr_player == state->player1)
         {
-            color = (*strat1)(state);
-            update_board(state, color);
+            state->curr_move = (*strat1)(state);
+            update_board(state);
             state->curr_player = state->player2;
         }
         else
         {
-            color = (*strat2)(state);
-            update_board(state, color);
+            state->curr_move = (*strat2)(state);
+            update_board(state);
             state->curr_player = state->player1;
         }
         state->turn++;
