@@ -1,3 +1,8 @@
+/*******************************************************
+Role ........ : définition des fonctions qui font l'affichage du jeu
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 12/10/2020
+********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include "display.h"

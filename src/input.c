@@ -1,3 +1,8 @@
+/*******************************************************
+Role ........ : définition de toutes les fonctions permettant à l'utilisateur d'interagir avec le programme
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 12/10/2020
+********************************************************/
 #include <stdio.h>
 #include "input.h"
 #include "utils.h"

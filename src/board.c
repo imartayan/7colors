@@ -1,3 +1,8 @@
+/*******************************************************
+Role ........ : définition des fonctions qui manipulent et mettent à jour le plateau
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 10/10/2020
+********************************************************/
 #include "board.h"
 #include "utils.h"
 #include "simple_unit_test.h"

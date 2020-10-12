@@ -1,3 +1,12 @@
+/*******************************************************
+Role ........ :
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 12/10/2020
+Licence ..... : GNU General Public License v3.0
+compilation : utilisez le CMakeList
+execution : pour lancer le mode de tournoi taper ./7colors n
+  où n est le nombre de parties à faire jouer dans le tournoi
+********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,7 +21,7 @@
 #include "strategies.h"
 
 /** Program entry point */
-int main(void)
+int main(int argc, char** argv)
 {
     srand((unsigned)time(NULL));
     print_welcome_screen();
@@ -43,7 +52,11 @@ int main(void)
     }
     else
     {
-        int nb_games = 20;
+        if(argc < 1){
+          fprintf(stderr,"nombre de parties du tournoi non donne");
+          exit(12);
+        }
+        int nb_games = atoi(argv[1]);
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;

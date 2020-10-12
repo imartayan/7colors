@@ -1,3 +1,9 @@
+/*******************************************************
+Role ........ : définition des fonctions qui permettent le déroulement d'une partie
+  en fonction du nombre de joueurs et de la stratégie qui est utilisée par chaque joueur
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 10/10/2020
+********************************************************/
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
