@@ -21,7 +21,7 @@ execution : pour lancer le mode de tournoi taper ./7colors n
 #include "strategies.h"
 
 /** Program entry point */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     srand((unsigned)time(NULL));
     print_welcome_screen();
@@ -52,11 +52,11 @@ int main(int argc, char** argv)
     }
     else
     {
-        if(argc < 1){
-          fprintf(stderr,"nombre de parties du tournoi non donne");
-          exit(12);
+        int nb_games = 100;
+        if (argc >= 1)
+        {
+            nb_games = atoi(argv[1]);
         }
-        int nb_games = atoi(argv[1]);
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;

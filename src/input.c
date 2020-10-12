@@ -35,7 +35,7 @@ void choose_game_mode(int *mode)
 {
     printf("Choix du mode de jeu :\n");
     printf("1: Partie normale\n");
-    printf("2: Tournoi de 100 parties\n");
+    printf("2: Championnat entre joueurs artificiels\n");
     mode[0] = ask_int(1, 2);
     for (int i = 1; i < 3; i++)
     {
