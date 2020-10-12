@@ -34,6 +34,8 @@ void free_state(State *state);
 
 typedef char (*strategy)(State *);
 
+typedef int (*heuristic)(State *, char);
+
 typedef struct cell
 {
     point val;

@@ -43,7 +43,7 @@ int main(void)
     }
     else
     {
-        int nb_games = 1000;
+        int nb_games = 20;
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;
@@ -51,8 +51,8 @@ int main(void)
         char *board_cpy = malloc(nb_cases * sizeof(char));
         for (int i = 0; i < nb_games; i++)
         {
-            // printf("%d ", i + 1);
-            // fflush(stdout);
+            printf("%d ", i + 1);
+            fflush(stdout);
             if (i % 2 == 0)
             {
                 init_board(&state);

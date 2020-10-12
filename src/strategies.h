@@ -36,10 +36,8 @@ void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *s
 int color_expansion_borderless(State *state, char color);
 char best_expansion_borderless(State *state);
 
-point minimax(State *state, int depth, bool maximizing);
-char get_minimax(State *state);
-
-point harpagon(State *state, int depth, int *alpha, int *beta, bool maximizing);
-char get_harpagon(State *state);
+point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bool maximizing);
+char harpagon(State *state);
+char toyota(State *state);
 
 #endif

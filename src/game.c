@@ -38,10 +38,10 @@ void select_strategy(int player_type, strategy *strat)
         *strat = best_expansion_borderless;
         break;
     case 9:
-        *strat = get_minimax;
+        *strat = harpagon;
         break;
     case 10:
-        *strat = get_harpagon;
+        *strat = toyota;
         break;
     }
 }

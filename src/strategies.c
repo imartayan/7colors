@@ -471,12 +471,12 @@ char best_expansion_borderless(State *state)
     return best;
 }
 
-point minimax(State *state, int depth, bool maximizing)
+point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bool maximizing)
 {
     int score_max = state->board_size * state->board_size;
     if (depth == 0 || game_ended(state->player1->score, state->player2->score, score_max))
     {
-        point score = {color_id(state->curr_move), color_score(state, state->curr_move)};
+        point score = {color_id(state->curr_move), (*heur)(state, state->curr_move)};
         if (maximizing)
             score.y += state->curr_player->score;
         else if (state->curr_player->id == state->player1->id)
@@ -512,79 +512,8 @@ point minimax(State *state, int depth, bool maximizing)
                 else
                     new_state->curr_player = new_state->player1;
                 // on simule le meilleur score
-                score = minimax(new_state, depth - 1, !maximizing);
-                // cas 1: on veut maximiser les scores possibles
-                if (maximizing && score.y > best.y)
-                {
-                    best.x = i;
-                    best.y = score.y;
-                }
-                // cas 2: on veut minimiser les scores possibles
-                else if (!maximizing && score.y < best.y)
-                {
-                    best.x = i;
-                    best.y = score.y;
-                }
-            }
-        }
-        if (best.x == -1)
-        {
-            fprintf(stderr, "Minimax: pas de meilleur coup.\n");
-            best.x = randint(NB_COLORS);
-        }
-        return best;
-    }
-}
-
-char get_minimax(State *state)
-{
-    int depth = 4;
-    point best = minimax(state, depth, true);
-    return colors[best.x];
-}
-
-point harpagon(State *state, int depth, int *alpha, int *beta, bool maximizing)
-{
-    int score_max = state->board_size * state->board_size;
-    if (depth == 0 || game_ended(state->player1->score, state->player2->score, score_max))
-    {
-        point score = {color_id(state->curr_move), color_score(state, state->curr_move)};
-        if (maximizing)
-            score.y += state->curr_player->score;
-        else if (state->curr_player->id == state->player1->id)
-            score.y += state->player2->score;
-        else
-            score.y += state->player1->score;
-        return score;
-    }
-    else
-    {
-        // recherche des couleurs atteignables
-        bool reachable[NB_COLORS] = {false};
-        reachable_colors(state, reachable);
-        point score;
-        point best = {-1, 0};
-        if (!maximizing)
-            best.y = score_max;
-        State *new_state = NULL;
-        for (int i = 0; i < NB_COLORS; i++)
-        {
-            if (reachable[i])
-            {
-                // on réinitialise new_state
-                Player new_player1 = {state->player1->id, state->player1->score, state->player1->start};
-                Player new_player2 = {state->player2->id, state->player2->score, state->player2->start};
-                state_cpy(&new_state, state, &new_player1, &new_player2);
-                // on joue la couleur donnée en argument
-                new_state->curr_move = colors[i];
-                update_board(new_state);
-                // on change de joueur
-                if (new_state->curr_player->id == new_state->player1->id)
-                    new_state->curr_player = new_state->player2;
-                else
-                    new_state->curr_player = new_state->player1;
-                // on simule le meilleur score
-                score = harpagon(new_state, depth - 1, alpha, beta, !maximizing);
+                score = minimax(new_state, heur, depth - 1, alpha, beta, !maximizing);
+                free_state(new_state);
                 // cas 1: on veut maximiser les scores possibles
                 if (maximizing && score.y > best.y)
                 {
@@ -614,11 +543,20 @@ point harpagon(State *state, int depth, int *alpha, int *beta, bool maximizing)
     }
 }
 
-char get_harpagon(State *state)
+char harpagon(State *state)
 {
     int depth = 4;
     int alpha = 0;
     int beta = state->board_size * state->board_size;
-    point best = harpagon(state, depth, &alpha, &beta, true);
+    point best = minimax(state, color_score, depth, &alpha, &beta, true);
+    return colors[best.x];
+}
+
+char toyota(State *state)
+{
+    int depth = 4;
+    int alpha = 0;
+    int beta = state->board_size * state->board_size;
+    point best = minimax(state, color_expansion, depth, &alpha, &beta, true);
     return colors[best.x];
 }
