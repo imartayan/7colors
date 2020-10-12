@@ -1,3 +1,8 @@
+/*******************************************************
+Role ........ : Définition des différentes stratégies qui peuvent être utilisées par les joueurs durant la partie
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 12/10/2020
+********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include "strategies.h"

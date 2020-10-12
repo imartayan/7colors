@@ -1,3 +1,11 @@
+/*******************************************************
+Role ........ : Définition des différentes structures de données qui sont utilisées dans le programme
+  et implémentations des différentes interfaces avec ces structures.
+  structures implémentées : points, listes chainées de points, file de points 
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 12/10/2020
+********************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
