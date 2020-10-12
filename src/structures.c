@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structures.h"
 #include "simple_unit_test.h"
 
@@ -12,10 +13,10 @@ void state_cpy(State **dest, State *src, Player *new_player1, Player *new_player
 {
     int nb_cases = src->board_size * src->board_size;
     (*dest) = (State *)malloc(sizeof(State));
+    // copie de la board
     (*dest)->board = (char *)malloc(nb_cases * sizeof(char));
     memcpy((*dest)->board, src->board, nb_cases);
     (*dest)->board_size = src->board_size;
-    (*dest)->curr_move = src->curr_move;
     (*dest)->player1 = new_player1;
     (*dest)->player2 = new_player2;
     // on a posé comme condition que les id des deux joueurs sont différents ce qui nous donne une condition suffisante pour les différencier
@@ -23,6 +24,8 @@ void state_cpy(State **dest, State *src, Player *new_player1, Player *new_player
         (*dest)->curr_player = new_player1;
     else
         (*dest)->curr_player = new_player2;
+    (*dest)->curr_move = src->curr_move;
+    (*dest)->turn = src->turn;
 }
 
 void free_state(State *state)

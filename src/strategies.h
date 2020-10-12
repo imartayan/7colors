@@ -36,10 +36,10 @@ void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *s
 int color_expansion_borderless(State *state, char color);
 char best_expansion_borderless(State *state);
 
-int minimax(State *state, int depth, bool maximizing_Player, char player_id);
-char get_minimax(State *state);
-
 int alpha_beta_pruning_minimax(State *state, int depth, bool maximizing_Player, char player_id, int *alpha, int *beta);
 char get_minimax_pruning(State *state);
+
+point minimax(State *state, int depth, bool maximizing);
+char get_minimax(State *state);
 
 #endif

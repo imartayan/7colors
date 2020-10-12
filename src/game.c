@@ -49,7 +49,6 @@ void select_strategy(int player_type, strategy *strat)
 // main game function, contains the game cycle, returns the winning player
 char run_game(State *state, strategy strat1, strategy strat2, bool wait)
 {
-    init_board(state);
     state->player1->score = 1;
     state->player2->score = 1;
     state->turn = 1;
@@ -87,7 +86,6 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
 
 char run_fast_game(State *state, strategy strat1, strategy strat2)
 {
-    init_board(state);
     state->player1->score = 1;
     state->player2->score = 1;
     state->turn = 1;

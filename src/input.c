@@ -47,7 +47,7 @@ void choose_game_mode(int *mode)
         printf("7: IA hybride\n");
         printf("8: IA hybride (sans bord)\n");
         printf("9: IA minimax\n");
-        printf("10: IA minimax alpha beta\n");
+        printf("10: IA minimax alpha beta (not working)\n");
         mode[i] = ask_int(1, 10);
     }
     reset_print_color();

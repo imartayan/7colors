@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <time.h>
 #include "structures.h"
 #include "utils.h"
@@ -15,7 +17,8 @@ int main(void)
     srand((unsigned)time(NULL));
     print_welcome_screen();
     int board_size = 30;
-    char *board = malloc(board_size * board_size * sizeof(char));
+    int nb_cases = board_size * board_size;
+    char *board = malloc(nb_cases * sizeof(char));
     point start1 = {0, 0}, start2 = {board_size - 1, board_size - 1};
     Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
     State state = {board, board_size, &player1, &player2, &player1, '?', 1};
@@ -31,6 +34,7 @@ int main(void)
         bool continue_playing = true;
         while (continue_playing)
         {
+            init_board(&state);
             state.curr_player = &player1;
             winner = run_game(&state, strat1, strat2, wait);
             print_end_screen(winner, &state);
@@ -39,17 +43,27 @@ int main(void)
     }
     else
     {
-        int nb_games = 100;
+        int nb_games = 20;
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;
         int total2 = 0;
+        char *board_cpy = malloc(nb_cases * sizeof(char));
         for (int i = 0; i < nb_games; i++)
         {
+            printf("%d ", i + 1);
+            fflush(stdout);
             if (i % 2 == 0)
+            {
+                init_board(&state);
+                memcpy(board_cpy, state.board, nb_cases);
                 state.curr_player = &player1;
+            }
             else
+            {
+                memcpy(state.board, board_cpy, nb_cases);
                 state.curr_player = &player2;
+            }
             winner = run_fast_game(&state, strat1, strat2);
             if (winner == player1.id)
                 wins1++;
@@ -58,6 +72,7 @@ int main(void)
             total1 += player1.score;
             total2 += player2.score;
         }
+        free(board_cpy);
         print_statistics(&state, nb_games, wins1, wins2, total1, total2);
     }
     free(board);
