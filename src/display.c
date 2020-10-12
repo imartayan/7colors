@@ -62,6 +62,7 @@ void set_print_color(char c)
 void print_welcome_screen()
 {
     system("clear");
+    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 83, 97, 108, 117, 116, 32, 97, 32, 116, 111, 105, 44, 32, 106, 101, 117, 110, 101, 32, 101, 110, 116, 114, 101, 112, 114, 101, 110, 101, 117, 114, 32, 33, 10);
     printf("Bienvenue dans le jeu des 7 couleurs !\n");
     printf("**************************************\n\n");
 }
