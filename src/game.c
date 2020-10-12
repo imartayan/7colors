@@ -48,7 +48,7 @@ void select_strategy(int player_type, strategy *strat)
         *strat = harpagon;
         break;
     case 10:
-        *strat = toyota;
+        *strat = napoleon;
         break;
     }
 }

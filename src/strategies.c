@@ -503,7 +503,7 @@ char harpagon(State *state)
     return colors[best.x];
 }
 
-char toyota(State *state)
+char napoleon(State *state)
 {
     int depth = 4;
     int alpha = 0;

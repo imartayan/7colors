@@ -49,11 +49,11 @@ void choose_game_mode(int *mode)
         printf("3: IA aléatoire+ (atteignable)\n");
         printf("4: IA gloutonne\n");
         printf("5: IA hégémonique\n");
-        printf("6: IA hégémonique (sans bord)\n");
+        printf("6: IA hégémonique- (sans bord)\n");
         printf("7: IA hybride\n");
-        printf("8: IA hybride (sans bord)\n");
+        printf("8: IA hybride+ (sans bord)\n");
         printf("9: Minimax Harpagon\n");
-        printf("10: Minimax Toyota\n");
+        printf("10: Minimax Napoléon\n");
         mode[i] = ask_int(1, 10);
     }
     reset_print_color();
