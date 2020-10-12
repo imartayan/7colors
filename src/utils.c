@@ -1,3 +1,8 @@
+/*******************************************************
+Role ........ : définition de fonctions utilitaires qui seront réutilisées de nombreuses fois dans le reste du programme
+Auteurs ...... : Clément MORAND, Igor Martayan
+dernière modification : 10/10/2020
+********************************************************/
 #include <stdlib.h>
 #include "utils.h"
 #include "simple_unit_test.h"
