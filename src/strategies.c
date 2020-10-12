@@ -4,6 +4,7 @@
 #include "input.h"
 #include "utils.h"
 #include "board.h"
+#include "simple_unit_test.h"
 
 char play_human_move(State *state)
 {
@@ -15,7 +16,7 @@ char play_random_move(State *state)
     return random_color();
 }
 
-void reachable_colors_bfs(point *p, bool *seen, queue *visit, State *state, bool *reachable)
+void reachable_colors_visit(point *p, bool *seen, queue *to_visit, State *state, bool *reachable)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -31,7 +32,7 @@ void reachable_colors_bfs(point *p, bool *seen, queue *visit, State *state, bool
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
             }
         }
@@ -50,15 +51,15 @@ void reachable_colors(State *state, bool *reachable)
     bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
     for (int i = 0; i < nb_cells; i++)
         seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
+    queue *to_visit = create_queue();
+    add_queue(to_visit, state->curr_player->start);
     point p;
-    while (!empty_queue(visit))
+    while (!empty_queue(to_visit))
     {
-        pop_queue(visit, &p);
-        reachable_colors_bfs(&p, seen, visit, state, reachable);
+        pop_queue(to_visit, &p);
+        reachable_colors_visit(&p, seen, to_visit, state, reachable);
     }
-    free(visit);
+    free(to_visit);
     free(seen);
 }
 
@@ -76,7 +77,25 @@ char random_reachable_color(State *state)
         return random_color();
 }
 
-void color_score_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *score)
+void compute_bfs(State *state, char color, int *val, visit_bfs visit)
+{
+    int nb_cells = state->board_size * state->board_size;
+    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
+    for (int i = 0; i < nb_cells; i++)
+        seen[i] = false;
+    queue *to_visit = create_queue();
+    add_queue(to_visit, state->curr_player->start);
+    point p;
+    while (!empty_queue(to_visit))
+    {
+        pop_queue(to_visit, &p);
+        (*visit)(&p, seen, to_visit, state, color, val);
+    }
+    free(to_visit);
+    free(seen);
+}
+
+void score_visit(point *p, bool *seen, queue *to_visit, State *state, char color, int *score)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -97,7 +116,7 @@ void color_score_bfs(point *p, bool *seen, queue *visit, State *state, char colo
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
             }
         }
@@ -106,21 +125,8 @@ void color_score_bfs(point *p, bool *seen, queue *visit, State *state, char colo
 
 int color_score(State *state, char color)
 {
-    int score = 0;
-    int nb_cells = state->board_size * state->board_size;
-    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
-    for (int i = 0; i < nb_cells; i++)
-        seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
-    point p;
-    while (!empty_queue(visit))
-    {
-        pop_queue(visit, &p);
-        color_score_bfs(&p, seen, visit, state, color, &score);
-    }
-    free(visit);
-    free(seen);
+    int score = state->curr_player->score;
+    compute_bfs(state, color, &score, score_visit);
     return score;
 }
 
@@ -169,7 +175,7 @@ int cell_expansion(point *p, State *state)
     return expansion;
 }
 
-void color_perimeter_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter)
+void perimeter_visit(point *p, bool *seen, queue *to_visit, State *state, char color, int *perimeter)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -189,7 +195,7 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, State *state, char 
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
                 else
                     (*perimeter)++;
@@ -204,20 +210,7 @@ void color_perimeter_bfs(point *p, bool *seen, queue *visit, State *state, char 
 int color_perimeter(State *state, char color)
 {
     int perimeter = 0;
-    int nb_cells = state->board_size * state->board_size;
-    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
-    for (int i = 0; i < nb_cells; i++)
-        seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
-    point p;
-    while (!empty_queue(visit))
-    {
-        pop_queue(visit, &p);
-        color_perimeter_bfs(&p, seen, visit, state, color, &perimeter);
-    }
-    free(visit);
-    free(seen);
+    compute_bfs(state, color, &perimeter, perimeter_visit);
     return perimeter;
 }
 
@@ -245,7 +238,7 @@ char best_perimeter(State *state)
     return best;
 }
 
-void color_perimeter_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *perimeter)
+void perimeter_borderless_visit(point *p, bool *seen, queue *to_visit, State *state, char color, int *perimeter)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -265,7 +258,7 @@ void color_perimeter_borderless_bfs(point *p, bool *seen, queue *visit, State *s
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
                 // On ne compte pas le bord du plateau
             }
@@ -278,20 +271,7 @@ void color_perimeter_borderless_bfs(point *p, bool *seen, queue *visit, State *s
 int color_perimeter_borderless(State *state, char color)
 {
     int perimeter = 0;
-    int nb_cells = state->board_size * state->board_size;
-    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
-    for (int i = 0; i < nb_cells; i++)
-        seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
-    point p;
-    while (!empty_queue(visit))
-    {
-        pop_queue(visit, &p);
-        color_perimeter_borderless_bfs(&p, seen, visit, state, color, &perimeter);
-    }
-    free(visit);
-    free(seen);
+    compute_bfs(state, color, &perimeter, perimeter_borderless_visit);
     return perimeter;
 }
 
@@ -319,7 +299,7 @@ char best_perimeter_borderless(State *state)
     return best;
 }
 
-void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion)
+void expansion_visit(point *p, bool *seen, queue *to_visit, State *state, char color, int *expansion)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -340,7 +320,7 @@ void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char 
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
                 else
                     (*expansion)++;
@@ -354,21 +334,8 @@ void color_expansion_bfs(point *p, bool *seen, queue *visit, State *state, char 
 
 int color_expansion(State *state, char color)
 {
-    int expansion = 0;
-    int nb_cells = state->board_size * state->board_size;
-    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
-    for (int i = 0; i < nb_cells; i++)
-        seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
-    point p;
-    while (!empty_queue(visit))
-    {
-        pop_queue(visit, &p);
-        color_expansion_bfs(&p, seen, visit, state, color, &expansion);
-    }
-    free(visit);
-    free(seen);
+    int expansion = state->curr_player->score;
+    compute_bfs(state, color, &expansion, expansion_visit);
     return expansion;
 }
 
@@ -396,7 +363,7 @@ char best_expansion(State *state)
     return best;
 }
 
-void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion)
+void expansion_borderless_visit(point *p, bool *seen, queue *to_visit, State *state, char color, int *expansion)
 {
     if (!seen[p->x + p->y * state->board_size])
     {
@@ -417,7 +384,7 @@ void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *s
                 if (in_bounds(state->board_size, x, y))
                 {
                     point voisin = {x, y};
-                    add_queue(visit, &voisin);
+                    add_queue(to_visit, &voisin);
                 }
                 // On ne compte pas le bord du plateau
             }
@@ -429,21 +396,8 @@ void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *s
 
 int color_expansion_borderless(State *state, char color)
 {
-    int expansion = 0;
-    int nb_cells = state->board_size * state->board_size;
-    bool *seen = (bool *)malloc(nb_cells * sizeof(bool));
-    for (int i = 0; i < nb_cells; i++)
-        seen[i] = false;
-    queue *visit = create_queue();
-    add_queue(visit, state->curr_player->start);
-    point p;
-    while (!empty_queue(visit))
-    {
-        pop_queue(visit, &p);
-        color_expansion_bfs(&p, seen, visit, state, color, &expansion);
-    }
-    free(visit);
-    free(seen);
+    int expansion = state->curr_player->score;
+    compute_bfs(state, color, &expansion, expansion_borderless_visit);
     return expansion;
 }
 
@@ -460,7 +414,7 @@ char best_expansion_borderless(State *state)
         if (reachable[i])
         {
             color = colors[i];
-            expansion = color_expansion(state, color);
+            expansion = color_expansion_borderless(state, color);
             if (expansion > expansion_max)
             {
                 best = color;
@@ -477,12 +431,6 @@ point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bo
     if (depth == 0 || game_ended(state->player1->score, state->player2->score, score_max))
     {
         point score = {color_id(state->curr_move), (*heur)(state, state->curr_move)};
-        if (maximizing)
-            score.y += state->curr_player->score;
-        else if (state->curr_player->id == state->player1->id)
-            score.y += state->player2->score;
-        else
-            score.y += state->player1->score;
         return score;
     }
     else
@@ -557,6 +505,26 @@ char toyota(State *state)
     int depth = 4;
     int alpha = 0;
     int beta = state->board_size * state->board_size;
-    point best = minimax(state, color_expansion, depth, &alpha, &beta, true);
+    point best = minimax(state, color_expansion_borderless, depth, &alpha, &beta, true);
     return colors[best.x];
 }
+
+/************ Tests **************/
+
+SUT_TEST(test_osef)
+{
+    char board[] = {'1', 'R', 'V', 'V', 'R', 'R', 'R', 'V', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 3, &player1, &player2, &player1, 'R', 1};
+    update_board(&state);
+    char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
+    for (int x = 0; x < 3; x++)
+        for (int y = 0; y < 3; y++)
+            SUT_CHAR_EQUAL(board[x + 3 * y], expected[x + 3 * y], "The cell (%d,%d) is not correctly changed with update_board.", x, y);
+    return 1;
+}
+
+SUT_TEST_SUITE(strategies) = {
+    SUT_TEST_SUITE_ADD(test_osef),
+    SUT_TEST_SUITE_END};

@@ -63,4 +63,6 @@ void print_queue(queue *q);
 void add_queue(queue *q, point *p);
 void pop_queue(queue *q, point *p);
 
+typedef void (*visit_bfs)(point *, bool *, queue *, State *, char, int *);
+
 #endif

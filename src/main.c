@@ -43,7 +43,7 @@ int main(void)
     }
     else
     {
-        int nb_games = 20;
+        int nb_games = 1000;
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;
