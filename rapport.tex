@@ -141,11 +141,11 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \begin{Tab}
     \begin{BTab}[1]{LCCCCC}
         \hspace{1.5cm} joueur opposant & glouton & hégémonique & hégémonique SB & hybride & hybride SB\|
-        glouton & -- & (565 V / 424 D) & (481 V / 515 D) & (726 V / 268 D) & (771 V / 223 D)\\
-        hégémonique & (424 V / 565 D) & -- & (416 V / 581 D) & (614 V / 378 D) & (694 V / 304 D)\\
-        hégémonique SB & (515 V / 481 D) & (581 V / 416 D) & -- & (701 V / 288 D) & (764 V / 232 D)\\
-        hybride & (268 V / 726 D) & (378 V / 614 D) & (288 V / 701 D) & -- & 572 V / 422 D\\
-        hybride SB & (223 V / 771 D) & (304 V / 694 D) & (232 V / 764 D) & 422 V / 572 D & --
+        glouton & -- & 584 V / 412 D & 453 V / 539 D & 720 V / 276 D & 772 V / 225 D\\
+        hégémonique & 412 V / 584 D & -- & 411 V / 583 D & 651 V / 343 D & 687 V / 307 D\\
+        hégémonique SB & 539 V / 453 D & 583 V / 411 D & -- & 704 V / 291 D & 749 V / 241 D\\
+        hybride & 276 V / 720 D & 343 V / 651 D & 291 V / 704 D & -- & 573 V / 415 D\\
+        hybride SB & 225 V / 772 D & 307 V / 687 D & 241 V / 749 D & 415 V / 573 D & --
     \end{BTab}
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
@@ -167,6 +167,16 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \begin{qu}
     On peut implémenter une version du minimax utilisant l'heuristique hybride que nous avons développée pour le joueur hégémonique comme fonction d'évaluation.
 \end{qu}
+
+\begin{Tab}
+    \begin{BTab}[0.75]{LCCC}
+        \hspace{1.5cm} joueur opposant & hybride SB & Harpagon & MiniMix\|
+        hybride SB & -- & 554 V / 435 D & 782 V / 211 D\\
+        Harpagon & 435 V / 554 D & -- & ? V / ? D\\
+        MiniMix & 211 V / 782 D & ? V / ? D & --
+    \end{BTab}
+    \caption{Résultats de 1000 parties entre les joueurs artificiels}
+\end{Tab}
 
 \section*{Synthèse}
 
