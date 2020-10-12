@@ -30,6 +30,7 @@ int ask_int(int lower_bound, int upper_bound)
     return n;
 }
 
+// sets the value pointed by mode to the number representing the strategy chosen by the user
 void choose_game_mode(int *mode)
 {
     printf("Choix du mode de jeu :\n");
@@ -58,6 +59,7 @@ void choose_game_mode(int *mode)
     reset_print_color();
 }
 
+// returns true if c is equal to one of the cells in the colors array
 bool in_colors(char c)
 {
     for (int i = 0; i < NB_COLORS; i++)
@@ -75,6 +77,7 @@ char to_uppercase(char c)
     return c;
 }
 
+//returns the char corresponding to the move chosen by the human player
 char ask_player_move()
 {
     char c;

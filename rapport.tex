@@ -117,8 +117,8 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[0.5]{CCCC}
-        versus & aléatoire & aléatoire+ & glouton\|
+    \begin{BTab}[0.75]{LCCC}
+        \hspace{1.5cm} joueur opposant & aléatoire & aléatoire+ & glouton\|
         aléatoire & -- & 991 V / 9 D & 1000 V / 0 D\\
         aléatoire+ & 9 V / 991 D & -- & 1000 V / 0 D\\
         glouton & 0 V / 1000 D & 0 V / 1000 D & --
@@ -139,13 +139,13 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[1]{CCCCCC}
-        versus & glouton & hégémonique & hégémonique SB & hybride & hybride SB\|
-        glouton & -- & 565 V / 424 D & 481 V / 515 D & 726 V / 268 D & 771 V / 223 D\\
-        hégémonique & 424 V / 565 D & -- & 416 V / 581 D & 614 V / 378 D & 694 V / 304 D\\
-        hégémonique SB & 515 V / 481 D & 581 V / 416 D & -- & 701 V / 288 D & 764 V / 232 D\\
-        hybride & 268 V / 726 D & 378 V / 614 D & 288 V / 701 D & -- & 501 V / 491 D\\
-        hybride SB & 223 V / 771 D & 304 V / 694 D & 232 V / 764 D & 491 V / 501 D & --
+    \begin{BTab}[1]{LCCCCC}
+        \hspace{1.5cm} joueur opposant & glouton & hégémonique & hégémonique SB & hybride & hybride SB\|
+        glouton & -- & (565 V / 424 D) & (481 V / 515 D) & (726 V / 268 D) & (771 V / 223 D)\\
+        hégémonique & (424 V / 565 D) & -- & (416 V / 581 D) & (614 V / 378 D) & (694 V / 304 D)\\
+        hégémonique SB & (515 V / 481 D) & (581 V / 416 D) & -- & (701 V / 288 D) & (764 V / 232 D)\\
+        hybride & (268 V / 726 D) & (378 V / 614 D) & (288 V / 701 D) & -- & 572 V / 422 D\\
+        hybride SB & (223 V / 771 D) & (304 V / 694 D) & (232 V / 764 D) & 422 V / 572 D & --
     \end{BTab}
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}

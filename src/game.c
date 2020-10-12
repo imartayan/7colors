@@ -15,6 +15,7 @@ dernière modification : 10/10/2020
 #include "utils.h"
 #include "strategies.h"
 
+// sets the the value pointed by strat to the strategy corresponding to the number player_type
 void select_strategy(int player_type, strategy *strat)
 {
     switch (player_type)
@@ -90,6 +91,7 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
         return '0';
 }
 
+// runs a game without displaying anything and returns the winner's_id 
 char run_fast_game(State *state, strategy strat1, strategy strat2)
 {
     state->player1->score = 1;

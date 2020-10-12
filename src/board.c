@@ -25,6 +25,7 @@ void init_board(State *state)
     set_cell(state->board, state->board_size, state->player2->start->x, state->player2->start->y, state->player2->id);
 }
 
+// first implementation of a function that updates the board. corresponds to question 2
 void naive_update_board(State *state)
 {
     bool change = true;
@@ -55,6 +56,7 @@ void naive_update_board(State *state)
     }
 }
 
+
 void propagate_color(point *p, State *state, bool *change)
 {
     point voisin;
@@ -72,6 +74,7 @@ void propagate_color(point *p, State *state, bool *change)
     }
 }
 
+// second implementation of a function that updates the board. corresponds to the first part of question 3
 void recursive_update_board(State *state)
 {
     bool change = true;
@@ -89,6 +92,7 @@ void recursive_update_board(State *state)
         }
     }
 }
+
 
 void update_board_bfs(point *p, bool *seen, queue *visit, State *state)
 {
@@ -119,6 +123,7 @@ void update_board_bfs(point *p, bool *seen, queue *visit, State *state)
     }
 }
 
+// corresponds to the third implementation of a function that updates the board. corresponds to the last part of question 3
 void update_board(State *state)
 {
     int nb_cells = state->board_size * state->board_size;
