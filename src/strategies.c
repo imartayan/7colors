@@ -489,7 +489,7 @@ point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bo
         }
         if (best.x == -1)
         {
-            fprintf(stderr, "Minimax: pas de meilleur coup.\n");
+            // pas de meilleur coup
             best.x = randint(NB_COLORS);
         }
         return best;
