@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include "structures.h"
 
+#define MAX_DEPTH 3
+#define MAX_DEPTH_PRUNING 5
+
 char play_human_move(State *state);
 char play_random_move(State *state);
 
@@ -32,5 +35,11 @@ char best_expansion(State *state);
 void color_expansion_borderless_bfs(point *p, bool *seen, queue *visit, State *state, char color, int *expansion);
 int color_expansion_borderless(State *state, char color);
 char best_expansion_borderless(State *state);
+
+int minimax(State *state, int depth, bool maximizing_Player, char player_id);
+char get_minimax(State *state);
+
+int alpha_beta_pruning_minimax(State *state, int depth, bool maximizing_Player, char player_id, int *alpha, int *beta);
+char get_minimax_pruning(State *state);
 
 #endif

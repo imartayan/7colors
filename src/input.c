@@ -46,7 +46,9 @@ void choose_game_mode(int *mode)
         printf("6: IA hégémonique (sans bord)\n");
         printf("7: IA hybride\n");
         printf("8: IA hybride (sans bord)\n");
-        mode[i] = ask_int(1, 8);
+        printf("9: IA minimax\n");
+        printf("10: IA minimax alpha beta\n");
+        mode[i] = ask_int(1, 10);
     }
     reset_print_color();
 }

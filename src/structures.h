@@ -9,7 +9,7 @@ typedef struct point
     int y;
 } point;
 
-bool equal_points(point* p1, point* p2);
+bool equal_points(point *p1, point *p2);
 
 typedef struct Player
 {
@@ -28,6 +28,9 @@ typedef struct State
     char curr_move;
     int turn;
 } State;
+
+void state_cpy(State **dest, State *src, Player *new_player1, Player *new_player2);
+void free_state(State *state);
 
 typedef char (*strategy)(State *);
 

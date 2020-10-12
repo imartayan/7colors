@@ -37,6 +37,12 @@ void select_strategy(int player_type, strategy *strat)
     case 8:
         *strat = best_expansion_borderless;
         break;
+    case 9:
+        *strat = get_minimax;
+        break;
+    case 10:
+        *strat = get_minimax_pruning;
+        break;
     }
 }
 

@@ -8,6 +8,29 @@ bool equal_points(point *p1, point *p2)
     return ((p1->x == p2->x) && (p1->y == p2->y));
 }
 
+void state_cpy(State **dest, State *src, Player *new_player1, Player *new_player2)
+{
+    int nb_cases = src->board_size * src->board_size;
+    (*dest) = (State *)malloc(sizeof(State));
+    (*dest)->board = (char *)malloc(nb_cases * sizeof(char));
+    memcpy((*dest)->board, src->board, nb_cases);
+    (*dest)->board_size = src->board_size;
+    (*dest)->curr_move = src->curr_move;
+    (*dest)->player1 = new_player1;
+    (*dest)->player2 = new_player2;
+    // on a posé comme condition que les id des deux joueurs sont différents ce qui nous donne une condition suffisante pour les différencier
+    if (src->curr_player->id == src->player1->id)
+        (*dest)->curr_player = new_player1;
+    else
+        (*dest)->curr_player = new_player2;
+}
+
+void free_state(State *state)
+{
+    free(state->board);
+    free(state);
+}
+
 bool empty_list(list head)
 {
     return head == NULL;
