@@ -37,7 +37,7 @@ An implementation of the 7 colors game written in C.
 * improve artificial intelligence (minimax ?)
 
 ## Sources
-* http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf
 * http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/
+* https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/les-pointeurs-de-fonction/
 * https://en.wikipedia.org/wiki/Minimax
 * https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
