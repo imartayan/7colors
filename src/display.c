@@ -68,11 +68,11 @@ void print_score(State *state)
     double p2 = (double)state->player2->score / score_max * 100;
     printf("Score : J1 ");
     set_print_color(state->player1->id);
-    printf("%.1f%%", p1);
+    printf("%.2f%%", p1);
     reset_print_color();
     printf(" - J2 ");
     set_print_color(state->player2->id);
-    printf("%.1f%%\n", p2);
+    printf("%.2f%%\n", p2);
     reset_print_color();
 }
 
@@ -129,8 +129,8 @@ void print_statistics(State *state, int nb_games, int wins1, int wins2, int tota
     double avg2 = (double)total2 / (nb_games * score_max) * 100;
     printf("\nRésultats du tournoi :\n");
     set_print_color(state->player1->id);
-    printf("Joueur 1 : %d victoires - score moyen %.1f%%\n", wins1, avg1);
+    printf("Joueur 1 : %d victoires - score moyen %.2f%%\n", wins1, avg1);
     set_print_color(state->player2->id);
-    printf("Joueur 2 : %d victoires - score moyen %.1f%%\n", wins2, avg2);
+    printf("Joueur 2 : %d victoires - score moyen %.2f%%\n", wins2, avg2);
     reset_print_color();
 }

@@ -43,7 +43,7 @@ int main(void)
     }
     else
     {
-        int nb_games = 20;
+        int nb_games = 1000;
         int wins1 = 0;
         int wins2 = 0;
         int total1 = 0;
@@ -51,8 +51,8 @@ int main(void)
         char *board_cpy = malloc(nb_cases * sizeof(char));
         for (int i = 0; i < nb_games; i++)
         {
-            printf("%d ", i + 1);
-            fflush(stdout);
+            // printf("%d ", i + 1);
+            // fflush(stdout);
             if (i % 2 == 0)
             {
                 init_board(&state);
@@ -62,6 +62,12 @@ int main(void)
             else
             {
                 memcpy(state.board, board_cpy, nb_cases);
+                char tmp_id = player1.id;
+                player1.id = player2.id;
+                player2.id = tmp_id;
+                point *tmp_start = player1.start;
+                player1.start = player2.start;
+                player2.start = tmp_start;
                 state.curr_player = &player2;
             }
             winner = run_fast_game(&state, strat1, strat2);

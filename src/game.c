@@ -41,7 +41,7 @@ void select_strategy(int player_type, strategy *strat)
         *strat = get_minimax;
         break;
     case 10:
-        *strat = get_minimax_pruning;
+        *strat = get_harpagon;
         break;
     }
 }
