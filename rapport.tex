@@ -1,4 +1,4 @@
-\documentclass[12pt,M,fira-sans]{paper}
+\documentclass[12pt,S,fira-sans]{paper}
 \usepackage{code-private}
 
 \title{Projet 7 colors}
@@ -16,7 +16,6 @@ Au-delà du développement du jeu en tant que tel, nous nous sommes aussi beauco
 \subsection*{Structure du projet}
 
 Au fil des questions, nous ferons référence à plusieurs fonctions réparties dans différents modules, c'est pourquoi il peut être utile de d'expliquer rapidement la structure générale du projet pour s'y retrouver plus facilement :
-(à traduire)
 
 \begin{itemize}
     \item \verb|structures.c| contains all the structures used in the projects : player, strategy, linked list, queue...
@@ -28,6 +27,7 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
     \item \verb|game.c| contains functions for selecting strategies and running normal or fast games
     \item \verb|main.c| contains the main loop of the game
 \end{itemize}
+(à traduire)
 
 \section{Voir le monde en 7 couleurs}
 
@@ -117,7 +117,7 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[0.75]{CCCC}
+    \begin{BTab}[0.5]{CCCC}
         versus & aléatoire & aléatoire+ & glouton\|
         aléatoire & -- & 991 V / 9 D & 1000 V / 0 D\\
         aléatoire+ & 9 V / 991 D & -- & 1000 V / 0 D\\
@@ -139,7 +139,7 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}{cccccc}
+    \begin{BTab}[1]{CCCCCC}
         versus & glouton & hégémonique & hégémonique SB & hybride & hybride SB\|
         glouton & -- & 565 V / 424 D & 481 V / 515 D & 726 V / 268 D & 771 V / 223 D\\
         hégémonique & 424 V / 565 D & -- & 416 V / 581 D & 614 V / 378 D & 694 V / 304 D\\
