@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     else
     {
         int nb_games = 100;
-        if (argc >= 1)
+        if (argc >= 2)
         {
             nb_games = atoi(argv[1]);
         }
@@ -75,12 +75,6 @@ int main(int argc, char **argv)
             else
             {
                 memcpy(state.board, board_cpy, nb_cases);
-                char tmp_id = player1.id;
-                player1.id = player2.id;
-                player2.id = tmp_id;
-                point *tmp_start = player1.start;
-                player1.start = player2.start;
-                player2.start = tmp_start;
                 state.curr_player = &player2;
             }
             winner = run_fast_game(&state, strat1, strat2);
@@ -90,6 +84,7 @@ int main(int argc, char **argv)
                 wins2++;
             total1 += player1.score;
             total2 += player2.score;
+            swap_player_position(&player1, &player2);
         }
         free(board_cpy);
         print_statistics(&state, nb_games, wins1, wins2, total1, total2);

@@ -53,6 +53,16 @@ void select_strategy(int player_type, strategy *strat)
     }
 }
 
+void swap_player_position(Player *player1, Player *player2)
+{
+    char tmp_id = player1->id;
+    player1->id = player2->id;
+    player2->id = tmp_id;
+    point *tmp_start = player1->start;
+    player1->start = player2->start;
+    player2->start = tmp_start;
+}
+
 // main game function, contains the game cycle, returns the winning player
 char run_game(State *state, strategy strat1, strategy strat2, bool wait)
 {
@@ -91,7 +101,7 @@ char run_game(State *state, strategy strat1, strategy strat2, bool wait)
         return '0';
 }
 
-// runs a game without displaying anything and returns the winner's_id 
+// runs a game without displaying anything and returns the winner's_id
 char run_fast_game(State *state, strategy strat1, strategy strat2)
 {
     state->player1->score = 1;

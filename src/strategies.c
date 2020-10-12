@@ -456,7 +456,7 @@ point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bo
                 Player new_player1 = {state->player1->id, state->player1->score, state->player1->start};
                 Player new_player2 = {state->player2->id, state->player2->score, state->player2->start};
                 state_cpy(&new_state, state, &new_player1, &new_player2);
-                // on joue la couleur donnée en argument
+                // on joue la ième couleur
                 new_state->curr_move = colors[i];
                 update_board(new_state);
                 // on change de joueur
@@ -488,10 +488,8 @@ point minimax(State *state, heuristic heur, int depth, int *alpha, int *beta, bo
             }
         }
         if (best.x == -1)
-        {
             // pas de meilleur coup
             best.x = randint(NB_COLORS);
-        }
         return best;
     }
 }
