@@ -117,12 +117,15 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[0.75]{LCCC}
-        \hspace{1.5cm} joueur opposant & aléatoire & aléatoire+ & glouton\|
+    \begin{TabX}[0.67]{|L|C|C|C|}
+        \hl
+        \hspace{1.5cm} joueur opposant & aléatoire & aléatoire+ (atteignable) & glouton\\
+        \hl
         aléatoire & -- & 991 V / 9 D & 1000 V / 0 D\\
         aléatoire+ & 9 V / 991 D & -- & 1000 V / 0 D\\
-        glouton & 0 V / 1000 D & 0 V / 1000 D & --
-    \end{BTab}
+        glouton & 0 V / 1000 D & 0 V / 1000 D & --\\
+        \hl
+    \end{TabX}
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
 
@@ -139,21 +142,24 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[1]{LCCCCC}
-        \hspace{1.5cm} joueur opposant & glouton & hégémonique & hégémonique SB & hybride & hybride SB\|
+    \begin{TabX}[1]{|L|C|C|C|C|C|}
+        \hl
+        \hspace{1.5cm} joueur opposant & glouton & hégémonique & hégémonique- (sans~bord) & hybride & hybride+ (sans~bord)\\
+        \hl
         glouton & -- & 584 V / 412 D & 453 V / 539 D & 720 V / 276 D & 772 V / 225 D\\
         hégémonique & 412 V / 584 D & -- & 411 V / 583 D & 651 V / 343 D & 687 V / 307 D\\
-        hégémonique SB & 539 V / 453 D & 583 V / 411 D & -- & 704 V / 291 D & 749 V / 241 D\\
+        hégémonique- & 539 V / 453 D & 583 V / 411 D & -- & 704 V / 291 D & 749 V / 241 D\\
         hybride & 276 V / 720 D & 343 V / 651 D & 291 V / 704 D & -- & 573 V / 415 D\\
-        hybride SB & 225 V / 772 D & 307 V / 687 D & 241 V / 749 D & 415 V / 573 D & --
-    \end{BTab}
+        hybride+ & 225 V / 772 D & 307 V / 687 D & 241 V / 749 D & 415 V / 573 D & --\\
+        \hl
+    \end{TabX}
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
 
 \begin{qu}
     On remarque que le glouton prévoyant s'apparente à une implémentation de l'algorithme minimax qui utilise le score comme fonction d'évaluation et qui ne tient pas compte de l'adversaire.
     Pour prendre en compte les n prochains coups avec un plateau contenant c cases, la complexité est en \(\Oh(7^n \x c)\).
-    Nous avons décidé d'implémenter l'algorithme minimax puis sa version avec élagage alpha beta, qui permet de ne pas calculer certaines branches de l'arbre quand on sait qu'elles ne peuvent pas mener à un meilleur résultat, dans l'espoir de pouvoir faire jouer une version qui calcule 4 coups en profondeur (en tenant compte du comportement de l'adversaire)
+    Nous avons décidé d'implémenter l'algorithme minimax puis sa version avec élagage alpha beta, qui permet de ne pas calculer certaines branches de l'arbre quand on sait qu'elles ne peuvent pas mener à un meilleur résultat, dans l'espoir de pouvoir faire jouer une version qui calcule 4 coups en profondeur en tenant compte des coups de l'adversaire.
 \end{qu}
 
 \section{Le pire du monde merveilleux des 7 couleurs}
@@ -169,12 +175,15 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{Tab}
-    \begin{BTab}[0.75]{LCCC}
-        \hspace{1.5cm} joueur opposant & hybride SB & Harpagon & MiniMix\|
-        hybride SB & -- & 554 V / 435 D & 782 V / 211 D\\
-        Harpagon & 435 V / 554 D & -- & ? V / ? D\\
-        MiniMix & 211 V / 782 D & ? V / ? D & --
-    \end{BTab}
+    \begin{TabX}[0.67]{|L|C|C|C|}
+        \hl
+        \hspace{1.5cm} joueur opposant & hybride+ & Harpagon & Napoléon\\
+        \hl
+        hybride+ & -- & 554 V / 435 D & 782 V / 211 D\\
+        Harpagon & 435 V / 554 D & -- & 735 V / 251 D\\
+        Napoléon & 211 V / 782 D & 251 V / 735 D & --\\
+        \hl
+    \end{TabX}
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
 
@@ -184,9 +193,8 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 
 \begin{itemize}
     \item \emph{The C Programming Language, second edition}, Brian W. Kernighan \& Denis M. Ritchie
-    \item \url{http://www.gecif.net/qcm/information/ascii_decimal_hexa.pdf}
     \item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/}
-    \item pointeurs de fonctions
+    \item \url{https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/les-pointeurs-de-fonction/}
     \item \url{https://en.wikipedia.org/wiki/Minimax}
     \item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning}
 \end{itemize}
