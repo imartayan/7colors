@@ -11,23 +11,22 @@
 
 Le but de ce projet est d'implémenter le jeu des 7 couleurs en C, avec un code aussi clair et structuré que possible.
 Nous avons essayé de faire un code suffisamment générique pour qu'il soit facilement ajustable et réutilisable par la suite : cela passe par l'utilisation de structures et de méthodes générales, ainsi qu'un découpage en modules relativement indépendants les uns des autres.
-Au-delà du développement du jeu en tant que tel, nous nous sommes aussi beaucoup intéressés à la conception de joueurs artificiels avec différentes stratégies : aléatoire, gloutonne, expansionniste, minimax\etc
+Au-delà du développement du jeu en tant que tel, nous nous sommes aussi beaucoup intéressés à la conception de joueurs artificiels avec différentes stratégies : aléatoire, gloutonne, hégémonique, expansionniste, minimax glouton, minimax expansionniste\etc
 
 \subsection*{Structure du projet}
 
 Au fil des questions, nous ferons référence à plusieurs fonctions réparties dans différents modules, c'est pourquoi il peut être utile de d'expliquer rapidement la structure générale du projet pour s'y retrouver plus facilement :
 
 \begin{itemize}
-    \item \verb|structures.c| contains all the structures used in the projects : player, strategy, linked list, queue...
-    \item \verb|utils.c| contains basic functions such as reading or writing a cell, choosing a random color...
-    \item \verb|display.c| contains functions for printing the board, the score and the results of a game
-    \item \verb|input.c| contains functions for asking game modes, next move and new game
-    \item \verb|board.c| contains functions for creating the board and updating it after each move
-    \item \verb|strategies.c| contains different strategies for artificial intelligence
-    \item \verb|game.c| contains functions for selecting strategies and running normal or fast games
-    \item \verb|main.c| contains the main loop of the game
+    \item \verb|structures.c| contient toutes les structures de données utilisées dans le programme (joueur, état du jeu, strategie, liste chaînée, file)
+    \item \verb|utils.c| contient plusieurs fonctions utilitaires utilisées dans les autres modules (manipulation d'une case, couleur aléatoire, condition d'arrêt)
+    \item \verb|display.c| contient les fonctions qui font l'affichage du jeu (plateau, score, résultats, statistiques)
+    \item \verb|input.c| contient les fonctions permettant à l'utilisateur d'interagir avec le programme (choix du mode, du prochain coup, nouvelle partie)
+    \item \verb|board.c| contient les fonctions qui initialisent et mettent à jour le plateau
+    \item \verb|strategies.c| contient les différentes stratégies qui peuvent être utilisées par les joueurs durant la partie
+    \item \verb|game.c| contient les fonctions qui permettent le déroulement d'une partie en fonction du nombre de joueurs et de la stratégie qui est utilisée par chaque joueur
+    \item \verb|main.c| contient le programme principal permettant de lancer une partie normale ou un tournoi
 \end{itemize}
-(à traduire)
 
 \section{Voir le monde en 7 couleurs}
 
