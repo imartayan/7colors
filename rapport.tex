@@ -107,11 +107,12 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 \end{qu}
 
 \begin{qu}
-    Pour obtenir une partie plus équitable, l'une des possibilités serait d'avoir un plateau symétrique qui donne accès aux même cases à chacun des joueurs. Cependant, le premier joueur reste grandement avantagé par le fait qu'il a toujours un coup d'avance.
+    Pour obtenir une partie plus équitable, l'une des possibilités serait d'avoir un plateau symétrique qui donne accès aux même cases à chacun des joueurs. Cependant, le premier joueur reste grandement avantagé par le fait qu'il a toujours un coup d'avance. C'est pourquoi nous avons introduit la notion de partie de revanche dans le mode tournoi. La revanche permet ainsi à chaque stratégie de commencer dans la position avantagée et seule une stratégie strictement meilleure pourra gagner les deux parties.
 \end{qu}
 
 \begin{qu}
-    La fonction \verb|run_fast_game| du module \verb|game.c| permet de lancer des parties rapides (sans affichage ni délai entre chaque tour). On lance ensuite 100 parties rapides en changeant le joueur qui commence à chaque partie et en tenant compte des scores de chaque joueur pour en faire une moyenne.
+    La fonction \verb|run_fast_game| du module \verb|game.c| permet de lancer des parties rapide (sans affichage ni pauses). On lance ensuite 100 parties rapides.
+Pour rendre le championnat vraiment équitable, nous réalisons deux parties sur chaque plateau : une première partie suivies d'une revanche où les positions de départ ainsi que le joueur qui commence sont échangés. Les joueurs s'affrontent donc sur 50 plateaux différents.
     Sans surprise, le joueur glouton gagne l'ensemble des parties face au joueur aléatoire.
 \end{qu}
 
@@ -138,7 +139,7 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
         \item Pour améliorer les résultats obtenus, nous avons ajouté une heuristique pour ne prendre en compte que les cases permettant de s'étendre par la suite (c'est-à-dire les cases ayant au moins un voisin que l'on peut colorer). On tient également compte des cases qui sont en contact avec la zone adverse car elles empêchent sa propagation.
         \item Enfin, nous avons mis en place une stratégie hybride entre le joueur glouton et le joueur hégémonique qui cherche à maximiser la somme du nombre de cases rajoutées et du périmètre de la zone.
     \end{itemize}
-\end{qu}
+ Nous avons réalisé des tournois entre chacune des versions de la stratégie hégémonique et la stratégie gloutonne et les résuultats sont visibles dans le tableau suivant.
 
 \begin{Tab}
     \begin{TabX}[1]{|L|C|C|C|C|C|}
@@ -155,8 +156,11 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
 
+\end{qu}
+
 \begin{qu}
     On remarque que le glouton prévoyant s'apparente à une implémentation de l'algorithme minimax qui utilise le score comme fonction d'évaluation et qui ne tient pas compte de l'adversaire.
+    Le principe de l'algorithme MiniMax est le suivant : on fait jouer toutes les possibilités de chaque joueur sur un nombre de coups donnés et quand on atteint des feuilles de notre arbre de jeu, les feuilles prennent un valeur heuristique calculée par une fonction heuristique (dans le cas du glouton prévoyant, la fonction heuristique utilisée renvoie le score du joueur qui a lancé la recherche). Chaque noeud interne de l'arbre hérite d'une des valeurs de ses enfants. Si on est à une hauteur paire, on prends le max de ses enfants, sinon on prends le min. cela correspond à considérer que les joueur prends le coup qui l'ammène au meilleur score et son adversaire choisis le coup qui mènera le joueur au coup le moins intéressant. 
     Pour prendre en compte les n prochains coups avec un plateau contenant c cases, la complexité est en \(\Oh(7^n \x c)\).
     Nous avons décidé d'implémenter l'algorithme minimax puis sa version avec élagage alpha beta, qui permet de ne pas calculer certaines branches de l'arbre quand on sait qu'elles ne peuvent pas mener à un meilleur résultat, dans l'espoir de pouvoir faire jouer une version qui calcule 4 coups en profondeur en tenant compte des coups de l'adversaire.
 \end{qu}
@@ -171,7 +175,7 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
 
 \begin{qu}
     On peut implémenter une version du minimax utilisant l'heuristique hybride que nous avons développée pour le joueur hégémonique comme fonction d'évaluation.
-\end{qu}
+Le code correspondant se trouve dans la fonction napoleon du module strategies.c. Nous avons réalisés des tournois entre les versions les plus abouties de nos intelligences artificielles (hégémonique hybride, Harpagon, Napoléon) et les résultats sont visibles dans le tableau ci dessous.
 
 \begin{Tab}
     \begin{TabX}[0.67]{|L|C|C|C|}
@@ -186,16 +190,18 @@ Au fil des questions, nous ferons référence à plusieurs fonctions réparties 
     \caption{Résultats de 1000 parties entre les joueurs artificiels}
 \end{Tab}
 
+On peut voir sur les résultats des tournois que Napoléon utilise une stratégie significativement plus efficace que les autres avec un taux de victoire de 78.2\% contre la stratégie hybride et un taux de victoire de 73.5\% contre Harpagon.
+\end{qu}
 \section*{Synthèse}
 
 \section*{Bibliographie}
 
 \begin{itemize}
-    \item \emph{The C Programming Language, second edition}, Brian W. Kernighan \& Denis M. Ritchie
-    \item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/}
-    \item \url{https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/les-pointeurs-de-fonction/}
-    \item \url{https://en.wikipedia.org/wiki/Minimax}
-    \item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning}
+    \item \emph{The C Programming Language, second edition}, Brian W. Kernighan \& Denis M. Ritchie : utilisé pour avoir la documentation des bibliothèques standard
+    \item \url{http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/} : pour changer la couleur d'écriture dans le terminal
+    \item \url{https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/les-pointeurs-de-fonction/} : comment passer des pointeurs de fonctions en argument et les utiliser dans le corps de la fonction.
+    \item \url{https://en.wikipedia.org/wiki/Minimax} : retrouver le fonctionnement de l'algorithme
+    \item \url{https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning} : référence pour le fonctionnement de l'algorithme
 \end{itemize}
 
 \end{document}
