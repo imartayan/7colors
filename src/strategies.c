@@ -6,8 +6,9 @@ dernière modification : 12/10/2020
 #include <stdio.h>
 #include <stdlib.h>
 #include "strategies.h"
-#include "input.h"
 #include "utils.h"
+#include "display.h"
+#include "input.h"
 #include "board.h"
 #include "simple_unit_test.h"
 
@@ -187,9 +188,7 @@ void perimeter_visit(point *p, bool *seen, queue *to_visit, State *state, char c
         seen[p->x + p->y * state->board_size] = true;
         char cell_color = get_cell(state->board, state->board_size, p->x, p->y);
         if (cell_color == color)
-        {
             cell_color = state->curr_player->id;
-        }
         if (cell_color == state->curr_player->id)
         {
             int x, y;
@@ -207,6 +206,7 @@ void perimeter_visit(point *p, bool *seen, queue *to_visit, State *state, char c
                 // On compte le bord du plateau
             }
         }
+        // On ne veut pas prendre en compte les cellules enclavées
         else if (cell_expansion(p, state) > 1)
             (*perimeter)++;
     }
@@ -250,9 +250,7 @@ void perimeter_borderless_visit(point *p, bool *seen, queue *to_visit, State *st
         seen[p->x + p->y * state->board_size] = true;
         char cell_color = get_cell(state->board, state->board_size, p->x, p->y);
         if (cell_color == color)
-        {
             cell_color = state->curr_player->id;
-        }
         if (cell_color == state->curr_player->id)
         {
             int x, y;
@@ -268,6 +266,7 @@ void perimeter_borderless_visit(point *p, bool *seen, queue *to_visit, State *st
                 // On ne compte pas le bord du plateau
             }
         }
+        // On ne veut pas prendre en compte les cellules enclavées
         else if (cell_expansion(p, state) > 1)
             (*perimeter)++;
     }
@@ -332,6 +331,7 @@ void expansion_visit(point *p, bool *seen, queue *to_visit, State *state, char c
                 // On compte le bord du plateau
             }
         }
+        // On ne veut pas prendre en compte les cellules enclavées
         else if (cell_expansion(p, state) > 1)
             (*expansion)++;
     }
@@ -394,6 +394,7 @@ void expansion_borderless_visit(point *p, bool *seen, queue *to_visit, State *st
                 // On ne compte pas le bord du plateau
             }
         }
+        // On ne veut pas prendre en compte les cellules enclavées
         else if (cell_expansion(p, state) > 1)
             (*expansion)++;
     }
@@ -514,20 +515,142 @@ char napoleon(State *state)
 
 /************ Tests **************/
 
-SUT_TEST(test_osef)
+SUT_TEST(test_reachable_colors)
 {
-    char board[] = {'1', 'R', 'V', 'V', 'R', 'R', 'R', 'V', '2'};
+    char board[] = {'1', '1', 'G', 'C', 'J', 'M', 'V', 'B', '2'};
     point start1 = {0, 0}, start2 = {2, 2};
-    Player player1 = {PLAYER1, 1, &start1}, player2 = {PLAYER2, 1, &start2};
-    State state = {board, 3, &player1, &player2, &player1, 'R', 1};
-    update_board(&state);
-    char expected[] = {'1', '1', 'V', 'V', '1', '1', 'R', 'V', '2'};
-    for (int x = 0; x < 3; x++)
-        for (int y = 0; y < 3; y++)
-            SUT_CHAR_EQUAL(board[x + 3 * y], expected[x + 3 * y], "The cell (%d,%d) is not correctly changed with update_board.", x, y);
+    Player player1 = {PLAYER1, 2, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 3, &player1, &player2, &player1, '?', 1};
+    bool reachable[NB_COLORS] = {false};
+    reachable_colors(&state, reachable);
+    bool expected[NB_COLORS] = {false};
+    expected[color_id('G')] = expected[color_id('C')] = expected[color_id('J')] = true;
+    for (int i = 0; i < NB_COLORS; i++)
+        SUT_INT_EQUAL(reachable[i], expected[i], "The color %c is not correctly marked as reachable.", colors[i]);
+    return 1;
+}
+
+SUT_TEST(test_random_reachable_color)
+{
+    char board[] = {'1', '1', 'G', 'C', 'J', 'M', 'V', 'B', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 2, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 3, &player1, &player2, &player1, '?', 1};
+    char c;
+    for (int i = 0; i < 50; i++)
+    {
+        c = random_reachable_color(&state);
+        SUT_ASSERT_TRUE(c == 'G' || c == 'C' || c == 'J', "random_reachable_color returns a color that is not reachable.");
+    }
+    return 1;
+}
+
+SUT_TEST(test_color_score)
+{
+    char board[] = {
+        '1', '1', '1', 'C', 'C',
+        'G', 'M', '1', 'V', 'C',
+        'J', 'J', 'R', 'V', 'J',
+        'J', 'J', 'J', 'J', 'J',
+        'J', 'J', 'J', 'J', '2'};
+    point start1 = {0, 0}, start2 = {4, 4};
+    Player player1 = {PLAYER1, 4, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 5, &player1, &player2, &player1, '?', 1};
+    int expected[NB_COLORS];
+    expected[color_id('B')] = 4;
+    expected[color_id('J')] = 4;
+    expected[color_id('G')] = 5;
+    expected[color_id('M')] = 5;
+    expected[color_id('R')] = 5;
+    expected[color_id('V')] = 6;
+    expected[color_id('C')] = 7;
+    for (int i = 0; i < NB_COLORS; i++)
+    {
+        SUT_INT_EQUAL(color_score(&state, colors[i]), expected[i], "Le score calculé pour la couleur %c est incorrect.", colors[i]);
+    }
+    return 1;
+}
+
+SUT_TEST(test_best_score)
+{
+    char board[] = {
+        '1', '1', '1', 'C', 'C',
+        'G', 'M', '1', 'V', 'C',
+        'J', 'J', 'R', 'V', 'J',
+        'J', 'J', 'J', 'J', 'J',
+        'J', 'J', 'J', 'J', '2'};
+    point start1 = {0, 0}, start2 = {4, 4};
+    Player player1 = {PLAYER1, 4, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 5, &player1, &player2, &player1, '?', 1};
+    char c = best_score(&state);
+    SUT_CHAR_EQUAL(c, 'C', "best_score does not return the correct color.");
+    return 1;
+}
+
+SUT_TEST(test_color_perimeter)
+{
+    char board[] = {
+        '1', '1', '1', 'C', 'C',
+        'G', 'M', '1', 'V', 'C',
+        'J', 'J', 'R', 'V', 'J',
+        'J', 'J', 'J', 'J', 'J',
+        'J', 'J', 'J', 'J', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 4, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 5, &player1, &player2, &player1, '?', 1};
+    int expected[NB_COLORS];
+    expected[color_id('B')] = 9;
+    expected[color_id('J')] = 9;
+    expected[color_id('M')] = 9;
+    expected[color_id('G')] = 10;
+    expected[color_id('R')] = 11;
+    expected[color_id('V')] = 11;
+    expected[color_id('C')] = 13;
+    for (int i = 0; i < NB_COLORS; i++)
+    {
+        SUT_INT_EQUAL(color_perimeter(&state, colors[i]), expected[i], "Le périmètre calculé pour la couleur %c est incorrect.", colors[i]);
+    }
+    return 1;
+}
+
+SUT_TEST(test_best_perimeter)
+{
+    char board[] = {
+        '1', '1', '1', 'C', 'C',
+        'G', 'M', '1', 'V', 'C',
+        'J', 'J', 'R', 'V', 'J',
+        'J', 'J', 'J', 'J', 'J',
+        'J', 'J', 'J', 'J', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 4, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 5, &player1, &player2, &player1, '?', 1};
+    char c = best_perimeter(&state);
+    SUT_CHAR_EQUAL(c, 'C', "best_perimeter does not return the correct color.");
+    return 1;
+}
+
+SUT_TEST(test_best_perimeter_borderless)
+{
+    char board[] = {
+        '1', '1', '1', 'C', 'C',
+        'G', 'M', '1', 'V', 'C',
+        'J', 'J', 'R', 'V', 'C',
+        'J', 'J', 'J', 'V', 'C',
+        'J', 'J', 'J', 'J', '2'};
+    point start1 = {0, 0}, start2 = {2, 2};
+    Player player1 = {PLAYER1, 4, &start1}, player2 = {PLAYER2, 1, &start2};
+    State state = {board, 5, &player1, &player2, &player1, '?', 1};
+    char c = best_perimeter_borderless(&state);
+    SUT_CHAR_EQUAL(c, 'V', "best_perimeter_borderless does not return the correct color.");
     return 1;
 }
 
 SUT_TEST_SUITE(strategies) = {
-    SUT_TEST_SUITE_ADD(test_osef),
+    SUT_TEST_SUITE_ADD(test_reachable_colors),
+    SUT_TEST_SUITE_ADD(test_random_reachable_color),
+    SUT_TEST_SUITE_ADD(test_color_score),
+    SUT_TEST_SUITE_ADD(test_best_score),
+    SUT_TEST_SUITE_ADD(test_color_perimeter),
+    SUT_TEST_SUITE_ADD(test_best_perimeter),
+    SUT_TEST_SUITE_ADD(test_best_perimeter_borderless),
     SUT_TEST_SUITE_END};

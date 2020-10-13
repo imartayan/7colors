@@ -23,7 +23,7 @@ void set_cell(char *board, int board_size, int x, int y, char color)
 
 bool in_bounds(int board_size, int x, int y)
 {
-    return x >= 0 && x < board_size && y >= 0 && y < board_size;
+    return (x >= 0) && (x < board_size) && (y >= 0) && (y < board_size);
 }
 
 int randint(int n)
@@ -116,7 +116,7 @@ SUT_TEST(test_get_nth_true)
 {
     bool tab[] = {true, false, false, true};
     int c = get_nth_true(tab, 4, 2);
-    SUT_INT_EQUAL(c, 3, "The index returned by get_nth_true is incorrect");
+    SUT_INT_EQUAL(c, 3, "The index returned by get_nth_true is incorrect.");
     return 1;
 }
 
