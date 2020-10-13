@@ -28,15 +28,12 @@ An implementation of the 7 colors game written in C.
 * hegemonic artificial intelligence
 * tournament mode with statistics
 * abstract structures to replace globals
-* units tests for utils and board
+* units tests
+* minimax implementation with alpha beta pruning
 
-## Todo
-* __write unit tests__
-* write documentation
-* write a detailed report
-* improve artificial intelligence (minimax ?)
 
 ## Sources
+* The C programming language 2nd edition Denis Ritchie & Brian Khernigan 
 * http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/
 * https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/les-pointeurs-de-fonction/
 * https://en.wikipedia.org/wiki/Minimax
