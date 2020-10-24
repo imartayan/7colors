@@ -23,8 +23,8 @@ void set_print_color(char c)
         printf("\033[0;36m");
         break;
     case PLAYER2:
-        // magenta
-        printf("\033[0;35m");
+        // jaune
+        printf("\033[0;33m");
         break;
     case 'R':
         // rouge
