@@ -19,11 +19,12 @@ execution : pour lancer le mode de tournoi taper ./7colors n
 #include "board.h"
 #include "game.h"
 #include "strategies.h"
+#include "server.h"
 
 /** Program entry point */
 int main(int argc, char **argv)
 {
-    open_server();
+    int server_socket = open_server();
     srand((unsigned)time(NULL));
     print_welcome_screen();
     int board_size = 30;
@@ -91,6 +92,6 @@ int main(int argc, char **argv)
         print_statistics(&state, nb_games, wins1, wins2, total1, total2);
     }
     free(board);
-    close_server();
+    close_server(server_socket);
     return 0; // Everything went well
 }
