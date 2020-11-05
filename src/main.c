@@ -41,6 +41,13 @@ int main(int argc, char **argv)
     char winner;
     if (mode[0] == 1)
     {
+        int client_socket = accept_spec(server_socket);
+        //envoi du plateau
+        send_message(client_socket, board, nb_cases);
+        //envoi de la taille du plateau
+        char* string_board_size = conversion_int_to_array(board_size);
+        send_message(client_socket, string_board_size, strlen(string_board_size));
+        free(string_board_size);
         bool wait = !(mode[1] == 1 || mode[2] == 1);
         bool continue_playing = true;
         while (continue_playing)
@@ -51,6 +58,8 @@ int main(int argc, char **argv)
             print_end_screen(winner, &state);
             continue_playing = ask_new_game();
         }
+        // déconnecter le spectateur
+        close_socket(client_socket);
     }
     else
     {
@@ -92,6 +101,6 @@ int main(int argc, char **argv)
         print_statistics(&state, nb_games, wins1, wins2, total1, total2);
     }
     free(board);
-    close_server(server_socket);
+    close_socket(server_socket);
     return 0; // Everything went well
 }

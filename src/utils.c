@@ -9,6 +9,25 @@ dernière modification : 10/10/2020
 
 const char colors[NB_COLORS] = {'R', 'V', 'B', 'J', 'G', 'M', 'C'};
 
+char* conversion_int_to_array(int a){
+  int reste = a;
+  int i = 0;
+  while(reste > 0){
+    reste /= 10;
+    i++;
+  }
+  printf("%d", i);
+  char* s = malloc((i+1)*sizeof(char));
+  s[i] = '\0';
+  i--;
+  reste = a;
+  while(i >= 0){
+    s[i] = '0' + reste%10;
+    reste /= 10;
+    i--;
+  }
+  return s;
+}
 /** Retrieves the color of a given board cell */
 char get_cell(char *board, int board_size, int x, int y)
 {

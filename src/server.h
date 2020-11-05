@@ -20,5 +20,7 @@ int open_server();
 
 int accept_spec(int sfd);
 
-void close_server(int sfd);
+void send_message(int fd, char* buffer, int buffer_size);
+
+void close_socket(int sfd);
 #endif

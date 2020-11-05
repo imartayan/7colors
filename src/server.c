@@ -47,7 +47,18 @@ int accept_spec(int sfd){
   return client_socket;
 }
 
-void close_server(int sfd){
+void send_message(int fd, char* buffer, int buffer_size){
+  int todo = buffer_size;
+  char* p = buffer;
+  while(todo > 0){
+    int res = send(fd, buffer, todo, 0);
+    error(res == -1, "envoi du plateau vers le client impossible");
+    todo -= res;
+    p += res;
+  }
+}
+
+void close_socket(int sfd){
   shutdown(sfd, SHUT_RDWR);
   close(sfd);
 }

@@ -12,6 +12,8 @@
 
 const char colors[NB_COLORS];
 
+char* conversion_int_to_array(int a);
+
 /** Retrieves the color of a given board cell */
 char get_cell(char *board, int board_size, int x, int y);
 
